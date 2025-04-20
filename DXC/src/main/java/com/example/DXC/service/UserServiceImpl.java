@@ -1,4 +1,4 @@
-package com.example.DXC.service.impl;
+package com.example.DXC.service;
 
 import com.example.DXC.dto.SignupRequest;
 import com.example.DXC.dto.SignInRequest;
