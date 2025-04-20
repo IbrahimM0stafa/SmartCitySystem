@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: youssef1622
+      MYSQL_DATABASE: iot_dxc_project
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pyoussef1622"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - backend-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend-container
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - backend-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/iot_dxc_project?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: youssef1622
+      # Remove Hikari-specific environment variables from here
+      # Add these instead:
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+
+volumes:
+  mysql-data:
+
+networks:
+  backend-network:
