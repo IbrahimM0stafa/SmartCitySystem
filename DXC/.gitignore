@@ -35,6 +35,8 @@ build/
 # Spring Boot configuration (DO NOT COMMIT SENSITIVE INFO)
 src/main/resources/application.properties
 src/main/resources/application.yml
+src/main/resources/application-local.properties
+src/main/resources/application-docker.properties
 
 # Logs
 *.log
