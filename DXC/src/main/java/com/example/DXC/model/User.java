@@ -41,4 +41,7 @@ public class User {
     @Column(nullable = true)
     private Integer age;
 
+    @Column(nullable = true)
+    private String authProvider;
+
 }

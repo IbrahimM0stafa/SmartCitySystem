@@ -2,22 +2,34 @@ package com.example.DXC.service;
 
 import com.example.DXC.dto.SignupRequest;
 import com.example.DXC.dto.SignInRequest;
+import com.example.DXC.dto.UserProfileResponse;
 import com.example.DXC.model.User;
+import com.example.DXC.model.UserDetailsImpl;
 import com.example.DXC.repository.UserRepository;
-import com.example.DXC.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserRepository userRepository;
+    private EmailService emailService;
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public User registerUser(SignupRequest request) {
@@ -36,22 +48,48 @@ public class UserServiceImpl implements UserService {
                 .age(request.getAge())
                 .build();
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        emailService.sendWelcomeEmail(savedUser.getEmail(), savedUser.getFirstName());
+
+        return savedUser;
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        return new UserDetailsImpl(user);
     }
 
     @Override
-    public User loginUser(SignInRequest request) {
-        Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
+    public UserProfileResponse getProfile(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) return null;
 
-        if (userOptional.isEmpty()) {
-            throw new RuntimeException("Invalid email or password");
-        }
+        User u = user.get();
+        UserProfileResponse response = new UserProfileResponse();
+        response.setFirstname(u.getFirstName());
+        response.setLastname(u.getLastName());
+        response.setEmail(u.getEmail());
 
-        User user = userOptional.get();
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
-        }
-
-        return user;
+        return response;
     }
+
+    //    @Override
+//    public User loginUser(SignInRequest request) {
+//        Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
+//
+//        if (userOptional.isEmpty()) {
+//            throw new RuntimeException("Invalid email or password");
+//        }
+//
+//        User user = userOptional.get();
+//        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+//            throw new RuntimeException("Invalid email or password");
+//        }
+//
+//        return user;
+//    }
 }

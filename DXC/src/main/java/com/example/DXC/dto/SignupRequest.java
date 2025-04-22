@@ -14,6 +14,7 @@ public class SignupRequest {
 
     @NotBlank(message = "Email is required")
     @Email(message = "Email should be valid")
+    @Pattern(regexp = "^[^<>]*$", message = "Email must not contain scripts or HTML")
     private String email;
 
     @NotBlank(message = "Password is required")
