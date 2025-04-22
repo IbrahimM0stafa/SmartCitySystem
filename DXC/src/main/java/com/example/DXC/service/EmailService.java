@@ -23,18 +23,22 @@ public class EmailService {
 
         String htmlContent = "<!DOCTYPE html>" +
                 "<html><head><style>" +
-                "  .container { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; }" +
-                "  .card { background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }" +
-                "  h2 { color: #333; }" +
-                "  p { font-size: 16px; color: #555; }" +
+                "  body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }" +
+                "  .card { background-color: #ffffff; max-width: 600px; margin: auto; padding: 30px; border-radius: 12px; box-shadow: 0 6px 12px rgba(0,0,0,0.1); }" +
+                "  h2 { color: #2c3e50; margin-bottom: 10px; }" +
+                "  p { font-size: 16px; color: #555555; line-height: 1.6; }" +
+                "  .cta { display: inline-block; margin-top: 20px; padding: 12px 20px; background-color: #2e86de; color: #ffffff; text-decoration: none; border-radius: 6px; }" +
+                "  .footer { margin-top: 40px; font-size: 13px; color: #999999; }" +
                 "</style></head>" +
-                "<body><div class='container'>" +
-                "  <div class='card'>" +
-                "    <h2>Welcome, " + name + " 👋</h2>" +
-                "    <p>Thanks for joining <strong>Smart Iot Platform</strong>! We're excited to have you.</p>" +
-                "    <p>Let us know if you have any questions.</p>" +
-                "    <p style='margin-top: 30px;'>Best regards,<br/>DXC Team</p>" +
-                "  </div></div></body></html>";
+                "<body><div class='card'>" +
+                "  <h2>Welcome aboard, " + name + "! 🎉</h2>" +
+                "  <p>We're thrilled to have you with us at <strong>Smart IoT Platform</strong>. Whether you're here to innovate, automate, or explore the power of connected things—you're in great company.</p>" +
+                "  <p>Get started by logging into your dashboard and exploring the features built just for you.</p>" +
+                "  <a href='https://your-platform-link.com/login' class='cta'>Go to Dashboard</a>" +
+                "  <p class='footer'>If you have any questions or need assistance, feel free to reach out to our support team anytime.<br/>" +
+                "  <br/>Warm regards,<br/>The DXC Team</p>" +
+                "</div></body></html>";
+
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
