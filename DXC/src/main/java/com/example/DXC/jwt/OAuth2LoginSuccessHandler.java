@@ -35,7 +35,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String token = jwtUtils.generateJwtTokenWithEmail(email);
 
         // Send JWT in redirect URL or cookie (Here: redirect with token)
-        String redirectURL = "http://localhost:3000/oauth2/redirect?token=" + token; // Change to your frontend URL
+        String redirectURL = "http://localhost:4200/oauth2/redirect?token=" + token; // Change to your frontend URL
 
         getRedirectStrategy().sendRedirect(request, response, redirectURL);
     }

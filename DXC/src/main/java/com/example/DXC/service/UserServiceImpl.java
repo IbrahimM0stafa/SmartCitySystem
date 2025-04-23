@@ -72,6 +72,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         response.setFirstname(u.getFirstName());
         response.setLastname(u.getLastName());
         response.setEmail(u.getEmail());
+        response.setAge(u.getAge());
+        response.setGender(u.getGender());
+        response.setPhoneNumber(u.getPhoneNumber());
 
         return response;
     }
