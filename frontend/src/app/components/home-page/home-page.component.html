@@ -1,0 +1,35 @@
+<div [ngClass]="darkMode ? 'dark-mode' : 'light-mode'">
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <h1 class="dxc-logo">DXC <span>TECHNOLOGY</span></h1>
+  
+      <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">Devices</a>
+        <a href="#">Sensors</a>
+        <a href="#">Notifications</a>
+      </div>
+  
+      <button class="theme-toggle" (click)="toggleTheme()">
+        {{ darkMode ? '☀️ Light' : '🌙 Dark' }}
+      </button>
+    </div>
+  
+    <!-- Flex Container -->
+    <div class="page-container">
+      <!-- Sidebar -->
+      <div class="left-sidebar">
+        <a [routerLink]="['/profile']">
+          <img src="assets/profile_picture.jpg" alt="Profile" class="profile-picture" />
+        </a>
+        <div class="profile-name">User's Profile</div>
+      </div>
+  
+      <!-- Main Content -->
+      <div class="main-content">
+        <h2>Welcome to the Smart IoT Monitoring System</h2>
+        <p>This is the main content area.</p>
+      </div>
+    </div>
+  </div>
+  

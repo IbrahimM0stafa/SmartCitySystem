@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smartcity-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smartcity
+  template:
+    metadata:
+      labels:
+        app: smartcity
+    spec:
+      containers:
+      - name: smartcity-container
+        image: smartcity-angular:v1
+        ports:
+        - containerPort: 80

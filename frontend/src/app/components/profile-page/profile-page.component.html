@@ -1,0 +1,80 @@
+<div class="profile-container" [ngClass]="{ 'dark-mode': darkMode }">
+    <div class="top-bar">
+      <div class="tabs">
+        <span class="tab">Home</span>
+        <span class="tab">Devices</span>
+        <span class="tab">Sensors</span>
+        <span class="tab">Notifications</span>
+      </div>
+  
+      <button class="dark-mode-toggle" (click)="toggleDarkMode()">
+        {{ darkMode ? '☀️' : '🌙' }}
+      </button>
+    </div>
+  
+    <div class="profile-content" *ngIf="userData; else loading">
+      <div class="left-box">
+        <div class="title">
+          <h3>Smart IoT Platform</h3>
+          <h1>
+            <span class="dxc">DXC</span>
+            <span class="tech">Technology</span>
+          </h1>
+        </div>
+  
+        <div class="user-box">
+          <img src="assets/profile-pic.jpg" alt="Profile" />
+          <h2>{{ userData.firstName }} {{ userData.lastName }}</h2>
+  
+          <div class="info-box">
+            <div class="info-row">
+              <div class="info-item">
+                <label>Email</label>
+                <p>{{ userData.email }}</p>
+              </div>
+              <div class="info-item">
+                <label>Phone</label>
+                <p>{{ userData.phone }}</p>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-item">
+                <label>First Name</label>
+                <p>{{ userData.firstName }}</p>
+              </div>
+              <div class="info-item">
+                <label>Age</label>
+                <p>{{ userData.age }}</p>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-item">
+                <label>Last Name</label>
+                <p>{{ userData.lastName }}</p>
+              </div>
+              <div class="info-item">
+                <label>Gender</label>
+                <p>{{ userData.gender }}</p>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-item">
+                <label>Password</label>
+                <p>{{ userData.password }}</p>
+              </div>
+              <div class="info-item edit-button-container">
+                <button class="edit-btn">Edit</button>
+              </div>
+            </div>
+          </div>
+  
+          <button class="change-password-btn" [routerLink]="['/change-password']">Change Password</button>
+        </div>
+      </div>
+    </div>
+  
+    <ng-template #loading>
+      <p>Loading...</p>
+    </ng-template>
+  </div>
+  

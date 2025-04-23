@@ -1,0 +1,176 @@
+/* General body styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f7f1e1; /* Cream background */
+    overflow: hidden;
+  }
+  
+  /* Container that holds sidebar + main side by side */
+  .page-container {
+    display: flex;
+    height: calc(100vh - 60px); /* Adjust if your top bar is taller */
+  }
+  
+  /* Dark purple top bar */
+  .top-bar {
+    background-color: #4b0082; /* Dark purple */
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .top-bar .title {
+    font-size: 24px;
+  }
+  
+  .top-bar .nav-links {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+  }
+  
+  .top-bar .nav-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 18px;
+  }
+  
+  .top-bar .nav-links a:hover {
+    text-decoration: underline;
+  }
+  
+  .dxc-logo {
+    color: #7B1FA2;
+    font-size: 28px;
+    margin-bottom: 5px;
+    font-weight: 900;
+  }
+  
+  .dxc-logo span {
+    color: #000;
+    font-size: 20px;
+    font-weight: 400;
+  }
+  
+  .top-bar .nav-links a:hover {
+    color: black;
+    text-decoration: none;
+  }
+  
+  
+  /* Light purple sidebar below the top bar */
+  .left-sidebar {
+    background: linear-gradient( to bottom, #e760ff, #7b1fa2);
+    width: 250px;
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .left-sidebar img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+  }
+  
+  .left-sidebar .profile-name {
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  /* Main content area, pushing it to the right of the sidebar */
+  .main-content {
+    margin-left: 350px; /* Leave space for the sidebar */
+    flex: 1;
+    padding: 20px;
+  }
+  
+  /* Profile section styling */
+  .profile-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  /* HomePage.css */
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  
+  
+  /* Dark/Light mode containers */
+  .light-mode {
+    background-color: #f7f1e1;
+    color: black;
+  }
+  
+  .dark-mode {
+    background: linear-gradient(to right, #430053 0%, #000000 80%);
+    color: white;
+  }
+  
+  /* Override specific areas in dark mode if needed */
+  .dark-mode .top-bar {
+    background: linear-gradient(80deg, #333333, #000000);
+    color: white;
+  }
+  
+  .dark-mode .nav-links a {
+    color: white;
+  }
+  
+  .dark-mode .nav-links a:hover {
+    color: #bbb;
+  }
+  
+  .dark-mode .left-sidebar {
+    background: linear-gradient(to bottom, #430053 0%, #000000 80%);
+  }
+  
+  .dark-mode .profile-name {
+    color: #ccc;
+  }
+  
+  /* Theme toggle button */
+  .theme-toggle {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: auto;
+    margin-right: 10px;
+  }
+  
+  .dark-mode .theme-toggle {
+    border-color: #bbb;
+    color: #ddd;
+  }
+  
+  .theme-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .dark-mode .dxc-logo span {
+    color: #430053;
+    font-size: 20px;
+    font-weight: 400;
+  }
+  

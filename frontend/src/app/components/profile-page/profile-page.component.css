@@ -1,0 +1,275 @@
+.profile-container {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(230deg, bottom, #eea0f9, white); /* Gradient from pink to white */
+    min-height: 100vh; /* Full page height */
+  }
+  
+  body {
+    background: linear-gradient(to bottom, #f29dfb 0%, #ffffff 100%); /* Stronger gradient from pink to white */
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  
+  .top-bar {
+    background-color: #d000f7;
+    height: 70px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+  }
+  
+  .profile-content {
+    display: flex;
+    background: linear-gradient(to right, #f29dfb 0%, #f4cbf9 40%);
+    padding: 20px;
+    border-radius: 0 0 8px 8px;
+
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh; /* full viewport height */
+  }
+  
+  .left-box {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+
+    max-width: 900px;
+    background: linear-gradient(to right, #f29dfb 0%, #f4cbf9 80%);
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+  }
+  
+  .title h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .title h1 {
+    margin: 0;
+    color: #443b7d;
+  }
+  
+  .user-box {
+    position: relative; /* Add this line */
+    margin-top: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .profile-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+  
+  .user-box h2 {
+    margin: 10px 0;
+  }
+  
+  .info-box {
+    margin-top: 20px;
+  }
+  
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .info-item {
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .info-item label {
+    font-weight: bold;
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .edit-button-container {
+    position: absolute; /* Position it absolutely within the .user-box */
+    bottom: 25px; /* Space from the bottom */
+    right: 10px;  /* Space from the right */
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+  
+  .edit-btn {
+    background-color: #9500b3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .change-password-btn {
+    margin-top: 20px;
+    background-color: #edaeff;
+    color: #5a0089;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .right-box {
+    flex: 1;
+    background: linear-gradient(180deg, #d000f7, #f0aaff); /* Gradient: base + lighter shade */
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    margin-left: 20px;
+    /* Flexbox centering */
+    display: flex;
+    justify-content: center;  /* Horizontally center */
+    align-items: center;      /* Vertically center */
+  }
+  
+  .feature-box h4 {
+    margin-bottom: 60px; /* Increase space between title and list */
+    font-size: 20px;     /* Make the title bigger */
+    color: black;
+    text-align: center;
+  }
+  
+  .feature-box ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-bottom: 50px;
+  }
+  
+  .feature-box li {
+    font-size: 14px;
+    margin-bottom: 40px;
+  }
+  
+  /* Top Bar Styling */
+  .profile-container {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(230deg, bottom, #eea0f9, white); /* Gradient from pink to white */
+  }
+  
+  .feature-box {
+    background-color: d000f7;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* This centers h4 and ul horizontally */
+    text-align: center; /* This centers the text inside them */
+  }
+  
+  /* Top Bar Styling */
+  .top-bar {
+    background-color: #d000f7;
+    height: 70px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: center; /* Center all items horizontally */
+    align-items: center;    /* Vertically center items */
+    padding: 0 20px;
+  }
+  
+  .tabs {
+    display: flex;
+    gap: 30px;
+    justify-content: center; /* Center the tabs horizontally */
+  }
+  
+  .tab {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .tab:hover {
+    color: #000000; /* gold hover effect */
+  }
+  
+  .dxc {
+    font-size: 42px; /* Bigger than default */
+    color: #443b7d;   /* Same color you had before */
+    font-weight: bold;
+  }
+  
+  .tech {
+    font-size: 28px;  /* Smaller if you want contrast */
+    color: black;
+    font-weight: normal;
+    margin-left: 5px;
+  }
+  
+  /* Dark Mode Toggle Button */
+  .dark-mode-toggle {
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .dark-mode-toggle:hover {
+    color: #da04c1; /* gold hover effect */
+  }
+  
+  .dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+  }
+  
+  .dark-mode .top-bar {
+    background: linear-gradient(80deg, #000000, #333333);
+  }
+  
+  .dark-mode .profile-content {
+    background: linear-gradient(to right, #430053 0%, #000000 80%);
+  }
+  
+  .dark-mode .user-box {
+    background-color: #000000;
+    color: white;
+  }
+  
+  .dark-mode .edit-btn {
+    background-color: #4d009e;
+  }
+  
+  .dark-mode .change-password-btn {
+    background-color: #6c4fff;
+    color: #ffffff;
+  }
+  
+  
+  
+  .dark-mode .tabs .tab {
+    color: #ffffff;
+  }
+  
+  .dark-mode .tabs .tab:hover {
+    color: #ae0cb4; /* gold hover effect */
+  }
+  
+  .dark-mode .right-box {
+    background: linear-gradient(180deg, #0c0c0c, #560069); /* Gradient: base + lighter shade */
+  }
+
+  .dark-mode .left-box {
+    background: linear-gradient(200deg, #0c0c0c, #560069); /* Gradient: base + lighter shade */
+  }
+  
+  
