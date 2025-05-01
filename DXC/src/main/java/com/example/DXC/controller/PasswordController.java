@@ -34,7 +34,7 @@ public class PasswordController {
     public ResponseEntity<?> verifyPasswordChange(@RequestBody PasswordOtpVerificationRequest request) {
         try {
             String message = passwordService.verifyAndChangePassword(request.getEmail(), request.getOtp(), request.getNewPassword());
-            return ResponseEntity.ok(Map.of("message", message)); // ✅ Return JSON
+            return ResponseEntity.ok(Map.of("message", message));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage())); // ✅ Return JSON error
         }

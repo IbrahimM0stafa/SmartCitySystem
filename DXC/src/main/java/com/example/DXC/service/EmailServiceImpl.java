@@ -74,7 +74,7 @@ public class EmailServiceImpl implements EmailService {
                 "  <h2>Welcome aboard, " + name + "! 🎉</h2>" +
                 "  <p>We're thrilled to have you with us at <strong>Smart IoT Platform</strong>. Whether you're here to innovate, automate, or explore the power of connected things—you're in great company.</p>" +
                 "  <p>Get started by logging into your dashboard and exploring the features built just for you.</p>" +
-                "  <a href='https://your-platform-link.com/login' class='cta'>Go to Dashboard</a>" +
+                "  <a href='http://localhost:4200/login' class='cta'>Login To Dashboard</a>" +
                 "  <p class='footer'>If you have any questions or need assistance, feel free to reach out to our support team anytime.<br/>" +
                 "  <br/>Warm regards,<br/>The DXC Team</p>" +
                 "</div></body></html>";
