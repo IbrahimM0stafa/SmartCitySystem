@@ -41,3 +41,6 @@ src/main/resources/application-docker.properties
 # Logs
 *.log
 
+# Environment variables
+.env
+

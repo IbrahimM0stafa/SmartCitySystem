@@ -19,7 +19,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;  // Use BCryptPasswordEncoder to hash passwords
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -36,7 +36,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             newUser.setAuthProvider("GOOGLE");
 
             // Create a default password for the user and hash it
-            String defaultPassword = "google-auth-password";  // You could generate a more secure password
+            String defaultPassword = "google-auth-password";
             String hashedPassword = passwordEncoder.encode(defaultPassword);
             newUser.setPassword(hashedPassword);
 

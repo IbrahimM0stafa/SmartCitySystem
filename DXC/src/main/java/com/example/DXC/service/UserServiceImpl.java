@@ -1,7 +1,6 @@
 package com.example.DXC.service;
 
 import com.example.DXC.dto.SignupRequest;
-import com.example.DXC.dto.SignInRequest;
 import com.example.DXC.dto.UserProfileResponse;
 import com.example.DXC.model.User;
 import com.example.DXC.model.UserDetailsImpl;
@@ -73,6 +72,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         response.setFirstname(u.getFirstName());
         response.setLastname(u.getLastName());
         response.setEmail(u.getEmail());
+        response.setAge(u.getAge());
+        response.setGender(u.getGender());
+        response.setPhoneNumber(u.getPhoneNumber());
 
         return response;
     }

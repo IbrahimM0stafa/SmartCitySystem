@@ -24,11 +24,10 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     @Override
-    public String getUsername() {
-        return user.getEmail(); // Or user.getUsername() if you have that field
+    public String getUsername() {   ///// change the username function to get email
+        return user.getEmail();
     }
 
-    // Add these methods (return `true` for simplicity or add logic)
     @Override
     public boolean isAccountNonExpired() { return true; }
     @Override
@@ -38,8 +37,8 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() { return true; }
 
-    // Optional: Add a method to access the full User object
-    public User getUser() {
+
+    public User getUser() { //// a method to access the full User
         return user;
     }
 }
