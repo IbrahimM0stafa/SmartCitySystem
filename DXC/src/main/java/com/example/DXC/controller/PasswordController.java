@@ -38,5 +38,6 @@ public class PasswordController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
+
     }
 }
