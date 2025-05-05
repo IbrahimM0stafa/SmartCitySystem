@@ -1,8 +1,8 @@
 package com.example.DXC.service;
 
-import com.example.DXC.model.AirPollutionSensorData;
-import com.example.DXC.model.StreetLightSensorData;
-import com.example.DXC.model.TrafficSensorData;
+import com.example.DXC.model.*;
+import com.example.DXC.repository.*;
+import com.example.DXC.service.SensorDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

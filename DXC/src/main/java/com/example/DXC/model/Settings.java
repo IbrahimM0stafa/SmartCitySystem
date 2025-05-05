@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -18,7 +19,7 @@ public class Settings {
 
     @Id
     @GeneratedValue
-    private long id;
+    private UUID id;
 
     @Column(nullable = false)
     private String type; // e.g., "Traffic", "Air_Pollution", "Street_Light"
