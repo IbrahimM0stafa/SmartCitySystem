@@ -54,7 +54,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/auth/signup",
                                 "/api/auth/signin",
-                                "/oauth2/**" , "/api/auth/change-password-request", "/api/auth/verify-password-change"// <-- allow OAuth2 flow
+                                "/oauth2/**" , "/api/auth/change-password-request", "/api/auth/verify-password-change"
+                                ,"/api/sensors/generate/**"
                         ).permitAll()
                         .requestMatchers("/api/profile/**").authenticated()
                         .anyRequest().authenticated()
