@@ -17,22 +17,35 @@ import java.util.UUID;
 @Table(name = "settings")
 public class Settings {
 
+    public enum SettingType {
+        Traffic,
+        Air_Pollution,
+        Street_Light
+    }
+
+    public enum AlertType {
+        Above,
+        Below
+    }
+
     @Id
     @GeneratedValue
     private UUID id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String type; // e.g., "Traffic", "Air_Pollution", "Street_Light"
+    private SettingType type;
 
     @Column(nullable = false)
-    private String metric; // e.g., "Density", "PM2.5", etc.
+    private String metric;
 
     @Column(nullable = false)
     private float thresholdValue;
 
-    @Column(nullable = false)
-    private String alertType; // "above" or "below"
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "alert_type")
+    private AlertType alertType;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
+    @Column(nullable = false, name = "created_at", updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

@@ -2,7 +2,6 @@ package com.example.DXC.service;
 
 import com.example.DXC.model.*;
 import com.example.DXC.repository.*;
-import com.example.DXC.service.SensorDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +16,7 @@ public class SensorDataServiceImpl implements SensorDataService {
     private final TrafficSensorDataRepository trafficRepo;
     private final AirPollutionSensorDataRepository airRepo;
     private final StreetLightSensorDataRepository lightRepo;
+    private final SettingsService settingsService;
 
     private final Random random = new Random();
 
@@ -31,6 +31,11 @@ public class SensorDataServiceImpl implements SensorDataService {
                 .congestionLevel(TrafficSensorData.CongestionLevel.values()[random.nextInt(4)])
                 .build();
         trafficRepo.save(data);
+
+        // Check for alerts
+        settingsService.checkAndTriggerAlert("trafficDensity", data.getTrafficDensity());
+        settingsService.checkAndTriggerAlert("avgSpeed", data.getAvgSpeed());
+
         System.out.println("🚦 Traffic data inserted");
     }
 
@@ -49,6 +54,11 @@ public class SensorDataServiceImpl implements SensorDataService {
                 .pollutionLevel(AirPollutionSensorData.PollutionLevel.values()[random.nextInt(5)])
                 .build();
         airRepo.save(data);
+
+        // Check for alerts
+        settingsService.checkAndTriggerAlert("co", data.getCo());
+        settingsService.checkAndTriggerAlert("ozone", data.getOzone());
+
         System.out.println("🌫️ Air pollution data inserted");
     }
 
@@ -63,6 +73,11 @@ public class SensorDataServiceImpl implements SensorDataService {
                 .status(random.nextBoolean() ? StreetLightSensorData.LightStatus.ON : StreetLightSensorData.LightStatus.OFF)
                 .build();
         lightRepo.save(data);
+
+        // Check for alerts
+        settingsService.checkAndTriggerAlert("brightnessLevel", data.getBrightnessLevel());
+        settingsService.checkAndTriggerAlert("powerConsumption", data.getPowerConsumption());
+
         System.out.println("💡 Street light data inserted");
     }
 }
