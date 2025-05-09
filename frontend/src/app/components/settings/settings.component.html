@@ -1,0 +1,284 @@
+<div class="settings-wrapper dark-theme" #wrapperRef> <!-- Toggle between dark-theme and light-theme -->
+  <!-- Decorative background elements -->
+  <div class="floating-decor decor-1"></div>
+  <div class="floating-decor decor-2"></div>
+  <div class="floating-decor decor-3"></div>
+
+  <!-- Theme toggle button -->
+  <div class="theme-toggle">
+    <button (click)="toggleTheme()">
+      <i class="fa fa-moon"></i> <!-- Use sun/moon icon based on theme -->
+    </button>
+  </div>
+
+  <!-- Main container -->
+  <div class="settings-container">
+    <!-- Brand section -->
+    <div class="brand-section">
+      <div class="brand-logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">SMARTCITY</span>
+      </div>
+      <h1>System Settings</h1>
+      <p>Configure and manage your sensor parameters</p>
+    </div>
+
+    <!-- Content card -->
+    <div class="settings-content-card">
+      <h2>Configure Sensor Thresholds</h2>
+      <p class="subtitle">Adjust the parameters for your monitoring devices</p>
+
+      <!-- Sensor selection -->
+      <div class="form-field">
+        <label for="sensorType">Select Sensor Type</label>
+        <div class="input-with-icon">
+          <select 
+            class="sensor-select"
+            [(ngModel)]="selectedSensor" 
+            name="sensorType" 
+            (change)="onSensorChange()">
+            <option value="traffic">Traffic</option>
+            <option value="air">Air Pollution</option>
+            <option value="light">Street Light</option>
+          </select>
+          <i class="field-icon fa fa-sensor"></i> <!-- Use appropriate icon -->
+        </div>
+      </div>
+
+      <form class="settings-form" (ngSubmit)="submitForm()" #settingsForm="ngForm">
+        <!-- Traffic -->
+        <div *ngIf="selectedSensor === 'traffic'">
+          <div class="form-field threshold-field">
+            <label for="trafficDensity">Traffic Density (0–500)</label>
+            <div class="input-with-icon">
+              <input
+                type="number"
+                name="trafficDensity"
+                [(ngModel)]="formData.trafficDensity"
+                #trafficDensity="ngModel"
+                min="0"
+                max="500"
+                required
+              />
+              <i class="field-icon fa fa-car"></i>
+            </div>
+            <div *ngIf="trafficDensity.invalid && trafficDensity.touched" class="error-message">
+              Must be between 0 and 500.
+            </div>
+          </div>
+    
+          <div class="form-field threshold-field">
+            <label for="avgSpeed">Average Speed (0–120 km/h)</label>
+            <div class="input-with-icon">
+              <input
+                type="number"
+                name="avgSpeed"
+                [(ngModel)]="formData.avgSpeed"
+                #avgSpeed="ngModel"
+                min="0"
+                max="120"
+                step="0.1"
+                required
+              />
+              <i class="field-icon fa fa-tachometer-alt"></i>
+            </div>
+            <div *ngIf="avgSpeed.invalid && avgSpeed.touched" class="error-message">
+              Must be between 0 and 120 km/h.
+            </div>
+          </div>
+          
+          <!-- Add checkbox controls for Traffic -->
+          <div class="form-field checkbox-field">
+            <h3>Notification Preferences</h3>
+            <div class="checkbox-group">
+              <div class="custom-checkbox">
+                <input 
+                  type="checkbox" 
+                  id="aboveThresholdTraffic" 
+                  name="aboveThresholdTraffic"
+                  [(ngModel)]="formData.notifyAboveTraffic" 
+                />
+                <label for="aboveThresholdTraffic">
+                  <span class="checkbox-indicator"></span>
+                  Notify when above threshold
+                </label>
+              </div>
+              
+              <div class="custom-checkbox">
+                <input 
+                  type="checkbox" 
+                  id="belowThresholdTraffic" 
+                  name="belowThresholdTraffic"
+                  [(ngModel)]="formData.notifyBelowTraffic"
+                />
+                <label for="belowThresholdTraffic">
+                  <span class="checkbox-indicator"></span>
+                  Notify when below threshold
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Air Pollution -->
+        <div *ngIf="selectedSensor === 'air'">
+          <div class="form-field threshold-field">
+            <label for="co">CO Level (0–50 ppm)</label>
+            <div class="input-with-icon">
+              <input
+                type="number"
+                name="co"
+                [(ngModel)]="formData.co"
+                #co="ngModel"
+                min="0"
+                max="50"
+                step="0.1"
+                required
+              />
+              <i class="field-icon fa fa-smog"></i>
+            </div>
+            <div *ngIf="co.invalid && co.touched" class="error-message">
+              Must be between 0 and 50 ppm.
+            </div>
+          </div>
+    
+          <div class="form-field threshold-field">
+            <label for="ozone">Ozone Level (0–300 ppb)</label>
+            <div class="input-with-icon">
+              <input
+                type="number"
+                name="ozone"
+                [(ngModel)]="formData.ozone"
+                #ozone="ngModel"
+                min="0"
+                max="300"
+                step="0.1"
+                required
+              />
+              <i class="field-icon fa fa-cloud"></i>
+            </div>
+            <div *ngIf="ozone.invalid && ozone.touched" class="error-message">
+              Must be between 0 and 300 ppb.
+            </div>
+          </div>
+          
+          <!-- Add checkbox controls for Air Pollution -->
+          <div class="form-field checkbox-field">
+            <h3>Notification Preferences</h3>
+            <div class="checkbox-group">
+              <div class="custom-checkbox">
+                <input 
+                  type="checkbox" 
+                  id="aboveThresholdAir" 
+                  name="aboveThresholdAir"
+                  [(ngModel)]="formData.notifyAboveAir"
+                />
+                <label for="aboveThresholdAir">
+                  <span class="checkbox-indicator"></span>
+                  Notify when above threshold
+                </label>
+              </div>
+              
+              <div class="custom-checkbox">
+                <input 
+                  type="checkbox" 
+                  id="belowThresholdAir" 
+                  name="belowThresholdAir"
+                  [(ngModel)]="formData.notifyBelowAir"
+                />
+                <label for="belowThresholdAir">
+                  <span class="checkbox-indicator"></span>
+                  Notify when below threshold
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Street Light -->
+        <div *ngIf="selectedSensor === 'light'">
+          <div class="form-field threshold-field">
+            <label for="brightnessLevel">Brightness Level (0–100)</label>
+            <div class="input-with-icon">
+              <input
+                type="number"
+                name="brightnessLevel"
+                [(ngModel)]="formData.brightnessLevel"
+                #brightnessLevel="ngModel"
+                min="0"
+                max="100"
+                required
+              />
+              <i class="field-icon fa fa-lightbulb"></i>
+            </div>
+            <div *ngIf="brightnessLevel.invalid && brightnessLevel.touched" class="error-message">
+              Must be between 0 and 100.
+            </div>
+          </div>
+    
+          <div class="form-field threshold-field">
+            <label for="powerConsumption">Power Consumption (0–5000W)</label>
+            <div class="input-with-icon">
+              <input
+                type="number"
+                name="powerConsumption"
+                [(ngModel)]="formData.powerConsumption"
+                #powerConsumption="ngModel"
+                min="0"
+                max="5000"
+                step="0.1"
+                required
+              />
+              <i class="field-icon fa fa-bolt"></i>
+            </div>
+            <div *ngIf="powerConsumption.invalid && powerConsumption.touched" class="error-message">
+              Must be between 0 and 5000 W.
+            </div>
+          </div>
+          
+          <!-- Add checkbox controls for Street Light -->
+          <div class="form-field checkbox-field">
+            <h3>Notification Preferences</h3>
+            <div class="checkbox-group">
+              <div class="custom-checkbox">
+                <input 
+                  type="checkbox" 
+                  id="aboveThresholdLight" 
+                  name="aboveThresholdLight"
+                  [(ngModel)]="formData.notifyAboveLight"
+                />
+                <label for="aboveThresholdLight">
+                  <span class="checkbox-indicator"></span>
+                  Notify when above threshold
+                </label>
+              </div>
+              
+              <div class="custom-checkbox">
+                <input 
+                  type="checkbox" 
+                  id="belowThresholdLight" 
+                  name="belowThresholdLight"
+                  [(ngModel)]="formData.notifyBelowLight"
+                />
+                <label for="belowThresholdLight">
+                  <span class="checkbox-indicator"></span>
+                  Notify when below threshold
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <div class="settings-buttons">
+          <button type="button" class="reset-button" (click)="resetForm()">Reset</button>
+          <button type="submit" class="save-button" [disabled]="settingsForm.invalid">Save Thresholds</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Optional features sidebar -->
+  <div class="settings-sidebar">
+    <!-- You can add additional features or info here similar to change password page -->
+  </div>
+</div>

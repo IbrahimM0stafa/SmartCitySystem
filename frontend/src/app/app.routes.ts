@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './auth.guard'; // adjust path if needed
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -47,5 +47,12 @@ export const routes: Routes = [
       import('./components/oauth2-redirect/oauth2-redirect.component').then(
         (m) => m.Oauth2RedirectComponent
       )
+  },
+  {
+    path: 'settings',
+    loadComponent: () =>
+      import('./components/settings/settings.component').then(
+        (m) => m.SettingsComponent
+      ),
   }
 ];
