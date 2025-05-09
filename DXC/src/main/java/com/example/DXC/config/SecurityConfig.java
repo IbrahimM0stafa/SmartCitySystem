@@ -55,7 +55,7 @@ public class SecurityConfig {
                                 "/api/auth/signup",
                                 "/api/auth/signin",
                                 "/oauth2/**" , "/api/auth/change-password-request", "/api/auth/verify-password-change"
-                                ,"/api/sensors/generate/**"
+                                ,"/api/sensors/**"
                         ).permitAll()
                         .requestMatchers("/api/profile/**").authenticated()
                         .anyRequest().authenticated()
