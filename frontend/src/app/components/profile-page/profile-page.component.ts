@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -14,10 +15,9 @@ import { RouterModule } from '@angular/router';
 })
 export class ProfilePageComponent implements OnInit {
   userData: any = null;
-  darkMode = false;
   loading = true;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public themeService: ThemeService) {}
 
   ngOnInit(): void {
     this.fetchUserProfile();
@@ -50,6 +50,6 @@ export class ProfilePageComponent implements OnInit {
   }
 
   toggleDarkMode(): void {
-    this.darkMode = !this.darkMode;
+    this.themeService.toggleTheme();
   }
 }

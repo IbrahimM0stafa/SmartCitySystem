@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-home-page',
@@ -11,9 +12,9 @@ import { RouterModule } from '@angular/router';
   encapsulation: ViewEncapsulation.None
 })
 export class HomePageComponent {
-  darkMode = true;
+  constructor(public themeService: ThemeService) {}
 
   toggleTheme() {
-    this.darkMode = !this.darkMode;
+    this.themeService.toggleTheme();
   }
 }

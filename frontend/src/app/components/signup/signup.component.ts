@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ThemeService } from '../../services/theme.service';
 
 interface SignupData {
   firstName: string;
@@ -34,22 +35,25 @@ export class SignupComponent implements OnInit {
     gender: '',
     age: null
   };
-  
-  isDarkMode: boolean = true;
+  showPassword: boolean = false;
 
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    public themeService: ThemeService
   ) { }
 
   ngOnInit(): void {
-    const savedTheme = localStorage.getItem('isDarkMode');
-    if (savedTheme !== null) {
-      this.isDarkMode = savedTheme === 'true';
-    }
+    // No need for localStorage logic, ThemeService handles it
   }
 
   handleSubmit(): void {
+    // Password regex: min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+    if (!passwordRegex.test(this.signupData.password)) {
+      alert('Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.');
+      return;
+    }
     this.http.post('http://localhost:8080/api/auth/signup', this.signupData)
       .subscribe({
         next: (response: any) => {
@@ -76,8 +80,11 @@ export class SignupComponent implements OnInit {
     console.log('Google signup initiated');
   }
 
+  toggleShowPassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
   toggleTheme(): void {
-    this.isDarkMode = !this.isDarkMode;
-    localStorage.setItem('isDarkMode', this.isDarkMode.toString());
+    this.themeService.toggleTheme();
   }
 }

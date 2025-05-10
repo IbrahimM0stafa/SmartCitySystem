@@ -1,4 +1,4 @@
-<div class="profile-container" [ngClass]="{ 'dark-mode': darkMode }">
+<div class="profile-container" [ngClass]="{ 'dark-mode': themeService.currentTheme === 'dark' }">
     <div class="top-bar">
       <div class="tabs">
         <span class="tab">Home</span>
@@ -8,7 +8,7 @@
       </div>
   
       <button class="dark-mode-toggle" (click)="toggleDarkMode()">
-        {{ darkMode ? '☀️' : '🌙' }}
+        {{ themeService.currentTheme === 'dark' ? '☀️' : '🌙' }}
       </button>
     </div>
   
@@ -77,4 +77,3 @@
       <p>Loading...</p>
     </ng-template>
   </div>
-  

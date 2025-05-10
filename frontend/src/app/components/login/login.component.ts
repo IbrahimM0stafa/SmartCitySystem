@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http'; // Added HttpClientModule
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-login',
@@ -18,18 +19,16 @@ export class LoginComponent implements OnInit {
   email: string = '';
   password: string = '';
   rememberMe: boolean = false;
-  isDarkMode: boolean = true;
+  showPassword: boolean = false;
 
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    public themeService: ThemeService
   ) { }
 
   ngOnInit(): void {
-    const savedTheme = localStorage.getItem('isDarkMode');
-    if (savedTheme !== null) {
-      this.isDarkMode = savedTheme === 'true';
-    }
+    // No need for localStorage logic, ThemeService handles it
   }
 
   handleSubmit(): void {
@@ -67,8 +66,11 @@ export class LoginComponent implements OnInit {
     window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   }
 
+  toggleShowPassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
   toggleTheme(): void {
-    this.isDarkMode = !this.isDarkMode;
-    localStorage.setItem('isDarkMode', this.isDarkMode.toString());
+    this.themeService.toggleTheme();
   }
 }

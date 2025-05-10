@@ -7,7 +7,7 @@ import { interval, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { FormsModule } from '@angular/forms';
-
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-change-password',
@@ -24,11 +24,14 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
   changePasswordForm: FormGroup;
   otpForm: FormGroup;
   isOtpScreen = false;
-  isDarkMode = true;
   passwordStrength = 0;
   passwordError = '';
   loading = false;
   pageAnimation = '';
+
+  showOldPassword: boolean = false;
+  showNewPassword: boolean = false;
+  showConfirmPassword: boolean = false;
 
   canResend = false;
   cooldown = 0;
@@ -39,7 +42,8 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    public themeService: ThemeService
   ) {
     // Initialize password change form
     this.changePasswordForm = this.fb.group({
@@ -160,6 +164,13 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
     if (!this.changePasswordForm.valid) return;
 
     const formData = this.changePasswordForm.value;
+
+    // Password regex: min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+    if (!passwordRegex.test(formData.newPassword)) {
+      this.passwordError = 'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.';
+      return;
+    }
 
     if (formData.newPassword !== formData.confirmPassword) {
       this.passwordError = 'Passwords do not match';
@@ -310,7 +321,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   toggleTheme(): void {
-    this.isDarkMode = !this.isDarkMode;
+    this.themeService.toggleTheme();
   }
 
   goToLogin(): void {
@@ -342,5 +353,15 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
     if (this.passwordStrength <= 50) return 'Fair';
     if (this.passwordStrength <= 75) return 'Good';
     return 'Strong';
+  }
+
+  toggleShowOldPassword(): void {
+    this.showOldPassword = !this.showOldPassword;
+  }
+  toggleShowNewPassword(): void {
+    this.showNewPassword = !this.showNewPassword;
+  }
+  toggleShowConfirmPassword(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 }

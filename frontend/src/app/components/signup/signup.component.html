@@ -1,7 +1,7 @@
-<div class="login-container" [ngClass]="isDarkMode ? 'dark-mode' : 'light-mode'">
+<div class="login-container" [ngClass]="themeService.currentTheme === 'dark' ? 'dark-mode' : 'light-mode'">
     <div class="theme-toggle">
       <button (click)="toggleTheme()" class="theme-toggle-btn">
-        {{ isDarkMode ? '☀️' : '🌙' }}
+        {{ themeService.currentTheme === 'dark' ? '☀️' : '🌙' }}
       </button>
     </div>
     <div class="login-box">
@@ -64,16 +64,22 @@
   
         <div class="form-group">
           <label for="password">Password*</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            [(ngModel)]="signupData.password"
-            placeholder="Create a password (min. 8 characters)"
-            required
-            minlength="8"
-            #passwordField="ngModel"
-          />
+          <div style="position:relative;display:flex;align-items:center;">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              name="password"
+              [(ngModel)]="signupData.password"
+              placeholder="Create a password (min. 8 characters)"
+              required
+              minlength="8"
+              #passwordField="ngModel"
+              style="flex:1;"
+            />
+            <button type="button" (click)="toggleShowPassword()" style="background:none;border:none;position:absolute;right:8px;cursor:pointer;">
+              {{ showPassword ? '🙈' : '👁️' }}
+            </button>
+          </div>
           <small class="error" *ngIf="passwordField.invalid && passwordField.touched">
             Password must be at least 8 characters long
           </small>
