@@ -3,13 +3,17 @@ package com.example.DXC.service;
 import com.example.DXC.dto.SettingsRequest;
 import com.example.DXC.model.Alert;
 import com.example.DXC.model.Settings;
+import com.example.DXC.model.User;
 import com.example.DXC.repository.AlertRepository;
 import com.example.DXC.repository.SettingsRepository;
+import com.example.DXC.repository.UserRepository;
 import com.example.DXC.service.SettingsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,6 +22,10 @@ public class SettingsServiceImpl implements SettingsService {
 
     private final SettingsRepository repo;
     private final AlertRepository alertRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public Settings saveSettings(SettingsRequest request) {
@@ -60,14 +68,12 @@ public class SettingsServiceImpl implements SettingsService {
         if (optionalSetting.isPresent()) {
             Settings setting = optionalSetting.get();
 
-            // Check if the current value should trigger an alert
             boolean shouldTrigger = switch (setting.getAlertType()) {
                 case Above -> currentValue > setting.getThresholdValue();
                 case Below -> currentValue < setting.getThresholdValue();
             };
 
             if (shouldTrigger) {
-                // Create an alert
                 Alert alert = Alert.builder()
                         .metric(metric)
                         .value(currentValue)
@@ -77,12 +83,19 @@ public class SettingsServiceImpl implements SettingsService {
                         .triggeredAt(LocalDateTime.now())
                         .build();
 
-                // Save the alert
-                return alertRepository.save(alert);
+                Alert savedAlert = alertRepository.save(alert);
+
+                // Send to all users
+                List<User> users = userRepository.findAll();
+                for (User user : users) {
+                    emailService.sendAlertEmail(savedAlert, user.getEmail());
+                }
+
+                return savedAlert;
             }
         }
 
-        return null; // No alert triggered
+        return null;
     }
 
     private void validateRequest(SettingsRequest request) {

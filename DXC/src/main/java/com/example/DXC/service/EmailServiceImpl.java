@@ -1,12 +1,16 @@
 package com.example.DXC.service;
 
+import com.example.DXC.model.Alert;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -93,5 +97,20 @@ public class EmailServiceImpl implements EmailService {
             // Optionally log or rethrow
             System.err.println("Failed to send welcome email: " + e.getMessage());
         }
+    }
+    @Async
+    @Override
+    public void sendAlertEmail(Alert alert, String toEmail) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("🚨 Alert Triggered: " + alert.getType());
+        message.setText("An alert has been triggered!\n\n"
+                + "Metric: " + alert.getMetric() + "\n"
+                + "Value: " + alert.getValue() + "\n"
+                + "Threshold: " + alert.getThresholdValue() + "\n"
+                + "Condition: " + alert.getAlertType() + "\n"
+                + "Triggered At: " + alert.getTriggeredAt());
+
+        mailSender.send(message);
     }
 }
