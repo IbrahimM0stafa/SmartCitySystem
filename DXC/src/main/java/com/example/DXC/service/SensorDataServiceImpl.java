@@ -44,7 +44,7 @@ public class SensorDataServiceImpl implements SensorDataService {
         settingsService.checkAndTriggerAlert("avgSpeed", saved.getAvgSpeed());
 
         // Print detailed data to console
-        System.out.println("\n🚦 TRAFFIC DATA INSERTED:");
+        System.out.println("\n TRAFFIC DATA INSERTED:");
         System.out.println("ID: " + saved.getId());
         System.out.println("Location: " + saved.getLocation());
         System.out.println("Timestamp: " + saved.getTimestamp().format(formatter));
@@ -79,7 +79,7 @@ public class SensorDataServiceImpl implements SensorDataService {
         settingsService.checkAndTriggerAlert("ozone", saved.getOzone());
 
         // Print detailed data to console
-        System.out.println("\n🌫️ AIR POLLUTION DATA INSERTED:");
+        System.out.println("\n AIR POLLUTION DATA INSERTED:");
         System.out.println("ID: " + saved.getId());
         System.out.println("Location: " + saved.getLocation());
         System.out.println("Timestamp: " + saved.getTimestamp().format(formatter));
@@ -114,7 +114,7 @@ public class SensorDataServiceImpl implements SensorDataService {
         settingsService.checkAndTriggerAlert("powerConsumption", saved.getPowerConsumption());
 
         // Print detailed data to console
-        System.out.println("\n💡 STREET LIGHT DATA INSERTED:");
+        System.out.println("\n STREET LIGHT DATA INSERTED:");
         System.out.println("ID: " + saved.getId());
         System.out.println("Location: " + saved.getLocation());
         System.out.println("Timestamp: " + saved.getTimestamp().format(formatter));
@@ -146,7 +146,7 @@ public class SensorDataServiceImpl implements SensorDataService {
         settingsService.checkAndTriggerAlert("avgSpeed", saved.getAvgSpeed());
 
         // Print detailed data to console
-        System.out.println("\n🚦 MANUAL TRAFFIC DATA INSERTED:");
+        System.out.println("\n MANUAL TRAFFIC DATA INSERTED:");
         System.out.println("ID: " + saved.getId());
         System.out.println("Location: " + saved.getLocation());
         System.out.println("Timestamp: " + saved.getTimestamp().format(formatter));
@@ -180,7 +180,7 @@ public class SensorDataServiceImpl implements SensorDataService {
         settingsService.checkAndTriggerAlert("ozone", saved.getOzone());
 
         // Print detailed data to console
-        System.out.println("\n🌫️ MANUAL AIR POLLUTION DATA INSERTED:");
+        System.out.println("\n MANUAL AIR POLLUTION DATA INSERTED:");
         System.out.println("ID: " + saved.getId());
         System.out.println("Location: " + saved.getLocation());
         System.out.println("Timestamp: " + saved.getTimestamp().format(formatter));
@@ -218,7 +218,7 @@ public class SensorDataServiceImpl implements SensorDataService {
         settingsService.checkAndTriggerAlert("powerConsumption", saved.getPowerConsumption());
 
         // Print detailed data to console
-        System.out.println("\n💡 MANUAL STREET LIGHT DATA INSERTED:");
+        System.out.println("\n MANUAL STREET LIGHT DATA INSERTED:");
         System.out.println("ID: " + saved.getId());
         System.out.println("Location: " + saved.getLocation());
         System.out.println("Timestamp: " + saved.getTimestamp().format(formatter));
