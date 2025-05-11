@@ -1,4 +1,4 @@
-<div class="settings-wrapper dark-theme" #wrapperRef> <!-- Toggle between dark-theme and light-theme -->
+<div class="settings-wrapper" [ngClass]="{'dark-theme': themeService.currentTheme === 'dark', 'light-theme': themeService.currentTheme === 'light'}">
   <!-- Decorative background elements -->
   <div class="floating-decor decor-1"></div>
   <div class="floating-decor decor-2"></div>
@@ -6,8 +6,8 @@
 
   <!-- Theme toggle button -->
   <div class="theme-toggle">
-    <button (click)="toggleTheme()">
-      <i class="fa fa-moon"></i> <!-- Use sun/moon icon based on theme -->
+    <button (click)="themeService.toggleTheme()" aria-label="Toggle theme">
+      {{ themeService.currentTheme === 'dark' ? '☀️' : '🌙' }}
     </button>
   </div>
 
@@ -43,6 +43,11 @@
           </select>
           <i class="field-icon fa fa-sensor"></i> <!-- Use appropriate icon -->
         </div>
+      </div>
+
+      <!-- Error message display -->
+      <div *ngIf="errorMessage" class="error-banner">
+        <i class="fa fa-exclamation-circle"></i> {{ errorMessage }}
       </div>
 
       <form class="settings-form" (ngSubmit)="submitForm()" #settingsForm="ngForm">
@@ -271,7 +276,12 @@
     
         <div class="settings-buttons">
           <button type="button" class="reset-button" (click)="resetForm()">Reset</button>
-          <button type="submit" class="save-button" [disabled]="settingsForm.invalid">Save Thresholds</button>
+          <button type="submit" class="save-button" [disabled]="settingsForm.invalid || isLoading">
+            <span *ngIf="!isLoading">Save Thresholds</span>
+            <span *ngIf="isLoading">
+              <i class="fa fa-spinner fa-spin"></i> Saving...
+            </span>
+          </button>
         </div>
       </form>
     </div>

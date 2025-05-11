@@ -532,3 +532,47 @@ button:disabled {
 .light-theme .custom-checkbox input[type="checkbox"]:focus + label .checkbox-indicator {
   box-shadow: 0 0 0 2px rgba(123, 31, 162, 0.2);
 }
+
+
+.error-banner {
+  background-color: rgba(255, 69, 58, 0.1);
+  border-left: 4px solid #ff453a;
+  color: #ff453a;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.error-banner i {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+/* Loading State Styles */
+.save-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.fa-spinner {
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Dark Theme Colors */
+.dark-theme .error-banner {
+  background-color: rgba(255, 69, 58, 0.15);
+  color: #ff6b6b;
+}
+
+/* Light Theme Colors */
+.light-theme .error-banner {
+  background-color: rgba(255, 69, 58, 0.1);
+  color: #e73535;
+}
