@@ -12,6 +12,6 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideHttpClient(withInterceptors([authInterceptor])),
     provideRouter(routes),
-    ThemeService // Provide ThemeService explicitly at the root level
+    ThemeService 
   ]
 }).catch(err => console.error(err));

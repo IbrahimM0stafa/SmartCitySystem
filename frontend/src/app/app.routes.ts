@@ -54,5 +54,13 @@ export const routes: Routes = [
       import('./components/settings/settings.component').then(
         (m) => m.SettingsComponent
       ),
-  }
+  },
+  {
+    path: 'dashboard-entry',
+    loadComponent: () =>
+      import('./components/dashboard-entry/dashboard-entry.component').then(
+        (m) => m.DashboardEntryComponent
+      ),
+    canActivate: [AuthGuard]
+  },
 ];

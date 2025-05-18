@@ -1,0 +1,48 @@
+<!-- Updated HTML snippet to incorporate Font Awesome icons properly -->
+
+<div class="container">
+  <header>
+    <div class="logo">
+      <span class="logo-icon">IoT</span>
+      <span>System Tracking</span>
+    </div>
+    <div class="user-controls">
+      <button (click)="toggleTheme()" class="theme-toggle">
+        {{ themeService.currentTheme === 'dark' ? '☀️' : '🌙' }}
+      </button>
+    </div>
+  </header>
+  
+  <div class="welcome-section">
+    <h1>Welcome to the IoT System Tracking Dashboard</h1>
+    <p>Select one of our specialized dashboards below to monitor and manage different aspects of your smart city infrastructure.</p>
+  </div>
+  
+  <div class="cards-container">
+    <div class="card" *ngFor="let card of cardData" (click)="navigateToDashboard(card.id)">
+      <div class="card-header">
+        <h2>{{ card.title }}</h2>
+        <div class="card-icon" [ngClass]="card.iconClass">
+          <!-- Add the icon element with the proper class -->
+          <i class="fas fa-{{ card.icon }}"></i>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>{{ card.description }}</p>
+        <div class="status-indicator">
+          <div class="status-dot active"></div>
+          <span class="status-text">System online </span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="metrics">
+          <div class="metric" *ngFor="let metric of card.metrics">
+            <div class="metric-value" [ngClass]="metric.class">{{ metric.value }}</div>
+            <div class="metric-label">{{ metric.label }}</div>
+          </div>
+        </div>
+        <button class="view-btn">View Dashboard <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+</div>

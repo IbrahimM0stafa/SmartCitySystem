@@ -1,0 +1,404 @@
+:root {
+  /* Dark Mode Colors */
+  --dark-primary: #6a1b9a;
+  --dark-primary-light: #9c4dcc;
+  --dark-primary-dark: #38006b;
+  --dark-accent: #00e5ff;
+  --dark-text: #f5f5f5;
+  --dark-bg: #121212;
+  --dark-card-bg: rgba(30, 30, 30, 0.8);
+  --dark-hover: rgba(255, 255, 255, 0.1);
+  
+  /* Light Mode Colors */
+  --light-primary: #7b1fa2;
+  --light-primary-light: #ae52d4;
+  --light-primary-dark: #4a0072;
+  --light-accent: #0097a7;
+  --light-text: #212121;
+  --light-bg: #f5f5f5;
+  --light-card-bg: rgba(255, 255, 255, 0.9);
+  --light-hover: rgba(0, 0, 0, 0.05);
+  
+  /* Common */
+  --border-radius: 12px;
+  --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  --transition: all 0.3s ease;
+  --success: #00c853;
+  --warning: #ffd600;
+  --error: #ff3d00;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  transition: var(--transition);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Dark Mode */
+body.dark-mode {
+  background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+  color: var(--dark-text);
+}
+
+/* Light Mode */
+body.light-mode {
+  background: linear-gradient(135deg, #e8e8e8 0%, #ffffff 100%);
+  color: var(--light-text);
+}
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-icon {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.dark-mode .logo-icon {
+  color: var(--dark-accent);
+}
+
+.light-mode .logo-icon {
+  color: var(--light-primary);
+}
+
+.theme-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  font-size: 1.2rem;
+  color: inherit;
+}
+
+.dark-mode .theme-toggle {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.light-mode .theme-toggle {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.welcome-section h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(to right, var(--light-primary-light), var(--light-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dark-mode .welcome-section h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(to right, var(--dark-primary-light), var(--dark-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.welcome-section p {
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto;
+  opacity: 0.8;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  transition: var(--transition);
+  cursor: pointer;
+  position: relative;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(10px);
+  border: 1px solid transparent;
+}
+
+.dark-mode .card {
+  background: var(--dark-card-bg);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.light-mode .card {
+  background: var(--light-card-bg);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--box-shadow);
+}
+
+.dark-mode .card:hover {
+  border-color: var(--dark-primary-light);
+}
+
+.light-mode .card:hover {
+  border-color: var(--light-primary-light);
+}
+
+.card-header {
+  padding: 1.5rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid;
+}
+
+.dark-mode .card-header {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.light-mode .card-header {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.card-icon {
+  font-size: 1.8rem;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.dark-mode .traffic-icon {
+  color: #ff5722;
+  background: rgba(255, 87, 34, 0.1);
+}
+
+.dark-mode .light-icon {
+  color: #ffc107;
+  background: rgba(255, 193, 7, 0.1);
+}
+
+.dark-mode .pollution-icon {
+  color: #4caf50;
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.light-mode .traffic-icon {
+  color: #e64a19;
+  background: rgba(230, 74, 25, 0.1);
+}
+
+.light-mode .light-icon {
+  color: #ffa000;
+  background: rgba(255, 160, 0, 0.1);
+}
+
+.light-mode .pollution-icon {
+  color: #2e7d32;
+  background: rgba(46, 125, 50, 0.1);
+}
+
+.card-body {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.card-body p {
+  margin: 0 0 1rem;
+  line-height: 1.6;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.dark-mode .status-dot.active {
+  background-color: var(--success);
+  box-shadow: 0 0 10px var(--success);
+}
+
+.light-mode .status-dot.active {
+  background-color: var(--success);
+  box-shadow: 0 0 10px rgba(0, 200, 83, 0.5);
+}
+
+.status-text {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.card-footer {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid;
+}
+
+.dark-mode .card-footer {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.light-mode .card-footer {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.metrics {
+  display: flex;
+}
+
+.metric {
+  margin-right: 1rem;
+  text-align: center;
+}
+
+.metric-value {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.dark-mode .traffic-value {
+  color: #ff5722;
+}
+
+.dark-mode .light-value {
+  color: #ffc107;
+}
+
+.dark-mode .pollution-value {
+  color: #4caf50;
+}
+
+.light-mode .traffic-value {
+  color: #e64a19;
+}
+
+.light-mode .light-value {
+  color: #ffa000;
+}
+
+.light-mode .pollution-value {
+  color: #2e7d32;
+}
+
+.metric-label {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.view-btn {
+  background: transparent;
+  border: 1px solid;
+  border-radius: var(--border-radius);
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+}
+
+.dark-mode .view-btn {
+  border-color: var(--dark-primary-light);
+  color: var(--dark-primary-light);
+}
+
+.dark-mode .view-btn:hover {
+  background: var(--dark-primary-light);
+  color: white;
+}
+
+.light-mode .view-btn {
+  border-color: var(--light-primary);
+  color: var(--light-primary);
+}
+
+.light-mode .view-btn:hover {
+  background: var(--light-primary);
+  color: white;
+}
+
+.view-btn i {
+  margin-left: 5px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .welcome-section h1 {
+    font-size: 2rem;
+  }
+  
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .card {
+    height: auto;
+  }
+
+  
+}
