@@ -1,16 +1,18 @@
 #!/bin/bash
 
-# Variables
-IMAGE_NAME="youssef773/dxc-backend"
+# Backend
+BACKEND_IMAGE="youssef773/dxc-backend"
+FRONTEND_IMAGE="youssef773/dxc-frontend"
 TAG="latest"
 
-echo "Building Docker image..."
-docker build -t $IMAGE_NAME:$TAG .
+echo " Building and pushing backend image..."
+docker build -t $BACKEND_IMAGE:$TAG .
+docker push $BACKEND_IMAGE:$TAG
 
-echo " Tagging Docker image..."
-docker tag $IMAGE_NAME:$TAG $IMAGE_NAME:$TAG
+echo " Backend image pushed as $BACKEND_IMAGE:$TAG"
 
-echo "Pushing Docker image to Docker Hub..."
-docker push $IMAGE_NAME:$TAG
+echo " Building and pushing frontend image..."
+docker build -t $FRONTEND_IMAGE:$TAG ../frontend
+docker push $FRONTEND_IMAGE:$TAG
 
-echo "Done. Image pushed as $IMAGE_NAME:$TAG"
+echo " Frontend image pushed as $FRONTEND_IMAGE:$TAG"
