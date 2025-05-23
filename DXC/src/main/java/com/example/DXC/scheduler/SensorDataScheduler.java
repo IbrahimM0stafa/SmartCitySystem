@@ -11,7 +11,7 @@ public class SensorDataScheduler {
 
     private final SensorDataService sensorDataService;
 
-    @Scheduled(fixedRate = 300000) // every 5 minutes
+    @Scheduled(fixedRate = 20000)
     public void generateAllSensorData() {
         sensorDataService.generateTrafficData();
         sensorDataService.generateAirPollutionData();
