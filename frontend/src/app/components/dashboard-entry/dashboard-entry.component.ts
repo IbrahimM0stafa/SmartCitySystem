@@ -2,13 +2,14 @@
 
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../services/theme.service';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-dashboard-entry',
-  standalone: true, 
-  imports: [CommonModule], 
+  standalone: true,
+  imports: [CommonModule, NavbarComponent],
   templateUrl: './dashboard-entry.component.html',
   styleUrls: ['./dashboard-entry.component.css'],
   encapsulation: ViewEncapsulation.None

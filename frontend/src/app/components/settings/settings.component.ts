@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SettingsService, SettingsRequest } from '../../services/settings.service';
@@ -9,7 +9,8 @@ import { ThemeService } from '../../services/theme.service';
   standalone: true,
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule],
+  encapsulation: ViewEncapsulation.None
 })
 export class SettingsComponent implements OnInit {
   selectedSensor: string = 'traffic';

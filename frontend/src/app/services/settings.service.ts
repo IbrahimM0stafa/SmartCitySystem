@@ -34,7 +34,7 @@ export class SettingsService {
       );
   }
 
-  
+  // Optional: Add method to fetch current settings
   getSettings(): Observable<Settings[]> {
     return this.http.get<Settings[]>(this.apiUrl)
       .pipe(
@@ -46,12 +46,12 @@ export class SettingsService {
     let errorMessage = 'An unknown error occurred!';
     
     if (error.error instanceof ErrorEvent) {
-      
+      // Client-side error
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      
+      // Server-side error
       if (error.status === 400) {
-        
+        // Handle validation errors
         errorMessage = error.error?.message || 'Invalid input data';
       } else if (error.status === 401) {
         errorMessage = 'Unauthorized. Please log in again.';

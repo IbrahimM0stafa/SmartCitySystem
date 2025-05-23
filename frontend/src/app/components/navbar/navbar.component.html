@@ -1,0 +1,27 @@
+<nav class="navbar" [ngClass]="themeService.currentTheme === 'dark' ? 'dark-theme' : 'light-theme'">
+  <div class="nav-left">
+    <a routerLink="/home" class="nav-link" routerLinkActive="active">Home</a>
+    <a routerLink="/profile" class="nav-link" routerLinkActive="active">Profile</a>
+    <a routerLink="/settings" class="nav-link" routerLinkActive="active">Settings</a>
+  </div>
+  
+  <div class="nav-right">
+    <div class="user-menu" (clickOutside)="closeDropdown()">
+      <div class="user-info" (click)="toggleDropdown()">
+        <span class="username">{{ userName }}</span>
+        <span class="dropdown-arrow" [class.open]="dropdownOpen">▼</span>
+      </div>
+      
+      <div class="dropdown-menu" *ngIf="dropdownOpen">
+        <button (click)="onChangePassword()">
+          <i class="fas fa-key"></i>
+          Change Password
+        </button>
+        <button (click)="onLogout()">
+          <i class="fas fa-sign-out-alt"></i>
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

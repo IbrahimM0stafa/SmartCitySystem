@@ -1,0 +1,292 @@
+<app-navbar></app-navbar>
+
+<div class="dashboard-container" [ngClass]="themeService.currentTheme === 'dark' ? 'dark-mode' : 'light-mode'">
+  <header class="dashboard-header">
+    <div class="header-content">
+      <h1>
+        <ng-container [ngSwitch]="dashboardType">
+          <ng-container *ngSwitchCase="'pollution'">Air Pollution Monitoring</ng-container>
+          <ng-container *ngSwitchCase="'lighting'">Street Light Management</ng-container>
+          <ng-container *ngSwitchDefault>Traffic Monitoring</ng-container>
+        </ng-container>
+      </h1>
+      <button class="theme-toggle" (click)="toggleTheme()">
+        {{ themeService.currentTheme === 'dark' ? '☀️' : '🌙' }}
+      </button>
+    </div>
+  </header>
+
+  <div class="filters-section">
+    <div class="filter-group">
+      <!-- Common filters -->
+      <input 
+        type="text" 
+        class="filter-input"
+        [(ngModel)]="locationFilter" 
+        (ngModelChange)="onFilterChange()"
+        placeholder="Filter by location"
+      >
+
+      <input 
+        type="datetime-local" 
+        class="filter-input"
+        [(ngModel)]="startDate"
+        (ngModelChange)="onFilterChange()"
+        placeholder="Start date"
+      >
+
+      <input 
+        type="datetime-local" 
+        class="filter-input"
+        [(ngModel)]="endDate"
+        (ngModelChange)="onFilterChange()"
+        placeholder="End date"
+      >
+
+      <!-- Status filter based on dashboard type -->
+      <select 
+        class="filter-input"
+        [(ngModel)]="statusFilter"
+        (ngModelChange)="onFilterChange()"
+      >
+        <option value="">All Status</option>
+        <ng-container [ngSwitch]="dashboardType">
+          <ng-container *ngSwitchCase="'traffic'">
+            <option value="Low">Low Congestion</option>
+            <option value="Moderate">Moderate Congestion</option>
+            <option value="High">High Congestion</option>
+            <option value="Severe">Severe Congestion</option>
+          </ng-container>
+          <ng-container *ngSwitchCase="'lighting'">
+            <option value="ON">On</option>
+            <option value="OFF">Off</option>
+            <option value="MAINTENANCE">Maintenance</option>
+          </ng-container>
+          <ng-container *ngSwitchCase="'pollution'">
+            <option value="Good">Good</option>
+            <option value="Moderate">Moderate</option>
+            <option value="Unhealthy">Unhealthy</option>
+            <option value="Very_Unhealthy">Very Unhealthy</option>
+            <option value="Hazardous">Hazardous</option>
+          </ng-container>
+        </ng-container>
+      </select>
+    </div>
+  </div>
+
+  <div class="dashboard-content">
+    <div class="chart-controls">
+      <button class="chart-toggle" (click)="toggleAllCharts()" [class.active]="showAllCharts">
+        Show All Charts
+      </button>
+      <button class="chart-toggle" (click)="toggleChart('primaryMetric')" [class.active]="selectedChart === 'primaryMetric' || showAllCharts">
+        {{ getPrimaryMetricName() }}
+      </button>
+      <button class="chart-toggle" (click)="toggleChart('secondaryMetric')" [class.active]="selectedChart === 'secondaryMetric' || showAllCharts">
+        {{ getSecondaryMetricName() }}
+      </button>
+      <button class="chart-toggle" (click)="toggleChart('statusDistribution')" [class.active]="selectedChart === 'statusDistribution' || showAllCharts">
+        {{ getStatusFieldName() }}
+      </button>
+    </div>
+
+    <div class="metrics-grid" [class.show-all]="showAllCharts">
+      <div class="metric-card" *ngIf="showAllCharts || selectedChart === 'primaryMetric'">
+        <h3>{{ getPrimaryMetricName() }}</h3>
+        <div class="chart-container">
+          <highcharts-chart 
+            [Highcharts]="Highcharts"
+            [options]="primaryMetricChartOptions"
+            style="width: 100%; height: 300px; display: block;">
+          </highcharts-chart>
+        </div>
+      </div>
+
+      <div class="metric-card" *ngIf="showAllCharts || selectedChart === 'secondaryMetric'">
+        <h3>{{ getSecondaryMetricName() }}</h3>
+        <div class="chart-container">
+          <highcharts-chart 
+            [Highcharts]="Highcharts"
+            [options]="secondaryMetricChartOptions"
+            style="width: 100%; height: 300px; display: block;">
+          </highcharts-chart>
+        </div>
+      </div>
+
+      <div class="metric-card" *ngIf="showAllCharts || selectedChart === 'statusDistribution'">
+        <h3>{{ getStatusFieldName() }}</h3>
+        <div class="chart-container">
+          <highcharts-chart 
+            [Highcharts]="Highcharts"
+            [options]="statusDistributionChartOptions"
+            style="width: 100%; height: 300px; display: block;">
+          </highcharts-chart>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th (click)="sort('location')">
+              Location
+              <span class="sort-icon" *ngIf="sortField === 'location'">
+                {{ sortDirection === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+            <th (click)="sort('timestamp')">
+              Time
+              <span class="sort-icon" *ngIf="sortField === 'timestamp'">
+                {{ sortDirection === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+            <ng-container [ngSwitch]="dashboardType">
+              <ng-container *ngSwitchCase="'traffic'">
+                <th (click)="sort('trafficDensity')">
+                  Traffic Density
+                  <span class="sort-icon" *ngIf="sortField === 'trafficDensity'">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                </th>
+                <th (click)="sort('avgSpeed')">
+                  Average Speed
+                  <span class="sort-icon" *ngIf="sortField === 'avgSpeed'">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                </th>
+                <th (click)="sort('congestionLevel')">
+                  Congestion Level
+                  <span class="sort-icon" *ngIf="sortField === 'congestionLevel'">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                </th>
+              </ng-container>
+              <ng-container *ngSwitchCase="'lighting'">
+                <th (click)="sort('brightnessLevel')">
+                  Brightness Level
+                  <span class="sort-icon" *ngIf="sortField === 'brightnessLevel'">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                </th>
+                <th (click)="sort('powerConsumption')">
+                  Power Consumption
+                  <span class="sort-icon" *ngIf="sortField === 'powerConsumption'">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                </th>
+                <th (click)="sort('status')">
+                  Status
+                  <span class="sort-icon" *ngIf="sortField === 'status'">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                </th>
+              </ng-container>
+              <ng-container *ngSwitchCase="'pollution'">
+                <th (click)="sort('pm2_5')">
+                  pm2_5
+                  <span class="sort-icon" *ngIf="sortField === 'pm2_5'">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                </th>
+                <th (click)="sort('pm10')">
+                  PM10
+                  <span class="sort-icon" *ngIf="sortField === 'pm10'">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                </th>
+                <th (click)="sort('ozone')">
+                  Ozone
+                  <span class="sort-icon" *ngIf="sortField === 'ozone'">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                </th>
+                <th (click)="sort('pollutionLevel')">
+                  Pollution Level
+                  <span class="sort-icon" *ngIf="sortField === 'pollutionLevel'">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                </th>
+                <th (click)="sort('co')">
+                  CO
+                  <span class="sort-icon" *ngIf="sortField === 'co'">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                </th>
+                <th (click)="sort('no2')">
+                  NO₂
+                  <span class="sort-icon" *ngIf="sortField === 'no2'">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                </th>
+                <th (click)="sort('so2')">
+                  SO₂
+                  <span class="sort-icon" *ngIf="sortField === 'so2'">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                </th>
+              </ng-container>
+            </ng-container>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of paginatedData" [ngClass]="
+            dashboardType === 'traffic' ? data.congestionLevel.toLowerCase() :
+            dashboardType === 'lighting' ? data.status.toLowerCase() :
+            data.pollutionLevel.toLowerCase()
+          ">
+            <td>{{ data.location }}</td>
+            <td>{{ data.timestamp | date:'medium' }}</td>
+            <ng-container [ngSwitch]="dashboardType">
+              <ng-container *ngSwitchCase="'traffic'">
+                <td>{{ data.trafficDensity }}</td>
+                <td>{{ data.avgSpeed }} km/h</td>
+                <td>
+                  <span class="status-badge" [ngClass]="data.congestionLevel.toLowerCase()">
+                    {{ data.congestionLevel }}
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container *ngSwitchCase="'lighting'">
+                <td>{{ data.brightnessLevel }}%</td>
+                <td>{{ data.powerConsumption }} W</td>
+                <td>
+                  <span class="status-badge" [ngClass]="data.status.toLowerCase()">
+                    {{ data.status }}
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container *ngSwitchCase="'pollution'">
+                <td>{{ data.pm2_5 }}</td>
+                <td>{{ data.pm10 }}</td>
+                <td>{{ data.ozone }}</td>
+                <td>
+                  <span class="status-badge" [ngClass]="data.pollutionLevel.toLowerCase()">
+                    {{ data.pollutionLevel }}
+                  </span>
+                </td>
+                <td>{{ data.co }}</td>
+                <td>{{ data.no2 }}</td>
+                <td>{{ data.so2 }}</td>
+              </ng-container>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <button [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+        Previous
+      </button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+        Next
+      </button>
+    </div>
+    
+    <div class="auto-refresh-indicator">
+      <small>Data automatically refreshes every minute</small>
+    </div>
+  </div>
+</div>

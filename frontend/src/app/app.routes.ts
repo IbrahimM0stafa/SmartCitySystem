@@ -3,7 +3,6 @@ import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-
   {
     path: 'login',
     loadComponent: () =>
@@ -54,6 +53,7 @@ export const routes: Routes = [
       import('./components/settings/settings.component').then(
         (m) => m.SettingsComponent
       ),
+    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard-entry',
@@ -63,4 +63,28 @@ export const routes: Routes = [
       ),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'traffic-dashboard',
+    loadComponent: () =>
+      import('./components/traffic-dashboard/traffic-dashboard.component').then(
+        (m) => m.TrafficDashboardComponent
+      ),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'lighting-dashboard',
+    loadComponent: () =>
+      import('./components/traffic-dashboard/traffic-dashboard.component').then(
+        (m) => m.TrafficDashboardComponent
+      ),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'pollution-dashboard',
+    loadComponent: () =>
+      import('./components/traffic-dashboard/traffic-dashboard.component').then(
+        (m) => m.TrafficDashboardComponent
+      ),
+    canActivate: [AuthGuard]
+  }
 ];
