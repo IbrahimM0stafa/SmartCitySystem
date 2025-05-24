@@ -9,23 +9,17 @@ import java.util.List;
 
 public interface SensorDataService {
 
-    /* ---------------------------------------------------------------
-     *  RANDOM DATA GENERATION
-     * --------------------------------------------------------------- */
+
     void generateTrafficData();
     void generateAirPollutionData();
     void generateStreetLightData();
 
-    /* ---------------------------------------------------------------
-     *  MANUAL SAVE
-     * --------------------------------------------------------------- */
+
     TrafficSensorData      saveTrafficData(TrafficSensorData data);
     AirPollutionSensorData saveAirPollutionData(AirPollutionSensorData data);
     StreetLightSensorData  saveStreetLightData(StreetLightSensorData data);
 
-    /* ---------------------------------------------------------------
-     *  DASHBOARD  —  PAGED + SORTABLE + FILTERABLE   (NEW)
-     * --------------------------------------------------------------- */
+
     Page<TrafficSensorData> getTrafficData(
             String location,
             TrafficSensorData.CongestionLevel congestionLevel,
@@ -50,9 +44,7 @@ public interface SensorDataService {
             Pageable pageable
     );
 
-    /* ---------------------------------------------------------------
-     *  (kept) LIST-style filtering helpers used elsewhere
-     * --------------------------------------------------------------- */
+
     List<TrafficSensorData> filterTrafficData(
             String location,
             TrafficSensorData.CongestionLevel congestionLevel,
