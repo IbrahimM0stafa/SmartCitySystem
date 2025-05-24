@@ -23,7 +23,7 @@ export interface AlertResponse {
   providedIn: 'root'
 })
 export class AlertService {
-  private readonly baseUrl = 'http://localhost:8080/api/alerts';
+  private readonly baseUrl = 'http://localhost:8081/api/alerts';
   private alerts = new BehaviorSubject<Alert[]>([]);
   private alertQueue: Alert[] = [];
   private pollingSubscription: Subscription | null = null;

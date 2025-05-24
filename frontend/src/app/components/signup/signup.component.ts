@@ -54,7 +54,7 @@ export class SignupComponent implements OnInit {
       alert('Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.');
       return;
     }
-    this.http.post('http://localhost:8080/api/auth/signup', this.signupData)
+    this.http.post('http://localhost:8081/api/auth/signup', this.signupData)
       .subscribe({
         next: (response: any) => {
           console.log('Signup successful:', response);
@@ -76,7 +76,7 @@ export class SignupComponent implements OnInit {
   }
 
   handleGoogleSignup(): void {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    window.location.href = 'http://localhost:8081/oauth2/authorization/google';
     console.log('Google signup initiated');
   }
 

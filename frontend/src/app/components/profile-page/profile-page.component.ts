@@ -29,7 +29,7 @@ export class ProfilePageComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.get('http://localhost:8080/api/profile', { headers }).subscribe({
+    this.http.get('http://localhost:8081/api/profile', { headers }).subscribe({
       next: (response: any) => {
         this.userData = {
           email: response.email,

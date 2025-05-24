@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   }
 
   handleSubmit(): void {
-    this.http.post<any>('http://localhost:8080/api/auth/signin', {
+    this.http.post<any>('http://localhost:8081/api/auth/signin', {
       email: this.email,
       password: this.password
     }).subscribe({
@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
   }
 
   handleGoogleLogin(): void {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    window.location.href = 'http://localhost:8081/oauth2/authorization/google';
   }
 
   toggleShowPassword(): void {
