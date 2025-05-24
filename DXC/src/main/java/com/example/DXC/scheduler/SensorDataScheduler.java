@@ -11,7 +11,7 @@ public class SensorDataScheduler {
 
     private final SensorDataService sensorDataService;
 
-    @Scheduled(fixedRate = 600000)
+    @Scheduled(fixedRate = 60000)
     public void generateAllSensorData() {
         sensorDataService.generateTrafficData();
         sensorDataService.generateAirPollutionData();
