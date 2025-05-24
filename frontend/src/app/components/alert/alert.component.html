@@ -1,0 +1,16 @@
+<div class="alert-container" [class.dark]="isDarkMode">
+  <div *ngFor="let alert of alerts" class="alert" [class.dark]="isDarkMode" [class]="'alert-' + alert.type.toLowerCase()">
+    <div class="alert-content">
+      <div class="alert-header">
+        <span class="alert-type">{{alert.type}}</span>
+        <button class="close-btn" (click)="removeAlert(alert.id)">×</button>
+      </div>
+      <div class="alert-body">
+        <p><strong>Metric:</strong> {{alert.metric}}</p>
+        <p><strong>Value:</strong> {{alert.value}}</p>
+        <p><strong>Threshold:</strong> {{alert.thresholdValue}}</p>
+        <p><strong>Condition:</strong> {{alert.alertType}}</p>
+      </div>
+    </div>
+  </div>
+</div>

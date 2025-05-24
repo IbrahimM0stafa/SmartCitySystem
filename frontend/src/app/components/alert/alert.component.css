@@ -1,0 +1,81 @@
+.alert-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  width: 350px;
+  max-width: 90vw;
+}
+
+.alert {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+  border-left: 4px solid #4CAF50;
+}
+
+.alert.dark {
+  background: #2d2d2d;
+  color: #ffffff;
+}
+
+.alert-content {
+  padding: 15px;
+}
+
+.alert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.alert-type {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+  padding: 0 5px;
+}
+
+.alert.dark .close-btn {
+  color: #fff;
+}
+
+.alert-body {
+  font-size: 0.9em;
+}
+
+.alert-body p {
+  margin: 5px 0;
+}
+
+/* Alert types */
+.alert-traffic { border-left-color: #2196F3; }
+.alert-air_pollution { border-left-color: #f44336; }
+.alert-street_light { border-left-color: #FFC107; }
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.alert {
+  animation: slideIn 0.3s ease-out;
+}

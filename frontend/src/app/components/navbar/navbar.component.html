@@ -1,13 +1,23 @@
 <nav class="navbar" [ngClass]="themeService.currentTheme === 'dark' ? 'dark-theme' : 'light-theme'">
-  <div class="nav-left">
-    <a routerLink="/home" class="nav-link" routerLinkActive="active">Home</a>
-    <a routerLink="/profile" class="nav-link" routerLinkActive="active">Profile</a>
-    <a routerLink="/settings" class="nav-link" routerLinkActive="active">Settings</a>
-  </div>
-  
-  <div class="nav-right">
-    <div class="user-menu" (clickOutside)="closeDropdown()">
-      <div class="user-info" (click)="toggleDropdown()">
+  <div class="nav-content">
+    <div class="nav-links">
+      <a routerLink="/home" class="nav-link" routerLinkActive="active">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a routerLink="/profile" class="nav-link" routerLinkActive="active">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+      </a>
+      <a routerLink="/settings" class="nav-link" routerLinkActive="active">
+        <i class="fas fa-cog"></i>
+        <span>Settings</span>
+      </a>
+    </div>
+    
+    <div class="user-menu" (click)="toggleDropdown()" (clickOutside)="closeDropdown()">
+      <div class="user-info">
+        <i class="fas fa-user-circle"></i>
         <span class="username">{{ userName }}</span>
         <span class="dropdown-arrow" [class.open]="dropdownOpen">▼</span>
       </div>

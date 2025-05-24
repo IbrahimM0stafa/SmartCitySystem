@@ -11,8 +11,6 @@ import { environment } from '../../../environments/environment';
 import { Subscription, interval } from 'rxjs';
 
 type CongestionLevel = 'Low' | 'Moderate' | 'High' | 'Severe';
-type PollutionLevel = 'Good' | 'Moderate' | 'Unhealthy' | 'Very_Unhealthy' | 'Hazardous';
-type LightStatus = 'ON' | 'OFF' | 'MAINTENANCE';
 
 interface TrafficData {
   id: string;
@@ -21,28 +19,6 @@ interface TrafficData {
   trafficDensity: number;
   avgSpeed: number;
   congestionLevel: CongestionLevel;
-}
-
-interface StreetLightData {
-  id: string;
-  location: string;
-  timestamp: string;
-  brightnessLevel: number;
-  powerConsumption: number;
-  status: LightStatus;
-}
-
-interface AirPollutionData {
-  id: string;
-  location: string;
-  timestamp: string;
-  pm2_5: number;
-  pm10: number;
-  ozone: number;
-  pollutionLevel: PollutionLevel;
-  co: number;
-  no2: number;
-  so2: number;
 }
 
 interface PageResponse<T> {
@@ -72,8 +48,6 @@ export class TrafficDashboardComponent implements OnInit, OnDestroy {
   
   // Data arrays for current data
   trafficData: TrafficData[] = [];
-  lightingData: StreetLightData[] = [];
-  pollutionData: AirPollutionData[] = [];
   
   // Common filters and sorting
   locationFilter: string = '';
@@ -94,15 +68,15 @@ export class TrafficDashboardComponent implements OnInit, OnDestroy {
   // Highcharts configuration
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {
-    title: { text: 'Metrics by Location' },
+    title: { text: 'Traffic Metrics by Location' },
     xAxis: { categories: [] },
     yAxis: [
-      { title: { text: 'Primary Metric' } },
-      { title: { text: 'Secondary Metric' }, opposite: true }
+      { title: { text: 'Traffic Density' } },
+      { title: { text: 'Average Speed (km/h)' }, opposite: true }
     ],
     series: [
-      { type: 'column', name: 'Primary Metric', data: [] },
-      { type: 'line', name: 'Secondary Metric', data: [], yAxis: 1 }
+      { type: 'column', name: 'Traffic Density', data: [] },
+      { type: 'line', name: 'Average Speed', data: [], yAxis: 1 }
     ]
   };
   updateFlag = false;
@@ -111,12 +85,12 @@ export class TrafficDashboardComponent implements OnInit, OnDestroy {
   selectedChart: 'primaryMetric' | 'secondaryMetric' | 'statusDistribution' | null = null;
 
   primaryMetricChartOptions: Highcharts.Options = {
-    title: { text: 'Primary Metric Over Time' },
+    title: { text: 'Traffic Density Over Time' },
     xAxis: { type: 'datetime', title: { text: 'Time' } },
-    yAxis: { title: { text: 'Value' } },
+    yAxis: { title: { text: 'Vehicles per Hour' } },
     series: [{
       type: 'line',
-      name: 'Primary Metric',
+      name: 'Traffic Density',
       data: [],
       color: '#7b1fa2'
     }],
@@ -124,12 +98,12 @@ export class TrafficDashboardComponent implements OnInit, OnDestroy {
   };
 
   secondaryMetricChartOptions: Highcharts.Options = {
-    title: { text: 'Secondary Metric Over Time' },
+    title: { text: 'Average Speed Over Time' },
     xAxis: { type: 'datetime', title: { text: 'Time' } },
-    yAxis: { title: { text: 'Value' } },
+    yAxis: { title: { text: 'Speed (km/h)' } },
     series: [{
       type: 'line',
-      name: 'Secondary Metric',
+      name: 'Average Speed',
       data: [],
       color: '#6a1b9a'
     }],
@@ -138,10 +112,10 @@ export class TrafficDashboardComponent implements OnInit, OnDestroy {
 
   statusDistributionChartOptions: Highcharts.Options = {
     chart: { type: 'column' },
-    title: { text: 'Status Distribution' },
+    title: { text: 'Congestion Level Distribution' },
     xAxis: { 
-      categories: [],
-      title: { text: 'Status' }
+      categories: ['Low', 'Moderate', 'High', 'Severe'],
+      title: { text: 'Congestion Level' }
     },
     yAxis: { title: { text: 'Frequency' } },
     series: [{
@@ -160,12 +134,9 @@ export class TrafficDashboardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    // Determine dashboard type from route
-    this.dashboardType = this.route.snapshot.url[0]?.path?.split('-')[0] as 'traffic' | 'lighting' | 'pollution' || 'traffic';
     this.loadData();
-    this.updateChartConfiguration();
     
-    // Set up auto refresh every 60 seconds
+    // Set up auto refresh every 20 seconds
     this.autoRefreshSubscription = interval(20000).subscribe(() => {
       this.loadData();
     });
@@ -179,12 +150,12 @@ export class TrafficDashboardComponent implements OnInit, OnDestroy {
   }
 
   loadData() {
-    console.log('Loading data for dashboard type:', this.dashboardType);
+    console.log('Loading traffic data');
     const baseUrl = `${environment.apiUrl}/api/sensors`;
     
     // Configure request parameters
     let params = new HttpParams()
-      .set('page', String(this.currentPage - 1))  // Spring uses 0-based indexing
+      .set('page', String(this.currentPage - 1))
       .set('size', String(this.itemsPerPage))
       .set('sortBy', this.sortField)
       .set('order', this.sortDirection);
@@ -195,33 +166,17 @@ export class TrafficDashboardComponent implements OnInit, OnDestroy {
     }
     
     if (this.startDate) {
-      // Ensure ISO format for dates
       const formattedStartDate = new Date(this.startDate).toISOString();
       params = params.set('start', formattedStartDate);
-      console.log('Using start date filter:', formattedStartDate);
     }
     
     if (this.endDate) {
-      // Ensure ISO format for dates
       const formattedEndDate = new Date(this.endDate).toISOString();
       params = params.set('end', formattedEndDate);
-      console.log('Using end date filter:', formattedEndDate);
     }
     
-    // Add status filter based on dashboard type
     if (this.statusFilter?.trim()) {
-      switch (this.dashboardType) {
-        case 'traffic':
-          params = params.set('congestionLevel', this.statusFilter);
-          break;
-        case 'lighting':
-          params = params.set('status', this.statusFilter);
-          break;
-        case 'pollution':
-          params = params.set('pollutionLevel', this.statusFilter);
-          break;
-      }
-      console.log(`Applied ${this.dashboardType} status filter:`, this.statusFilter);
+      params = params.set('congestionLevel', this.statusFilter);
     }
 
     // Set HTTP options with parameters and manual Authorization header
@@ -229,52 +184,14 @@ export class TrafficDashboardComponent implements OnInit, OnDestroy {
     const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : undefined;
     const options = headers ? { params, headers } : { params };
     
-    // Determine endpoint based on dashboard type
-    let endpoint = '';
-    switch (this.dashboardType) {
-      case 'traffic':
-        endpoint = `${baseUrl}/traffic`;
-        break;
-      case 'lighting':
-        endpoint = `${baseUrl}/street-light`;
-        break;
-      case 'pollution':
-        endpoint = `${baseUrl}/air-pollution`;
-        break;
-    }
+    const endpoint = `${baseUrl}/traffic`;
     
-    console.log('Making request to:', endpoint);
-    console.log('With parameters:', params.toString());
-    
-    // Check if we have authentication token
-    const hasToken = !!localStorage.getItem('token');
-    console.log('Authentication token present:', hasToken);
-
     // Make the HTTP request
-    this.http.get<PageResponse<any>>(endpoint, options)
+    this.http.get<PageResponse<TrafficData>>(endpoint, options)
       .subscribe({
         next: response => {
-          console.log('Response received:', response);
-          // Store the data based on dashboard type
-          switch (this.dashboardType) {
-            case 'traffic':
-              this.trafficData = response.content;
-              console.log(`Loaded ${this.trafficData.length} traffic records`);
-              break;
-            case 'lighting':
-              this.lightingData = response.content;
-              console.log(`Loaded ${this.lightingData.length} lighting records`);
-              break;
-            case 'pollution':
-              this.pollutionData = response.content;
-              console.log(`Loaded ${this.pollutionData.length} pollution records`);
-              break;
-          }
-          
+          this.trafficData = response.content;
           this.totalElements = response.totalElements;
-          console.log('Total records available:', this.totalElements);
-          console.log('Current page:', response.number + 1);
-          console.log('Total pages:', response.totalPages);
           
           // Update charts with the real data
           this.updateChartData();
@@ -283,297 +200,104 @@ export class TrafficDashboardComponent implements OnInit, OnDestroy {
         },
         error: error => {
           console.error('Error loading data:', error);
-          
-          // Handle specific error cases
-          if (error.status === 401) {
-            console.error('Authentication failed. Redirecting to login...');
-            // You might want to redirect to login page here
-            // this.router.navigate(['/login']);
-          } else if (error.status === 403) {
-            console.error('Permission denied for this resource');
-          } else if (error.status === 0) {
-            console.error('Connection error. Backend might be down or CORS issue');
-          }
-          
-          // Reset data to empty to avoid displaying stale data
-          switch (this.dashboardType) {
-            case 'traffic':
-              this.trafficData = [];
-              break;
-            case 'lighting':
-              this.lightingData = [];
-              break;
-            case 'pollution':
-              this.pollutionData = [];
-              break;
-          }
+          this.trafficData = [];
         }
       });
   }
 
-  updateChartConfiguration() {
-    switch (this.dashboardType) {
-      case 'traffic':
-        this.chartOptions.title = { text: 'Traffic Metrics by Location' };
-        this.chartOptions.yAxis = [
-          { title: { text: 'Traffic Density' } },
-          { title: { text: 'Average Speed (km/h)' }, opposite: true }
-        ];
-        this.chartOptions.series = [
-          { type: 'column', name: 'Traffic Density', data: [] },
-          { type: 'line', name: 'Average Speed', data: [], yAxis: 1 }
-        ];
+  updateChartData() {
+    // Process data for chart
+    const locationMap = new Map<string, { primary: number; secondary: number; count: number }>();
+    
+    // Aggregate data by location
+    this.trafficData.forEach(data => {
+      const location = data.location;
+      if (!locationMap.has(location)) {
+        locationMap.set(location, { primary: 0, secondary: 0, count: 0 });
+      }
+      
+      const entry = locationMap.get(location)!;
+      entry.primary += data.trafficDensity;
+      entry.secondary += data.avgSpeed;
+      entry.count++;
+    });
+    
+    // Calculate averages
+    const categories: string[] = [];
+    const primaryData: number[] = [];
+    const secondaryData: number[] = [];
+    
+    locationMap.forEach((value, key) => {
+      categories.push(key);
+      primaryData.push(value.primary / value.count);
+      secondaryData.push(value.secondary / value.count);
+    });
 
-        this.primaryMetricChartOptions.title = { text: 'Traffic Density Over Time' };
-        this.primaryMetricChartOptions.yAxis = { title: { text: 'Vehicles per Hour' } };
-        this.primaryMetricChartOptions.series = [{
-          type: 'line',
+    // Update chart configuration
+    this.chartOptions = {
+      ...this.chartOptions,
+      xAxis: { categories },
+      series: [
+        { 
+          type: 'column',
           name: 'Traffic Density',
-          data: [],
-          color: '#7b1fa2'
-        }];
-
-        this.secondaryMetricChartOptions.title = { text: 'Average Speed Over Time' };
-        this.secondaryMetricChartOptions.yAxis = { title: { text: 'Speed (km/h)' } };
-        this.secondaryMetricChartOptions.series = [{
+          data: primaryData
+        },
+        {
           type: 'line',
           name: 'Average Speed',
-          data: [],
-          color: '#6a1b9a'
-        }];
+          data: secondaryData,
+          yAxis: 1
+        }
+      ]
+    };
 
-        this.statusDistributionChartOptions.title = { text: 'Congestion Level Distribution' };
-        this.statusDistributionChartOptions.xAxis = { 
-          categories: ['Low', 'Moderate', 'High', 'Severe'],
-          title: { text: 'Congestion Level' }
-        };
-        break;
-
-      case 'lighting':
-        this.chartOptions.title = { text: 'Street Light Metrics by Location' };
-        this.chartOptions.yAxis = [
-          { title: { text: 'Brightness Level' } },
-          { title: { text: 'Power Consumption (W)' }, opposite: true }
-        ];
-        this.chartOptions.series = [
-          { type: 'column', name: 'Brightness Level', data: [] },
-          { type: 'line', name: 'Power Consumption', data: [], yAxis: 1 }
-        ];
-
-        this.primaryMetricChartOptions.title = { text: 'Brightness Level Over Time' };
-        this.primaryMetricChartOptions.yAxis = { title: { text: 'Brightness (%)' } };
-        this.primaryMetricChartOptions.series = [{
-          type: 'line',
-          name: 'Brightness Level',
-          data: [],
-          color: '#7b1fa2'
-        }];
-
-        this.secondaryMetricChartOptions.title = { text: 'Power Consumption Over Time' };
-        this.secondaryMetricChartOptions.yAxis = { title: { text: 'Power (W)' } };
-        this.secondaryMetricChartOptions.series = [{
-          type: 'line',
-          name: 'Power Consumption',
-          data: [],
-          color: '#6a1b9a'
-        }];
-
-        this.statusDistributionChartOptions.title = { text: 'Light Status Distribution' };
-        this.statusDistributionChartOptions.xAxis = { 
-          categories: ['ON', 'OFF', 'MAINTENANCE'],
-          title: { text: 'Status' }
-        };
-        break;
-
-      case 'pollution':
-        this.chartOptions.title = { text: 'Air Quality Metrics by Location' };
-        this.chartOptions.yAxis = [
-          { title: { text: 'PM2.5' } },
-          { title: { text: 'Ozone (ppb)' }, opposite: true }
-        ];
-        this.chartOptions.series = [
-          { type: 'column', name: 'PM2.5', data: [] },
-          { type: 'line', name: 'Ozone', data: [], yAxis: 1 }
-        ];
-
-        this.primaryMetricChartOptions.title = { text: 'PM2.5 Levels Over Time' };
-        this.primaryMetricChartOptions.yAxis = { title: { text: 'PM2.5 (μg/m³)' } };
-        this.primaryMetricChartOptions.series = [{
-          type: 'line',
-          name: 'PM2.5',
-          data: [],
-          color: '#7b1fa2'
-        }];
-
-        this.secondaryMetricChartOptions.title = { text: 'Ozone Levels Over Time' };
-        this.secondaryMetricChartOptions.yAxis = { title: { text: 'Ozone (ppb)' } };
-        this.secondaryMetricChartOptions.series = [{
-          type: 'line',
-          name: 'Ozone',
-          data: [],
-          color: '#6a1b9a'
-        }];
-
-        this.statusDistributionChartOptions.title = { text: 'Air Quality Status Distribution' };
-        this.statusDistributionChartOptions.xAxis = { 
-          categories: ['Good', 'Moderate', 'Unhealthy', 'Very_Unhealthy', 'Hazardous'],
-          title: { text: 'Pollution Level' }
-        };
-        break;
-    }
-    
     this.updateFlag = true;
+    setTimeout(() => {
+      this.updateFlag = false;
+    });
   }
 
-  updateChartData() {
-  let currentData = this.getCurrentData();
-  
-  // Process data for chart - use original data order (no sorting needed here)
-  const locationMap = new Map<string, { primary: number; secondary: number; count: number }>();
-  
-  // Aggregate data by location
-  currentData.forEach(data => {
-    const location = data.location;
-    if (!locationMap.has(location)) {
-      locationMap.set(location, { primary: 0, secondary: 0, count: 0 });
-    }
+  updateTimeSeriesCharts() {
+    const sortedData = [...this.trafficData].sort((a, b) => {
+      return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+    });
     
-    const entry = locationMap.get(location)!;
+    const primaryTimeSeriesData: [number, number][] = [];
+    const secondaryTimeSeriesData: [number, number][] = [];
     
-    switch (this.dashboardType) {
-      case 'traffic':
-        entry.primary += data.trafficDensity;
-        entry.secondary += data.avgSpeed;
-        break;
-      case 'lighting':
-        entry.primary += data.brightnessLevel;
-        entry.secondary += data.powerConsumption;
-        break;
-      case 'pollution':
-        entry.primary += data.pm2_5;
-        entry.secondary += data.ozone;
-        break;
-    }
-    entry.count++;
-  });
-  
-  // Calculate averages
-  const categories: string[] = [];
-  const primaryData: number[] = [];
-  const secondaryData: number[] = [];
-  
-  locationMap.forEach((value, key) => {
-    categories.push(key);
-    primaryData.push(value.primary / value.count);
-    secondaryData.push(value.secondary / value.count);
-  });
-
-  // Update chart configuration
-  this.chartOptions = {
-    ...this.chartOptions,
-    xAxis: { categories },
-    series: [
-      { 
-        type: 'column',
-        name: this.getPrimaryMetricName(),
-        data: primaryData
-      },
-      {
+    sortedData.forEach(data => {
+      const timestamp = new Date(data.timestamp).getTime();
+      primaryTimeSeriesData.push([timestamp, data.trafficDensity]);
+      secondaryTimeSeriesData.push([timestamp, data.avgSpeed]);
+    });
+    
+    // Update primary metric chart
+    this.primaryMetricChartOptions = {
+      ...this.primaryMetricChartOptions,
+      series: [{
         type: 'line',
-        name: this.getSecondaryMetricName(),
-        data: secondaryData,
-        yAxis: 1
-      }
-    ]
-  };
-
-  // Force chart update
-  this.updateFlag = true;
-  setTimeout(() => {
-    this.updateFlag = false;
-  });
-}
-
-
- updateTimeSeriesCharts() {
-  let currentData = this.getCurrentData();
-  
-  // CREATE A COPY before sorting - this is the key fix!
-  const sortedData = [...currentData].sort((a, b) => {
-    return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
-  });
-  
-  // Prepare time series data arrays
-  const primaryTimeSeriesData: [number, number][] = [];
-  const secondaryTimeSeriesData: [number, number][] = [];
-  
-  // Use the sorted copy, not the original data
-  sortedData.forEach(data => {
-    const timestamp = new Date(data.timestamp).getTime();
+        name: 'Traffic Density',
+        data: primaryTimeSeriesData,
+        color: '#7b1fa2'
+      }]
+    };
     
-    switch (this.dashboardType) {
-      case 'traffic':
-        primaryTimeSeriesData.push([timestamp, data.trafficDensity]);
-        secondaryTimeSeriesData.push([timestamp, data.avgSpeed]);
-        break;
-      case 'lighting':
-        primaryTimeSeriesData.push([timestamp, data.brightnessLevel]);
-        secondaryTimeSeriesData.push([timestamp, data.powerConsumption]);
-        break;
-      case 'pollution':
-        primaryTimeSeriesData.push([timestamp, data.pm2_5]);
-        secondaryTimeSeriesData.push([timestamp, data.ozone]);
-        break;
-    }
-  });
-  
-  // Update primary metric chart
-  this.primaryMetricChartOptions = {
-    ...this.primaryMetricChartOptions,
-    series: [{
-      type: 'line',
-      name: this.getPrimaryMetricName(),
-      data: primaryTimeSeriesData,
-      color: '#7b1fa2'
-    }]
-  };
-  
-  // Update secondary metric chart
-  this.secondaryMetricChartOptions = {
-    ...this.secondaryMetricChartOptions,
-    series: [{
-      type: 'line',
-      name: this.getSecondaryMetricName(),
-      data: secondaryTimeSeriesData,
-      color: '#6a1b9a'
-    }]
-  };
-}
+    // Update secondary metric chart
+    this.secondaryMetricChartOptions = {
+      ...this.secondaryMetricChartOptions,
+      series: [{
+        type: 'line',
+        name: 'Average Speed',
+        data: secondaryTimeSeriesData,
+        color: '#6a1b9a'
+      }]
+    };
+  }
 
   updateStatusDistributionChart() {
-    let currentData = this.getCurrentData();
     const statusCounts = new Map<string, number>();
-    let statusField: string;
-    let statusCategories: string[] = [];
-    
-    // Determine the status field based on dashboard type
-    switch (this.dashboardType) {
-      case 'traffic':
-        statusField = 'congestionLevel';
-        statusCategories = ['Low', 'Moderate', 'High', 'Severe'];
-        break;
-      case 'lighting':
-        statusField = 'status';
-        statusCategories = ['ON', 'OFF', 'MAINTENANCE'];
-        break;
-      case 'pollution':
-        statusField = 'pollutionLevel';
-        statusCategories = ['Good', 'Moderate', 'Unhealthy', 'Very_Unhealthy', 'Hazardous'];
-        break;
-      default:
-        statusField = '';
-        break;
-    }
+    const statusCategories = ['Low', 'Moderate', 'High', 'Severe'];
     
     // Initialize counts
     statusCategories.forEach(category => {
@@ -581,8 +305,8 @@ export class TrafficDashboardComponent implements OnInit, OnDestroy {
     });
     
     // Count occurrences
-    currentData.forEach(data => {
-      const status = data[statusField];
+    this.trafficData.forEach(data => {
+      const status = data.congestionLevel;
       statusCounts.set(status, (statusCounts.get(status) || 0) + 1);
     });
     
@@ -594,7 +318,7 @@ export class TrafficDashboardComponent implements OnInit, OnDestroy {
       ...this.statusDistributionChartOptions,
       xAxis: {
         categories: statusCategories,
-        title: { text: this.getStatusFieldName() }
+        title: { text: 'Congestion Level' }
       },
       series: [{
         type: 'column',
@@ -605,57 +329,20 @@ export class TrafficDashboardComponent implements OnInit, OnDestroy {
     };
   }
 
-  // Make these public so they can be used in the template
-  getCurrentData(): any[] {
-    switch (this.dashboardType) {
-      case 'traffic':
-        return this.trafficData;
-      case 'lighting':
-        return this.lightingData;
-      case 'pollution':
-        return this.pollutionData;
-      default:
-        return [];
-    }
+  getCurrentData(): TrafficData[] {
+    return this.trafficData;
   }
 
   getPrimaryMetricName(): string {
-    switch (this.dashboardType) {
-      case 'traffic':
-        return 'Traffic Density';
-      case 'lighting':
-        return 'Brightness Level';
-      case 'pollution':
-        return 'PM2.5';
-      default:
-        return 'Primary Metric';
-    }
+    return 'Traffic Density';
   }
 
   getSecondaryMetricName(): string {
-    switch (this.dashboardType) {
-      case 'traffic':
-        return 'Average Speed';
-      case 'lighting':
-        return 'Power Consumption';
-      case 'pollution':
-        return 'Ozone Level';
-      default:
-        return 'Secondary Metric';
-    }
+    return 'Average Speed';
   }
 
   getStatusFieldName(): string {
-    switch (this.dashboardType) {
-      case 'traffic':
-        return 'Congestion Level';
-      case 'lighting':
-        return 'Light Status';
-      case 'pollution':
-        return 'Pollution Level';
-      default:
-        return 'Status';
-    }
+    return 'Congestion Level';
   }
 
   toggleTheme() {

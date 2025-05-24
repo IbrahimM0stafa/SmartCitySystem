@@ -31,12 +31,14 @@
   --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+
 /* Base Styles */
 .dashboard-container {
   min-height: 100vh;
   transition: var(--transition);
   font-family: 'Segoe UI', 'Roboto', sans-serif;
   padding: 20px;
+  padding-top: 0; 
 }
 
 /* Dark Mode Styles */
@@ -85,14 +87,14 @@
 /* Header Styles */
 .dashboard-header {
   padding: 1.5rem 2rem;
-  background: rgba(0, 0, 0, 0.2);
+  /* background: rgba(0, 0, 0, 0.2); */
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--dark-border);
   margin-bottom: 20px;
 }
 
 .light-mode .dashboard-header {
-  background: rgba(255, 255, 255, 0.2);
+  /* background: rgba(255, 255, 255, 0.2); */
   border-bottom: 1px solid var(--light-border);
 }
 
@@ -573,18 +575,9 @@
   border: 1px solid #ef4444;
 }
 
-.dark-mode .status-badge[ng-reflect-ng-class*='very unhealthy'],
-.dark-mode .status-badge.very\ unhealthy {
-  background-color: rgba(168, 85, 247, 0.25);
-  color: #a855f7;
-  border: 1px solid #a855f7;
-}
 
-.dark-mode .status-badge.hazardous {
-  background-color: rgba(55, 65, 81, 0.5);
-  color: #f59e42;
-  border: 1px solid #f59e42;
-}
+
+
 
 /* Traffic Status */
 .low {
@@ -602,37 +595,7 @@
   color: #721c24;
 }
 
-/* Street Light Status */
-.on {
-  background-color: #cce5ff;
-  color: #004085;
-}
 
-.off {
-  background-color: #e2e3e5;
-  color: #383d41;
-}
-
-.maintenance {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-/* Air Pollution Status */
-.good {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.moderate {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.unhealthy {
-  background-color: #f8d7da;
-  color: #721c24;
-}
 
 /* Responsive Table Styles */
 @media (max-width: 768px) {
@@ -699,7 +662,12 @@ select.filter-input {
 }
 
 .dark-mode select.filter-input {
+  cursor: pointer;
+  appearance: none;
+  padding-right: 2rem;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23fff' viewBox='0 0 16 16'%3E%3Cpath d='M8 11l-6-6h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
 }
 
 /* Date Input */
@@ -722,27 +690,13 @@ input[type="datetime-local"].filter-input {
   background-color: #f9c2c6;
   color: #721c24;
 }
-.hazardous {
-  background-color: #fff3cd;
-  color: #856404;
-}
-.very_unhealthy, .very-unhealthy {
-  background-color: #e1d5fa;
-  color: #6a1b9a;
-}
 
 .dark-mode .severe {
   background-color: rgba(211, 47, 47, 0.2);
   color: #ffb4b4;
 }
-.dark-mode .hazardous {
-  background-color: rgba(245, 158, 66, 0.2);
-  color: #f59e42;
-}
-.dark-mode .very_unhealthy, .dark-mode .very-unhealthy {
-  background-color: rgba(168, 85, 247, 0.2);
-  color: #a855f7;
-}
+
+
 
 .data-table tr:hover {
   background-color: rgba(0,0,0,0.04) !important;
