@@ -13,20 +13,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-/**
- * Concrete implementation of {@link SensorDataService}.
- *
- * REPOSITORY REQUIREMENTS
- * • Each repository must extend both JpaRepository<T, UUID> and JpaSpecificationExecutor<T>
- *   (so Spring Data can apply Specifications with paging/sorting).
- */
+
 @Service
 @RequiredArgsConstructor
 public class SensorDataServiceImpl implements SensorDataService {
 
-    /* ----------------------------------------------------------------
-       DEPENDENCIES
-       ---------------------------------------------------------------- */
+
     private final TrafficSensorDataRepository      trafficRepo;
     private final AirPollutionSensorDataRepository airRepo;
     private final StreetLightSensorDataRepository  lightRepo;
@@ -34,15 +26,11 @@ public class SensorDataServiceImpl implements SensorDataService {
     private final SensorDataValidator validator;
     private final SettingsService      settingsService;
 
-    /* ----------------------------------------------------------------
-       HELPERS
-       ---------------------------------------------------------------- */
+
     private final Random            random    = new Random();
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    /* ================================================================
-       RANDOM-DATA GENERATION
-       ================================================================ */
+
     @Override
     public void generateTrafficData() {
         TrafficSensorData data = TrafficSensorData.builder()
@@ -108,9 +96,7 @@ public class SensorDataServiceImpl implements SensorDataService {
         logLight(saved, "STREET LIGHT DATA INSERTED");
     }
 
-    /* ================================================================
-       MANUAL SAVE
-       ================================================================ */
+
     @Override
     public TrafficSensorData saveTrafficData(TrafficSensorData data) {
         ensureIdAndTimestamp(data);
@@ -150,9 +136,7 @@ public class SensorDataServiceImpl implements SensorDataService {
         return saved;
     }
 
-    /* ================================================================
-       DASHBOARD — PAGED + SORTABLE + FILTERABLE   🚀
-       ================================================================ */
+
     @Override
     public Page<TrafficSensorData> getTrafficData(
             String location,
@@ -189,9 +173,7 @@ public class SensorDataServiceImpl implements SensorDataService {
         return lightRepo.findAll(spec, pageable);
     }
 
-    /* ================================================================
-       LIST-STYLE FILTERING HELPERS (used by other layers/tests)
-       ================================================================ */
+
     @Override
     public List<TrafficSensorData> filterTrafficData(
             String location,
@@ -225,9 +207,7 @@ public class SensorDataServiceImpl implements SensorDataService {
         return lightRepo.findAll(spec, Sort.unsorted());
     }
 
-    /* ================================================================
-       PRIVATE HELPERS
-       ================================================================ */
+
     private void ensureIdAndTimestamp(Object entity) {
         if (entity instanceof BaseSensorData base) {
             if (base.getId() == null)        base.setId(UUID.randomUUID());
@@ -235,7 +215,7 @@ public class SensorDataServiceImpl implements SensorDataService {
         }
     }
 
-    /* ---------- SPEC BUILDERS ---------- */
+
 
     private Specification<TrafficSensorData> buildTrafficSpec(
             String location,
@@ -285,7 +265,7 @@ public class SensorDataServiceImpl implements SensorDataService {
         };
     }
 
-    /* ---------- CONSOLE LOGGING ---------- */
+
 
     private void logTraffic(TrafficSensorData d, String header) {
         System.out.println("\n " + header + ':');
@@ -337,7 +317,7 @@ public class SensorDataServiceImpl implements SensorDataService {
                 d.getBrightnessLevel(), d.getPowerConsumption(), d.getStatus());
     }
 
-    /* ---------- INTERNAL GENERIC BASE INTERFACE ---------- */
+
     private interface BaseSensorData {
         UUID          getId();
         void          setId(UUID id);
