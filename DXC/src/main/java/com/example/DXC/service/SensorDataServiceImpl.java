@@ -26,7 +26,6 @@ public class SensorDataServiceImpl implements SensorDataService {
     private final SensorDataValidator validator;
     private final SettingsService      settingsService;
 
-
     private final Random            random    = new Random();
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -216,7 +215,6 @@ public class SensorDataServiceImpl implements SensorDataService {
     }
 
 
-
     private Specification<TrafficSensorData> buildTrafficSpec(
             String location,
             TrafficSensorData.CongestionLevel level,
@@ -264,7 +262,6 @@ public class SensorDataServiceImpl implements SensorDataService {
             return cb.and(predicates.toArray(Predicate[]::new));
         };
     }
-
 
 
     private void logTraffic(TrafficSensorData d, String header) {
@@ -316,7 +313,6 @@ public class SensorDataServiceImpl implements SensorDataService {
                 d.getTimestamp().format(formatter),
                 d.getBrightnessLevel(), d.getPowerConsumption(), d.getStatus());
     }
-
 
     private interface BaseSensorData {
         UUID          getId();

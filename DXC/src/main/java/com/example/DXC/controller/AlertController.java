@@ -21,9 +21,10 @@ public class AlertController {
         LocalDateTime oneMinuteAgo = LocalDateTime.now().minusMinutes(1);
         List<Alert> alerts = alertRepository.findByTriggeredAtAfter(oneMinuteAgo);
 
-        String message = alerts.isEmpty() ? "No alerts found." : alerts.size() + " alerts fetched successfully.";
+        String message = alerts.isEmpty()
+                ? "No alerts found."
+                : alerts.size() + " alerts fetched successfully.";
 
         return new AlertResponse(message, alerts.size(), alerts);
     }
-
 }

@@ -18,23 +18,25 @@ public class SensorDataController {
 
     private final SensorDataService sensorDataService;
 
-
+    /* ================================================================
+       RANDOM-DATA GENERATION ENDPOINTS
+       ================================================================ */
     @PostMapping("/generate/traffic")
     public String generateTrafficData() {
         sensorDataService.generateTrafficData();
-        return " Traffic data generated successfully.";
+        return "✅ Traffic data generated successfully.";
     }
 
     @PostMapping("/generate/air-pollution")
     public String generateAirPollutionData() {
         sensorDataService.generateAirPollutionData();
-        return " Air-pollution data generated successfully.";
+        return "✅ Air-pollution data generated successfully.";
     }
 
     @PostMapping("/generate/street-light")
     public String generateStreetLightData() {
         sensorDataService.generateStreetLightData();
-        return " Street-light data generated successfully.";
+        return "✅ Street-light data generated successfully.";
     }
 
     @PostMapping("/generate/all")
@@ -42,10 +44,12 @@ public class SensorDataController {
         sensorDataService.generateTrafficData();
         sensorDataService.generateAirPollutionData();
         sensorDataService.generateStreetLightData();
-        return " All sensor-data types generated successfully.";
+        return "✅ All sensor-data types generated successfully.";
     }
 
-
+    /* ================================================================
+       MANUAL DATA-INSERT ENDPOINTS
+       ================================================================ */
     @PostMapping("/traffic")
     public ResponseEntity<TrafficSensorData> addTrafficData(@RequestBody TrafficSensorData data) {
         if (data.getId() == null) data.setId(UUID.randomUUID());
@@ -64,7 +68,9 @@ public class SensorDataController {
         return ResponseEntity.ok(sensorDataService.saveStreetLightData(data));
     }
 
-
+    /* ================================================================
+       DASHBOARD  —  PAGED  +  SORTABLE  +  FILTERABLE   🚀  (NEW)
+       ================================================================ */
 
     @GetMapping("/traffic")
     public ResponseEntity<Page<TrafficSensorData>> getTraffic(
