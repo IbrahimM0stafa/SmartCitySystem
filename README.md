@@ -46,26 +46,22 @@ You can launch the frontend in two different ways:
 
 - Docker must be installed: [Install Docker](https://docs.docker.com/get-docker/)
 
-### ⚙️ Backend (Spring Boot + Java 21)
-💡 Features
-REST APIs with JWT authentication
+## ⚙️ Backend (Spring Boot + Java 21)
 
-File handling (upload/download/delete)
+### 💡 Features
 
-Swagger UI for exploring APIs
+- REST APIs with JWT authentication  
+- File handling (upload/download/delete)  
+- Docker-ready for deployment  
 
-Docker-ready for deployment
+---
 
-🔨 Prerequisites
-Java 21
-Maven
+### 🔨 Prerequisites
 
-📦 Running the Backend
-✅ Via Maven
-bash
-Copy
-Edit
-git clone <repository-url>
-cd backend
-mvn clean install
-mvn spring-boot:run
+- Java 21  
+- Maven  
+
+To verify Maven is installed:
+
+```bash
+mvn -v
