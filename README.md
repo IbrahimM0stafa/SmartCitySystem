@@ -1,3 +1,7 @@
+## 📖 About
+
+IoT-Insight-Hub is a real-time data monitoring platform built to gather, analyze, and display information from traffic and environmental sensors. It offers a unified dashboard that delivers meaningful insights on road congestion, air quality, weather patterns, and more — empowering users with the tools needed for smarter, data-driven decision-making and efficient infrastructure management.
+
 # 🌐 IoT Insight Hub
 
 IoT Insight Hub is a powerful platform for real-time monitoring and visualization of sensor data. Designed for smart environments, it centralizes data from environmental and traffic sensors — delivering key insights on weather, congestion, air quality, and more.
