@@ -44,7 +44,9 @@ public interface SensorDataService {
             Pageable pageable
     );
 
-
+    /* ---------------------------------------------------------------
+     *  (kept) LIST-style filtering helpers used elsewhere
+     * --------------------------------------------------------------- */
     List<TrafficSensorData> filterTrafficData(
             String location,
             TrafficSensorData.CongestionLevel congestionLevel,

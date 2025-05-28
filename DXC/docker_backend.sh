@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Backend
-BACKEND_IMAGE="youssef773/dxc-backend"
-FRONTEND_IMAGE="youssef773/dxc-frontend"
+BACKEND_IMAGE="ibrahimtalaat/dxc-backend"
+FRONTEND_IMAGE="ibrahimtalaat/dxc-frontend"
 TAG="latest"
 
 echo " Building and pushing backend image..."
