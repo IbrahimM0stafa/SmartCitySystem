@@ -67,15 +67,15 @@ pipeline {
             "GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}"
           ]) {
             script {
-              bat """
-                docker-compose -f docker-compose.yml down --remove-orphans || exit 0
+              sh '''
+                docker-compose -f docker-compose.yml down --remove-orphans || true
 
-                docker ps -a --format "{{.Names}}" | findstr "mysql-container" && docker rm -f mysql-container || echo "No existing MySQL container"
-                docker ps -a --format "{{.Names}}" | findstr "backend-container" && docker rm -f backend-container || echo "No existing backend container"
-                docker ps -a --format "{{.Names}}" | findstr "smartcity-frontend" && docker rm -f smartcity-frontend || echo "No existing frontend container"
+                if docker ps -a --format "{{.Names}}" | grep -q "mysql-container"; then docker rm -f mysql-container; else echo "No existing MySQL container"; fi
+                if docker ps -a --format "{{.Names}}" | grep -q "backend-container"; then docker rm -f backend-container; else echo "No existing backend container"; fi
+                if docker ps -a --format "{{.Names}}" | grep -q "smartcity-frontend"; then docker rm -f smartcity-frontend; else echo "No existing frontend container"; fi
 
                 docker-compose -f docker-compose.yml up -d --pull always
-              """
+              '''
             }
           }
         }
@@ -86,9 +86,9 @@ pipeline {
       steps {
         script {
           sleep(time: 30, unit: 'SECONDS')
-          bat "docker ps --filter name=mysql-container --format \"table {{.Names}}\\t{{.Status}}\""
-          bat "docker ps --filter name=backend-container --format \"table {{.Names}}\\t{{.Status}}\""
-          bat "docker ps --filter name=smartcity-frontend --format \"table {{.Names}}\\t{{.Status}}\""
+          sh 'docker ps --filter name=mysql-container --format "table {{.Names}}\t{{.Status}}"'
+          sh 'docker ps --filter name=backend-container --format "table {{.Names}}\t{{.Status}}"'
+          sh 'docker ps --filter name=smartcity-frontend --format "table {{.Names}}\t{{.Status}}"'
         }
       }
     }
