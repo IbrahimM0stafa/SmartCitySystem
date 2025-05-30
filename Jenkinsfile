@@ -1,20 +1,24 @@
 pipeline {
   agent any
-
   environment {
     DOCKER_REGISTRY = "ibrahimtalaat"
     BACKEND_IMAGE = "${DOCKER_REGISTRY}/dxc-backend"
     FRONTEND_IMAGE = "${DOCKER_REGISTRY}/dxc-frontend"
-    COMPOSE_FILE = "/docker-compose.yml"
+    COMPOSE_FILE = "docker-compose.yml"
   }
-
   stages {
     stage('Checkout') {
       steps {
-        git branch: 'main', url: 'https://github.com/IbrahimM0stafa/SmartCitySystem.git'
+        // Clean workspace first
+        deleteDir()
+        // Clone the repository
+        checkout([
+          $class: 'GitSCM',
+          branches: [[name: '*/main']],
+          userRemoteConfigs: [[url: 'https://github.com/IbrahimM0stafa/SmartCitySystem.git']]
+        ])
       }
     }
-
     stage('Build Backend Image') {
       steps {
         script {
@@ -22,7 +26,6 @@ pipeline {
         }
       }
     }
-
     stage('Build Frontend Image') {
       steps {
         script {
@@ -30,7 +33,6 @@ pipeline {
         }
       }
     }
-
     stage('Push Images') {
       steps {
         withDockerRegistry(credentialsId: 'ibrahimtalaat-dockerhub', url: '') {
@@ -41,7 +43,6 @@ pipeline {
         }
       }
     }
-
     stage('Deploy with Docker Compose') {
       steps {
         withCredentials([
@@ -68,12 +69,13 @@ pipeline {
           ]) {
             script {
               sh '''
+                # Stop and remove existing containers
                 docker-compose -f docker-compose.yml down --remove-orphans || true
 
-                if docker ps -a --format "{{.Names}}" | grep -q "mysql-container"; then docker rm -f mysql-container; else echo "No existing MySQL container"; fi
-                if docker ps -a --format "{{.Names}}" | grep -q "backend-container"; then docker rm -f backend-container; else echo "No existing backend container"; fi
-                if docker ps -a --format "{{.Names}}" | grep -q "smartcity-frontend"; then docker rm -f smartcity-frontend; else echo "No existing frontend container"; fi
+                # Remove individual containers if they exist
+                docker rm -f mysql-container backend-container smartcity-frontend || true
 
+                # Start services
                 docker-compose -f docker-compose.yml up -d --pull always
               '''
             }
@@ -81,26 +83,39 @@ pipeline {
         }
       }
     }
-
     stage('Health Check') {
       steps {
         script {
           sleep(time: 30, unit: 'SECONDS')
-          sh 'docker ps --filter name=mysql-container --format "table {{.Names}}\t{{.Status}}"'
-          sh 'docker ps --filter name=backend-container --format "table {{.Names}}\t{{.Status}}"'
-          sh 'docker ps --filter name=smartcity-frontend --format "table {{.Names}}\t{{.Status}}"'
+          sh '''
+            echo "=== Container Status ==="
+            docker ps --filter name=mysql-container --format "table {{.Names}}\t{{.Status}}" || echo "MySQL container not found"
+            docker ps --filter name=backend-container --format "table {{.Names}}\t{{.Status}}" || echo "Backend container not found"
+            docker ps --filter name=smartcity-frontend --format "table {{.Names}}\t{{.Status}}" || echo "Frontend container not found"
+
+            echo "=== All Running Containers ==="
+            docker ps
+          '''
         }
       }
     }
   }
-
   post {
     success {
       echo '✅ Deployment completed successfully!'
     }
-
     failure {
       echo '❌ Deployment failed!'
+      script {
+        sh 'docker ps -a'
+        sh 'docker logs mysql-container || true'
+        sh 'docker logs backend-container || true'
+        sh 'docker logs smartcity-frontend || true'
+      }
+    }
+    always {
+      // Clean up workspace
+      cleanWs()
     }
   }
 }
