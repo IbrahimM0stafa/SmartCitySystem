@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  options {
+    skipDefaultCheckout(true) // ✅ Prevents redundant git checkout that causes errors
+  }
+
   environment {
     DOCKER_REGISTRY = "ibrahimtalaat"
     BACKEND_IMAGE = "${DOCKER_REGISTRY}/dxc-backend"
@@ -9,7 +13,6 @@ pipeline {
   }
 
   stages {
-    // 🔥 Removed redundant 'Checkout' stage
 
     stage('Build Backend Image') {
       steps {
