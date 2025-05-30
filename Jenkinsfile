@@ -1,11 +1,13 @@
 pipeline {
   agent any
+
   environment {
     DOCKER_REGISTRY = "ibrahimtalaat"
     BACKEND_IMAGE = "${DOCKER_REGISTRY}/dxc-backend"
     FRONTEND_IMAGE = "${DOCKER_REGISTRY}/dxc-frontend"
-    COMPOSE_FILE = "docker-compose.yml"
+    COMPOSE_FILE = "/docker-compose.yml"
   }
+
   stages {
     // 🔥 Removed redundant 'Checkout' stage
 
@@ -16,6 +18,7 @@ pipeline {
         }
       }
     }
+
     stage('Build Frontend Image') {
       steps {
         script {
@@ -23,6 +26,7 @@ pipeline {
         }
       }
     }
+
     stage('Push Images') {
       steps {
         withDockerRegistry(credentialsId: 'ibrahimtalaat-dockerhub', url: '') {
@@ -33,6 +37,7 @@ pipeline {
         }
       }
     }
+
     stage('Deploy with Docker Compose') {
       steps {
         withCredentials([
@@ -59,14 +64,12 @@ pipeline {
           ]) {
             script {
               sh '''
-                # Stop and remove existing containers
                 docker-compose -f docker-compose.yml down --remove-orphans || true
 
                 docker rm -f mysql-container || true
                 docker rm -f backend-container || true
                 docker rm -f smartcity-frontend || true
 
-                # Start services
                 docker-compose -f docker-compose.yml up -d --pull always
               '''
             }
@@ -74,39 +77,25 @@ pipeline {
         }
       }
     }
+
     stage('Health Check') {
       steps {
         script {
           sleep(time: 30, unit: 'SECONDS')
-          sh '''
-            echo "=== Container Status ==="
-            docker ps --filter name=mysql-container --format "table {{.Names}}\t{{.Status}}" || echo "MySQL container not found"
-            docker ps --filter name=backend-container --format "table {{.Names}}\t{{.Status}}" || echo "Backend container not found"
-            docker ps --filter name=smartcity-frontend --format "table {{.Names}}\t{{.Status}}" || echo "Frontend container not found"
-
-            echo "=== All Running Containers ==="
-            docker ps
-          '''
+          sh 'docker ps --filter name=mysql-container --format "table {{.Names}}\t{{.Status}}"'
+          sh 'docker ps --filter name=backend-container --format "table {{.Names}}\t{{.Status}}"'
+          sh 'docker ps --filter name=smartcity-frontend --format "table {{.Names}}\t{{.Status}}"'
         }
       }
     }
   }
+
   post {
     success {
       echo '✅ Deployment completed successfully!'
     }
     failure {
       echo '❌ Deployment failed!'
-      script {
-        sh 'docker ps -a'
-        sh 'docker logs mysql-container || true'
-        sh 'docker logs backend-container || true'
-        sh 'docker logs smartcity-frontend || true'
-      }
-    }
-    always {
-      // Clean up workspace
-      cleanWs()
     }
   }
 }
