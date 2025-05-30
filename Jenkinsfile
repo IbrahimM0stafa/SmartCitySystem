@@ -7,18 +7,8 @@ pipeline {
     COMPOSE_FILE = "docker-compose.yml"
   }
   stages {
-    stage('Checkout') {
-      steps {
-        // Clean workspace first
-        deleteDir()
-        // Clone the repository
-        checkout([
-          $class: 'GitSCM',
-          branches: [[name: '*/main']],
-          userRemoteConfigs: [[url: 'https://github.com/IbrahimM0stafa/SmartCitySystem.git']]
-        ])
-      }
-    }
+    // 🔥 Removed redundant 'Checkout' stage
+
     stage('Build Backend Image') {
       steps {
         script {
@@ -72,8 +62,9 @@ pipeline {
                 # Stop and remove existing containers
                 docker-compose -f docker-compose.yml down --remove-orphans || true
 
-                # Remove individual containers if they exist
-                docker rm -f mysql-container backend-container smartcity-frontend || true
+                docker rm -f mysql-container || true
+                docker rm -f backend-container || true
+                docker rm -f smartcity-frontend || true
 
                 # Start services
                 docker-compose -f docker-compose.yml up -d --pull always
