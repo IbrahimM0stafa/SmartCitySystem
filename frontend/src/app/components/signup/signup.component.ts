@@ -4,6 +4,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../services/theme.service';
+import { environment } from '../../../environments/environment';
 
 interface SignupData {
   firstName: string;
@@ -54,7 +55,7 @@ export class SignupComponent implements OnInit {
       alert('Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.');
       return;
     }
-    this.http.post('http://localhost:8081/api/auth/signup', this.signupData)
+    this.http.post(`${environment.apiUrl}/api/auth/signup`, this.signupData)
       .subscribe({
         next: (response: any) => {
           console.log('Signup successful:', response);
@@ -76,7 +77,7 @@ export class SignupComponent implements OnInit {
   }
 
   handleGoogleSignup(): void {
-    window.location.href = 'http://localhost:8081/oauth2/authorization/google';
+    window.location.href = `${environment.apiUrl}/oauth2/authorization/google`;
     console.log('Google signup initiated');
   }
 

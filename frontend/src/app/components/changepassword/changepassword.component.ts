@@ -37,7 +37,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
   cooldown = 0;
   cooldownSubscription?: Subscription;
 
-  private apiUrl = environment.apiUrl || 'http://localhost:8081';
+  private apiUrl = environment.apiUrl;
 
   constructor(
     private fb: FormBuilder,

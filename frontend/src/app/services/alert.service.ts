@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, interval, Subscription } from 'rxjs';
 import { switchMap, tap, catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 export interface Alert {
   id: string;
@@ -23,7 +24,7 @@ export interface AlertResponse {
   providedIn: 'root'
 })
 export class AlertService {
-  private readonly baseUrl = 'http://localhost:8081/api/alerts';
+  private readonly baseUrl = `${environment.apiUrl}/api/alerts`;
   private alerts = new BehaviorSubject<Alert[]>([]);
   private alertQueue: Alert[] = [];
   private pollingSubscription: Subscription | null = null;
