@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 export interface SettingsRequest {
   type: 'Traffic' | 'Air_Pollution' | 'Street_Light';
@@ -23,7 +24,7 @@ export interface Settings {
   providedIn: 'root'
 })
 export class SettingsService {
-  private apiUrl = 'http://localhost:8081/api/settings';
+  private apiUrl = `${environment.apiUrl}/api/settings`;
 
   constructor(private http: HttpClient) { }
 

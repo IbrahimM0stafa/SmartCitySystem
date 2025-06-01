@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-profile-page',
@@ -29,7 +30,7 @@ export class ProfilePageComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     });
 
-    this.http.get('http://localhost:8081/api/profile', { headers }).subscribe({
+    this.http.get(`${environment.apiUrl}/api/profile`, { headers }).subscribe({
       next: (response: any) => {
         this.userData = {
           email: response.email,

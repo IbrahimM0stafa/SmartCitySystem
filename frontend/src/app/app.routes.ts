@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/dashboard-entry', pathMatch: 'full' },
   {
     path: 'login',
     loadComponent: () =>
@@ -74,8 +74,8 @@ export const routes: Routes = [
   {
     path: 'lighting-dashboard',
     loadComponent: () =>
-      import('./components/traffic-dashboard/traffic-dashboard.component').then(
-        (m) => m.TrafficDashboardComponent
+      import('./components/street-light-dashboard/street-light-dashboard.component').then(
+        (m) => m.StreetLightDashboardComponent
       ),
     canActivate: [AuthGuard]
   },

@@ -10,7 +10,7 @@ export class ThemeService {
   private _currentTheme: 'light' | 'dark' = 'dark';
   private themeSubject = new BehaviorSubject<'light' | 'dark'>('dark');
 
-  // Observable for theme changes
+  
   themeChanges$: Observable<'light' | 'dark'> = this.themeSubject.asObservable();
 
   constructor() {
@@ -18,13 +18,13 @@ export class ThemeService {
   }
 
   private initTheme(): void {
-    // Check localStorage first
+    
     const savedTheme = localStorage.getItem(this.storageKey) as 'light' | 'dark';
     
     if (savedTheme) {
       this.setTheme(savedTheme);
     } else {
-      // Check user's system preference
+      
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       this.setTheme(prefersDark ? 'dark' : 'light');
     }

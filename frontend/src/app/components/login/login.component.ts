@@ -4,6 +4,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http'; // Added Ht
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../services/theme.service';
+import { environment } from '../../../environments/environment'; // Import environment
 
 @Component({
   selector: 'app-login',
@@ -32,7 +33,7 @@ export class LoginComponent implements OnInit {
   }
 
   handleSubmit(): void {
-    this.http.post<any>('http://localhost:8081/api/auth/signin', {
+    this.http.post<any>(`${environment.apiUrl}/api/auth/signin`, {
       email: this.email,
       password: this.password
     }).subscribe({
@@ -54,7 +55,7 @@ export class LoginComponent implements OnInit {
         this.onLogin.emit();
   
         // Navigate to home page or dashboard
-        this.router.navigate(['/home']);
+        this.router.navigate(['/dashboard-entry']);
       },
       error: (error) => {
         alert(error.error ? `Login failed: ${error.error}` : 'An error occurred while trying to log in.');
@@ -63,7 +64,7 @@ export class LoginComponent implements OnInit {
   }
 
   handleGoogleLogin(): void {
-    window.location.href = 'http://localhost:8081/oauth2/authorization/google';
+    window.location.href = `${environment.apiUrl}/oauth2/authorization/google`;
   }
 
   toggleShowPassword(): void {
