@@ -1,5 +1,4 @@
-  // src/environments/environment.prod.ts
-  export const environment = {
-    production: true,
-    apiUrl: process.env["API_URL"] || 'http://localhost:8081'
-  };
+export const environment = {
+  production: true,
+  apiUrl: '' // Will be replaced dynamically at runtime
+};

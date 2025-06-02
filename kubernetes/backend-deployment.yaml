@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: smartcity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: ibrahimtalaat/dxc-backend:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql:3306/iot_dxc_project?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: smartcity-secrets
+                  key: MYSQL_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: smartcity-secrets
+                  key: MYSQL_PASSWORD
+          envFrom:
+            - secretRef:
+                name: smartcity-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: smartcity
+spec:
+  selector:
+    app: backend
+  type: NodePort
+  ports:
+    - port: 8081
+      targetPort: 8081
+      nodePort: 31881
