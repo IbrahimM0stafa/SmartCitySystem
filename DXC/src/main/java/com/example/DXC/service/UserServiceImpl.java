@@ -1,6 +1,7 @@
 package com.example.DXC.service;
 
 import com.example.DXC.dto.SignupRequest;
+import com.example.DXC.dto.UpdateProfileRequest;
 import com.example.DXC.dto.UserProfileResponse;
 import com.example.DXC.model.User;
 import com.example.DXC.model.UserDetailsImpl;
@@ -78,6 +79,46 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return response;
     }
+
+    @Override
+    public UserProfileResponse updateProfile(Long userId, UpdateProfileRequest updateRequest) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Update only the fields that are allowed to be updated
+        if (updateRequest.getFirstName() != null) {
+            user.setFirstName(updateRequest.getFirstName());
+        }
+        if (updateRequest.getLastName() != null) {
+            user.setLastName(updateRequest.getLastName());
+        }
+        if (updateRequest.getPhoneNumber() != null) {
+            user.setPhoneNumber(updateRequest.getPhoneNumber());
+        }
+        if (updateRequest.getAge() != null) {
+            user.setAge(updateRequest.getAge());
+        }
+        if (updateRequest.getGender() != null) {
+            user.setGender(updateRequest.getGender());
+        }
+        if (updateRequest.getProfilePicture() != null) {
+            user.setProfilePicture(updateRequest.getProfilePicture());
+        }
+
+        User updatedUser = userRepository.save(user);
+
+        // Convert to response DTO
+        UserProfileResponse response = new UserProfileResponse();
+        response.setFirstname(updatedUser.getFirstName());
+        response.setLastname(updatedUser.getLastName());
+        response.setEmail(updatedUser.getEmail());
+        response.setAge(updatedUser.getAge());
+        response.setGender(updatedUser.getGender());
+        response.setPhoneNumber(updatedUser.getPhoneNumber());
+
+        return response;
+    }
+
 
     //    @Override
 //    public User loginUser(SignInRequest request) {

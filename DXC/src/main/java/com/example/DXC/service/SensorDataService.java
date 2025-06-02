@@ -44,27 +44,4 @@ public interface SensorDataService {
             Pageable pageable
     );
 
-    /* ---------------------------------------------------------------
-     *  (kept) LIST-style filtering helpers used elsewhere
-     * --------------------------------------------------------------- */
-    List<TrafficSensorData> filterTrafficData(
-            String location,
-            TrafficSensorData.CongestionLevel congestionLevel,
-            LocalDateTime start,
-            LocalDateTime end
-    );
-
-    List<AirPollutionSensorData> filterAirPollutionData(
-            String location,
-            AirPollutionSensorData.PollutionLevel pollutionLevel,
-            LocalDateTime start,
-            LocalDateTime end
-    );
-
-    List<StreetLightSensorData> filterStreetLightData(
-            String location,
-            StreetLightSensorData.LightStatus status,
-            LocalDateTime start,
-            LocalDateTime end
-    );
 }
