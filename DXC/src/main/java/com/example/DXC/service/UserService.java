@@ -9,5 +9,4 @@ public interface UserService {
     User registerUser(SignupRequest request);
 //    User loginUser(SignInRequest request);
     UserProfileResponse getProfile(Long userId);
-
 }
