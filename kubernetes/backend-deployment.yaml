@@ -19,6 +19,8 @@ spec:
           ports:
             - containerPort: 8081
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "kubernetes"
             - name: SPRING_DATASOURCE_URL
               value: jdbc:mysql://mysql:3306/iot_dxc_project?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
             - name: MYSQL_USER
