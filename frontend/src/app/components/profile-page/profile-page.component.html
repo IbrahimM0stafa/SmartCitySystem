@@ -1,79 +1,172 @@
-<div class="profile-container" [ngClass]="{ 'dark-mode': themeService.currentTheme === 'dark' }">
-    <div class="top-bar">
-      <div class="tabs">
-        <span class="tab">Home</span>
-        <span class="tab">Devices</span>
-        <span class="tab">Sensors</span>
-        <span class="tab">Notifications</span>
-      </div>
-  
-      <button class="dark-mode-toggle" (click)="toggleDarkMode()">
+<!-- Enhanced Profile Page HTML with Better Integration -->
+<app-navbar></app-navbar>
+
+<div class="container">
+  <header>
+    <div class="user-controls">
+      <button (click)="toggleTheme()" class="theme-toggle" title="Toggle Theme">
         {{ themeService.currentTheme === 'dark' ? '☀️' : '🌙' }}
       </button>
     </div>
-  
-    <div class="profile-content" *ngIf="userData; else loading">
-      <div class="left-box">
-        <div class="title">
-          <h3>Smart IoT Platform</h3>
-          <h1>
-            <span class="dxc">DXC</span>
-            <span class="tech">Technology</span>
-          </h1>
-        </div>
-  
-        <div class="user-box">
-          <img src="assets/profile-pic.jpg" alt="Profile" />
-          <h2>{{ userData.firstName }} {{ userData.lastName }}</h2>
-  
-          <div class="info-box">
-            <div class="info-row">
-              <div class="info-item">
-                <label>Email</label>
-                <p>{{ userData.email }}</p>
-              </div>
-              <div class="info-item">
-                <label>Phone</label>
-                <p>{{ userData.phone }}</p>
-              </div>
+  </header>
+
+  <div class="profile-section">
+    <h1>User Profile</h1>
+    <p>Manage your account information and platform preferences</p>
+  </div>
+
+  <!-- Success Message -->
+  <div *ngIf="successMessage" class="success-container">
+    <div class="success-icon">✅</div>
+    <p>{{ successMessage }}</p>
+  </div>
+
+  <!-- Global Error Message -->
+  <div *ngIf="error && !loading" class="inline-error">
+    <i class="fas fa-exclamation-triangle"></i>
+    {{ error }}
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>{{ isEditMode ? 'Saving profile information...' : 'Loading profile information...' }}</p>
+  </div>
+
+  <!-- Error State (for initial load failures) -->
+  <div *ngIf="error && !loading && !userData" class="error-container">
+    <div class="error-icon">⚠️</div>
+    <h3>Error Loading Profile</h3>
+    <p>{{ error }}</p>
+    <button class="retry-btn" (click)="fetchUserProfile()">
+      <i class="fas fa-refresh"></i>
+      Try Again
+    </button>
+  </div>
+
+  <!-- Profile Content -->
+  <div *ngIf="userData && !loading" class="profile-content">
+    <div class="profile-main">
+      <!-- User Information Card -->
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-user-info">
+            <div class="profile-avatar">
+              <img src="assets/profile-pic.jpg" alt="Profile Avatar" class="avatar-image">
+              <div class="avatar-status" title="Online"></div>
             </div>
-            <div class="info-row">
-              <div class="info-item">
-                <label>First Name</label>
-                <p>{{ userData.firstName }}</p>
-              </div>
-              <div class="info-item">
-                <label>Age</label>
-                <p>{{ userData.age }}</p>
-              </div>
-            </div>
-            <div class="info-row">
-              <div class="info-item">
-                <label>Last Name</label>
-                <p>{{ userData.lastName }}</p>
-              </div>
-              <div class="info-item">
-                <label>Gender</label>
-                <p>{{ userData.gender }}</p>
-              </div>
-            </div>
-            <div class="info-row">
-              <div class="info-item">
-                <label>Password</label>
-                <p>{{ userData.password }}</p>
-              </div>
-              <div class="info-item edit-button-container">
-                <button class="edit-btn">Edit</button>
+            <div class="profile-info">
+              <h2>{{ userData.firstName }} {{ userData.lastName }}</h2>
+              <p class="profile-email">{{ userData.email }}</p>
+              <div class="profile-badges">
               </div>
             </div>
           </div>
-  
-          <button class="change-password-btn" [routerLink]="['/change-password']">Change Password</button>
+          <div class="profile-actions">
+            <button 
+              *ngIf="!isEditMode" 
+              class="action-btn primary" 
+              (click)="onEditProfile()"
+              title="Edit Profile">
+              <i class="fas fa-edit"></i>
+              Edit Profile
+            </button>
+            <button 
+              *ngIf="isEditMode" 
+              class="action-btn save" 
+              (click)="onSaveProfile()"
+              [disabled]="loading"
+              title="Save Changes">
+              <i class="fas" [ngClass]="loading ? 'fa-spinner fa-spin' : 'fa-save'"></i>
+              {{ loading ? 'Saving...' : 'Save Changes' }}
+            </button>
+            <button 
+              *ngIf="isEditMode" 
+              class="action-btn cancel" 
+              (click)="onCancelEdit()"
+              [disabled]="loading"
+              title="Cancel Edit">
+              <i class="fas fa-times"></i>
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        <div class="profile-body">
+          <h3>Personal Information</h3>
+          
+          <div class="info-grid">
+            <div class="info-item" *ngFor="let field of profileFields">
+              <label>{{ field.label }}</label>
+              
+              <!-- Display Mode -->
+              <div 
+                *ngIf="!isEditMode || field.key === 'email'" 
+                class="info-value" 
+                [ngClass]="{'masked': field.key === 'password'}">
+                {{ field.value || 'Not specified' }}
+              </div>
+              
+              <!-- Edit Mode for Text Fields -->
+              <input 
+                *ngIf="isEditMode && field.key !== 'email' && field.key !== 'password' && field.key !== 'gender'"
+                class="info-input"
+                [type]="getInputType(field.key)"
+                [(ngModel)]="editableData[field.key]"
+                [placeholder]="field.label"
+                [min]="field.key === 'age' ? 1 : null"
+                [max]="field.key === 'age' ? 150 : null"
+                required>
+              
+              <!-- Edit Mode for Gender (Dropdown) -->
+              <select 
+                *ngIf="isEditMode && field.key === 'gender'"
+                class="info-input"
+                [(ngModel)]="editableData.gender"
+                required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="security-section">
+            <h4>Security</h4>
+            <div class="security-item">
+              <div class="security-info">
+                <span class="security-label">Password</span>
+                <span class="security-value">••••••••</span>
+              </div>
+              <button 
+                class="action-btn secondary" 
+                (click)="onChangePassword()"
+                title="Change Password">
+                <i class="fas fa-key"></i>
+                Change Password
+              </button>
+            </div>
+          </div>
+
+          <!-- Edit Mode Actions (Alternative placement for mobile) -->
+          <div *ngIf="isEditMode" class="edit-actions">
+            <button 
+              class="action-btn save" 
+              (click)="onSaveProfile()"
+              [disabled]="loading">
+              <i class="fas" [ngClass]="loading ? 'fa-spinner fa-spin' : 'fa-save'"></i>
+              {{ loading ? 'Saving...' : 'Save Changes' }}
+            </button>
+            <button 
+              class="action-btn cancel" 
+              (click)="onCancelEdit()"
+              [disabled]="loading">
+              <i class="fas fa-times"></i>
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  
-    <ng-template #loading>
-      <p>Loading...</p>
-    </ng-template>
   </div>
+</div>
