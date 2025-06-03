@@ -2,28 +2,30 @@ pipeline {
   agent any
 
   options {
-    skipDefaultCheckout(true) 
+    skipDefaultCheckout(true)
+    timeout(time: 1, unit: 'HOURS')
   }
 
   environment {
-    DOCKER_REGISTRY = "ibrahimtalaat"
-    BACKEND_IMAGE = "${DOCKER_REGISTRY}/dxc-backend"
-    FRONTEND_IMAGE = "${DOCKER_REGISTRY}/dxc-frontend"
-    COMPOSE_FILE = "/docker-compose.yml"
+    DOCKER_REGISTRY = 'ibrahimtalaat'
+    BACKEND_IMAGE   = "${DOCKER_REGISTRY}/dxc-backend"
+    FRONTEND_IMAGE  = "${DOCKER_REGISTRY}/dxc-frontend"
+    COMPOSE_FILE    = './docker-compose.yml'
   }
 
   stages {
-    
+
     stage('Checkout Code') {
       steps {
+        deleteDir()
         checkout scm
+      }
     }
-  }
 
     stage('Build Backend Image') {
       steps {
         script {
-          docker.build("${BACKEND_IMAGE}:latest", "-f DXC/Dockerfile DXC")
+          docker.build("${BACKEND_IMAGE}:latest", '-f DXC/Dockerfile DXC')
         }
       }
     }
@@ -31,7 +33,7 @@ pipeline {
     stage('Build Frontend Image') {
       steps {
         script {
-          docker.build("${FRONTEND_IMAGE}:latest", "-f frontend/Dockerfile frontend")
+          docker.build("${FRONTEND_IMAGE}:latest", '-f frontend/Dockerfile frontend')
         }
       }
     }
@@ -50,15 +52,15 @@ pipeline {
     stage('Deploy with Docker Compose') {
       steps {
         withCredentials([
-          string(credentialsId: 'mysql-root-password', variable: 'MYSQL_ROOT_PASSWORD'),
-          string(credentialsId: 'mysql-user', variable: 'MYSQL_USER'),
-          string(credentialsId: 'mysql-password', variable: 'MYSQL_PASSWORD'),
-          string(credentialsId: 'mysql-db', variable: 'MYSQL_DATABASE'),
-          string(credentialsId: 'jwt-secret', variable: 'JWT_SECRET'),
-          string(credentialsId: 'mail-username', variable: 'MAIL_USERNAME'),
-          string(credentialsId: 'mail-password', variable: 'MAIL_PASSWORD'),
-          string(credentialsId: 'google-client-id', variable: 'GOOGLE_CLIENT_ID'),
-          string(credentialsId: 'google-client-secret', variable: 'GOOGLE_CLIENT_SECRET')
+          string(credentialsId: 'mysql-root-password',   variable: 'MYSQL_ROOT_PASSWORD'),
+          string(credentialsId: 'mysql-user',            variable: 'MYSQL_USER'),
+          string(credentialsId: 'mysql-password',        variable: 'MYSQL_PASSWORD'),
+          string(credentialsId: 'mysql-db',              variable: 'MYSQL_DATABASE'),
+          string(credentialsId: 'jwt-secret',            variable: 'JWT_SECRET'),
+          string(credentialsId: 'mail-username',         variable: 'MAIL_USERNAME'),
+          string(credentialsId: 'mail-password',         variable: 'MAIL_PASSWORD'),
+          string(credentialsId: 'google-client-id',      variable: 'GOOGLE_CLIENT_ID'),
+          string(credentialsId: 'google-client-secret',  variable: 'GOOGLE_CLIENT_SECRET')
         ]) {
           withEnv([
             "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}",
@@ -73,13 +75,9 @@ pipeline {
           ]) {
             script {
               sh '''
-                docker-compose -f docker-compose.yml down --remove-orphans || true
-
-                docker rm -f mysql-container || true
-                docker rm -f backend-container || true
-                docker rm -f smartcity-frontend || true
-
-                docker-compose -f docker-compose.yml up -d --pull always
+                docker-compose -f ${COMPOSE_FILE} down --remove-orphans || true
+                docker rm -f mysql-container backend-container smartcity-frontend || true
+                docker-compose -f ${COMPOSE_FILE} up -d --pull always
               '''
             }
           }
@@ -101,10 +99,10 @@ pipeline {
 
   post {
     success {
-      echo 'Deployment completed successfully!'
+      echo '✅ Deployment completed successfully!'
     }
     failure {
-      echo 'Deployment failed!'
+      echo '❌ Deployment failed!'
     }
   }
 }
