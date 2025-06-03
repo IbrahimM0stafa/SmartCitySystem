@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   options {
-    skipDefaultCheckout(true) // ✅ Prevents redundant git checkout that causes errors
+    skipDefaultCheckout(true) 
   }
 
   environment {
@@ -13,6 +13,12 @@ pipeline {
   }
 
   stages {
+    
+    stage('Checkout Code') {
+      steps {
+        checkout scm
+    }
+  }
 
     stage('Build Backend Image') {
       steps {
@@ -95,10 +101,10 @@ pipeline {
 
   post {
     success {
-      echo '✅ Deployment completed successfully!'
+      echo 'Deployment completed successfully!'
     }
     failure {
-      echo '❌ Deployment failed!'
+      echo 'Deployment failed!'
     }
   }
 }
