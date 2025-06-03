@@ -8,6 +8,7 @@ import com.example.DXC.repository.AlertRepository;
 import com.example.DXC.repository.SettingsRepository;
 import com.example.DXC.repository.UserRepository;
 import com.example.DXC.service.SettingsService;
+import com.example.DXC.service.observer.AlertObserver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,7 @@ public class SettingsServiceImpl implements SettingsService {
     private final AlertRepository alertRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private EmailService emailService;
+    private final AlertObserver alertObserver;
 
     @Override
     public Settings saveSettings(SettingsRequest request) {
@@ -88,13 +88,11 @@ public class SettingsServiceImpl implements SettingsService {
                 // Send to all users
                 List<User> users = userRepository.findAll();
                 for (User user : users) {
-                    emailService.sendAlertEmail(savedAlert, user.getEmail());
+                    alertObserver.notify(savedAlert, user);
                 }
-
                 return savedAlert;
             }
         }
-
         return null;
     }
 
