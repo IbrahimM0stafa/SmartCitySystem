@@ -1,3 +1,5 @@
+#!/bin/sh
+
 if [ -z "$MINIKUBE_IP" ]; then
   echo "MINIKUBE_IP is not set. Using fallback: http://localhost:8081"
   MINIKUBE_IP="localhost:8081"
