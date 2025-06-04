@@ -18,17 +18,17 @@ spec:
           image: ibrahimtalaat/dxc-frontend:latest
           ports:
             - containerPort: 80
-          env:
+          env:  
             - name: MINIKUBE_IP
               valueFrom:
                 configMapKeyRef:
-                  name: app-config
-                  key: MINIKUBE_IP
+                  name: app-config  
+                  key: MINIKUBE_IP  
             - name: BACKEND_URL
               valueFrom:
                 configMapKeyRef:
-                  name: app-config
-                  key: BACKEND_URL
+                  name: app-config  
+                  key: BACKEND_URL  
 ---
 apiVersion: v1
 kind: Service
