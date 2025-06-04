@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: smartcity
+data:
+  MINIKUBE_IP: "PLACEHOLDER_IP"
+  FRONTEND_URL: "http://PLACEHOLDER_IP:30080"
+  BACKEND_URL: "http://PLACEHOLDER_IP:31881"

@@ -33,6 +33,21 @@ spec:
                 secretKeyRef:
                   name: smartcity-secrets
                   key: MYSQL_PASSWORD
+            - name: MINIKUBE_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: MINIKUBE_IP
+            - name: FRONTEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: FRONTEND_URL
+            - name: BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: BACKEND_URL
           envFrom:
             - secretRef:
                 name: smartcity-secrets
