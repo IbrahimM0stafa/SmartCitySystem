@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: '' // Will be replaced dynamically at runtime
+  apiUrl: 'http://localhost:8081'  // For local prod builds
 };

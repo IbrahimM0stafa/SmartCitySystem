@@ -11,7 +11,10 @@ import { environment } from './environments/environment';
 fetch('/assets/config/app.config.json')
   .then(response => response.json())
   .then(config => {
-    environment.apiUrl = config.apiUrl;
+    // Replace placeholder with actual backend URL from environment
+    const backendUrl = config.apiUrl.replace('${BACKEND_URL}', 
+      window.location.origin.replace(':30080', ':31881'));
+    environment.apiUrl = backendUrl;
 
     bootstrapApplication(AppComponent, {
       providers: [
