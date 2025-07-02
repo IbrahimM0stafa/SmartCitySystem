@@ -11,8 +11,8 @@ Write-Output "Updating ConfigMap with IP: $MINIKUBE_IP"
 $patch = @{
     data = @{
         MINIKUBE_IP = $MINIKUBE_IP
-        FRONTEND_URL = "http://$MINIKUBE_IP:30080"
-        BACKEND_URL = "http://$MINIKUBE_IP:31881"
+        FRONTEND_URL = "http://$MINIKUBE_IP+:30080"
+        BACKEND_URL = "http://$MINIKUBE_IP+:31881"
     }
 } | ConvertTo-Json -Depth 3
 
