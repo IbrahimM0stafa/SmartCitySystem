@@ -11,11 +11,13 @@ import { environment } from './environments/environment';
 fetch('/assets/config/app.config.json')
   .then(response => response.json())
   .then(config => {
-    let backendUrl = config.apiUrl.replace('${BACKEND_URL}', window.location.origin.replace(':30080', ':31881'));
-    // If backendUrl is empty or still contains the placeholder, use default
+    let backendUrl = config.apiUrl;
+
+    // Fallback if not defined properly
     if (!backendUrl || backendUrl.includes('${BACKEND_URL}')) {
       backendUrl = 'http://localhost:8081';
     }
+
     environment.apiUrl = backendUrl;
 
     bootstrapApplication(AppComponent, {

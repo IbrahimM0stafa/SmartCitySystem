@@ -1,13 +1,11 @@
 #!/bin/sh
 
-if [ -z "$MINIKUBE_IP" ]; then
-  echo "MINIKUBE_IP is not set. Using fallback: http://localhost:8081"
-  MINIKUBE_IP="localhost:8081"
-else
-  MINIKUBE_IP="$MINIKUBE_IP:31881"
+if [ -z "$BACKEND_URL" ]; then
+  echo "BACKEND_URL is not set. Using fallback: http://localhost:8081"
+  BACKEND_URL="http://localhost:8081"
 fi
 
-export BACKEND_URL="http://$MINIKUBE_IP"
+export BACKEND_URL="$BACKEND_URL"
 
 echo "Using BACKEND_URL: $BACKEND_URL"
 
