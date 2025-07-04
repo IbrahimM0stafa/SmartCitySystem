@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  FRONTEND_URL: "https://frontend-route-ibrahimmostafa768-dev.apps.rm3.7wse.p1.openshiftapps.com"
+  BACKEND_URL: "https://frontend-route-ibrahimmostafa768-dev.apps.rm3.7wse.p1.openshiftapps.com"
