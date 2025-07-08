@@ -82,8 +82,8 @@ export const routes: Routes = [
   {
     path: 'pollution-dashboard',
     loadComponent: () =>
-      import('./components/traffic-dashboard/traffic-dashboard.component').then(
-        (m) => m.TrafficDashboardComponent
+      import('./components/air-pollution-dashboard/air-pollution-dashboard.component').then(
+        (m) => m.AirPollutionDashboardComponent
       ),
     canActivate: [AuthGuard]
   }

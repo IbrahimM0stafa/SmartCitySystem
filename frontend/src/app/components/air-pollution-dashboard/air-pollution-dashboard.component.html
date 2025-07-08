@@ -1,0 +1,199 @@
+<app-navbar></app-navbar>
+
+<div class="dashboard-container" [ngClass]="themeService.currentTheme === 'dark' ? 'dark-mode' : 'light-mode'">
+  <header class="dashboard-header">
+    <div class="header-content">
+      <h1>Air Pollution Monitoring</h1>
+      <button class="theme-toggle" (click)="toggleTheme()">
+        {{ themeService.currentTheme === 'dark' ? '☀️' : '🌙' }}
+      </button>
+    </div>
+  </header>
+
+  <div class="filters-section">
+    <div class="filter-group">
+      <input 
+        type="text" 
+        class="filter-input"
+        [(ngModel)]="locationFilter" 
+        (ngModelChange)="onFilterChange()"
+        placeholder="Filter by location"
+      >
+
+      <input 
+        type="datetime-local" 
+        class="filter-input"
+        [(ngModel)]="startDate"
+        (ngModelChange)="onFilterChange()"
+        placeholder="Start date"
+      >
+
+      <input 
+        type="datetime-local" 
+        class="filter-input"
+        [(ngModel)]="endDate"
+        (ngModelChange)="onFilterChange()"
+        placeholder="End date"
+      >
+
+      <select 
+        class="filter-input"
+        [(ngModel)]="pollutionLevelFilter"
+        (ngModelChange)="onFilterChange()"
+      >
+        <option value="">All Pollution Levels</option>
+        <option value="Good">Good</option>
+        <option value="Moderate">Moderate</option>
+        <option value="Unhealthy">Unhealthy</option>
+        <option value="Very_Unhealthy">Very Unhealthy</option>
+        <option value="Hazardous">Hazardous</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="dashboard-content">
+    <div class="chart-controls">
+      <button class="chart-toggle" (click)="toggleAllCharts()" [class.active]="showAllCharts">
+        Show All Charts
+      </button>
+      <button class="chart-toggle" (click)="toggleChart('pm25')" [class.active]="selectedChart === 'pm25' || showAllCharts">
+        PM2.5 Levels
+      </button>
+      <button class="chart-toggle" (click)="toggleChart('ozone')" [class.active]="selectedChart === 'ozone' || showAllCharts">
+        Ozone Levels
+      </button>
+      <button class="chart-toggle" (click)="toggleChart('pollutionDistribution')" [class.active]="selectedChart === 'pollutionDistribution' || showAllCharts">
+        Pollution Level Distribution
+      </button>
+    </div>
+
+    <div class="metrics-grid" [class.show-all]="showAllCharts">
+      <div class="metric-card" *ngIf="showAllCharts || selectedChart === 'pm25'">
+        <h3>PM2.5 Levels Over Time</h3>
+        <div class="chart-container">
+          <highcharts-chart 
+            [Highcharts]="Highcharts"
+            [options]="pm25ChartOptions"
+            style="width: 100%; height: 300px; display: block;">
+          </highcharts-chart>
+        </div>
+      </div>
+
+      <div class="metric-card" *ngIf="showAllCharts || selectedChart === 'ozone'">
+        <h3>Ozone Levels Over Time</h3>
+        <div class="chart-container">
+          <highcharts-chart 
+            [Highcharts]="Highcharts"
+            [options]="ozoneChartOptions"
+            style="width: 100%; height: 300px; display: block;">
+          </highcharts-chart>
+        </div>
+      </div>
+
+      <div class="metric-card" *ngIf="showAllCharts || selectedChart === 'pollutionDistribution'">
+        <h3>Pollution Level Distribution</h3>
+        <div class="chart-container">
+          <highcharts-chart 
+            [Highcharts]="Highcharts"
+            [options]="pollutionDistributionChartOptions"
+            style="width: 100%; height: 300px; display: block;">
+          </highcharts-chart>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th (click)="sort('location')">
+              Location
+              <span class="sort-icon" *ngIf="sortField === 'location'">
+                {{ sortDirection === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+            <th (click)="sort('timestamp')">
+              Time
+              <span class="sort-icon" *ngIf="sortField === 'timestamp'">
+                {{ sortDirection === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+            <th (click)="sort('pm2_5')">
+              PM2.5
+              <span class="sort-icon" *ngIf="sortField === 'pm2_5'">
+                {{ sortDirection === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+            <th (click)="sort('pm10')">
+              PM10
+              <span class="sort-icon" *ngIf="sortField === 'pm10'">
+                {{ sortDirection === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+            <th (click)="sort('ozone')">
+              Ozone
+              <span class="sort-icon" *ngIf="sortField === 'ozone'">
+                {{ sortDirection === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+            <th (click)="sort('pollutionLevel')">
+              Pollution Level
+              <span class="sort-icon" *ngIf="sortField === 'pollutionLevel'">
+                {{ sortDirection === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+            <th (click)="sort('co')">
+              CO
+              <span class="sort-icon" *ngIf="sortField === 'co'">
+                {{ sortDirection === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+            <th (click)="sort('no2')">
+              NO₂
+              <span class="sort-icon" *ngIf="sortField === 'no2'">
+                {{ sortDirection === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+            <th (click)="sort('so2')">
+              SO₂
+              <span class="sort-icon" *ngIf="sortField === 'so2'">
+                {{ sortDirection === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of paginatedData" [ngClass]="data.pollutionLevel.toLowerCase()">
+            <td>{{ data.location }}</td>
+            <td>{{ data.timestamp | date:'medium' }}</td>
+            <td>{{ data.pm2_5 }}</td>
+            <td>{{ data.pm10 }}</td>
+            <td>{{ data.ozone }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="data.pollutionLevel.toLowerCase()">
+                {{ data.pollutionLevel }}
+              </span>
+            </td>
+            <td>{{ data.co }}</td>
+            <td>{{ data.no2 }}</td>
+            <td>{{ data.so2 }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <button [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+        Previous
+      </button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+        Next
+      </button>
+    </div>
+    
+    <div class="auto-refresh-indicator">
+      <small>Data automatically refreshes every minute</small>
+    </div>
+  </div>
+</div>
