@@ -17,7 +17,7 @@ spec:
         - name: frontend
           image: ibrahimtalaat/dxc-frontend:latest
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           env:  
             - name: MINIKUBE_IP
               valueFrom:
@@ -39,7 +39,7 @@ spec:
   selector:
     app: frontend
   ports:
-    - port: 80
-      targetPort: 80
+    - port: 8080
+      targetPort: 8080
       nodePort: 30080
   type: NodePort
