@@ -49,7 +49,7 @@ services:
     image: ibrahimtalaat/dxc-frontend:latest
     container_name: smartcity-frontend
     ports:
-      - "4200:80"
+      - "4200:8080"
     depends_on:
       - backend
     environment:
