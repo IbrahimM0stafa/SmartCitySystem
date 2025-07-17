@@ -106,55 +106,100 @@
       <table class="data-table">
         <thead>
           <tr>
-            <th (click)="sort('location')">
+            <th 
+              tabindex="0"
+              (click)="sort('location')" 
+              (keydown.enter)="sort('location')" 
+              (keydown.space)="sort('location')"
+            >
               Location
               <span class="sort-icon" *ngIf="sortField === 'location'">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
               </span>
             </th>
-            <th (click)="sort('timestamp')">
+            <th 
+              tabindex="0"
+              (click)="sort('timestamp')" 
+              (keydown.enter)="sort('timestamp')" 
+              (keydown.space)="sort('timestamp')"
+            >
               Time
               <span class="sort-icon" *ngIf="sortField === 'timestamp'">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
               </span>
             </th>
-            <th (click)="sort('pm2_5')">
+            <th 
+              tabindex="0"
+              (click)="sort('pm2_5')" 
+              (keydown.enter)="sort('pm2_5')" 
+              (keydown.space)="sort('pm2_5')"
+            >
               PM2.5
               <span class="sort-icon" *ngIf="sortField === 'pm2_5'">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
               </span>
             </th>
-            <th (click)="sort('pm10')">
+            <th 
+              tabindex="0"
+              (click)="sort('pm10')" 
+              (keydown.enter)="sort('pm10')" 
+              (keydown.space)="sort('pm10')"
+            >
               PM10
               <span class="sort-icon" *ngIf="sortField === 'pm10'">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
               </span>
             </th>
-            <th (click)="sort('ozone')">
+            <th 
+              tabindex="0"
+              (click)="sort('ozone')" 
+              (keydown.enter)="sort('ozone')" 
+              (keydown.space)="sort('ozone')"
+            >
               Ozone
               <span class="sort-icon" *ngIf="sortField === 'ozone'">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
               </span>
             </th>
-            <th (click)="sort('pollutionLevel')">
+            <th 
+              tabindex="0"
+              (click)="sort('pollutionLevel')" 
+              (keydown.enter)="sort('pollutionLevel')" 
+              (keydown.space)="sort('pollutionLevel')"
+            >
               Pollution Level
               <span class="sort-icon" *ngIf="sortField === 'pollutionLevel'">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
               </span>
             </th>
-            <th (click)="sort('co')">
+            <th 
+              tabindex="0"
+              (click)="sort('co')" 
+              (keydown.enter)="sort('co')" 
+              (keydown.space)="sort('co')"
+            >
               CO
               <span class="sort-icon" *ngIf="sortField === 'co'">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
               </span>
             </th>
-            <th (click)="sort('no2')">
+            <th 
+              tabindex="0"
+              (click)="sort('no2')" 
+              (keydown.enter)="sort('no2')" 
+              (keydown.space)="sort('no2')"
+            >
               NO₂
               <span class="sort-icon" *ngIf="sortField === 'no2'">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
               </span>
             </th>
-            <th (click)="sort('so2')">
+            <th 
+              tabindex="0"
+              (click)="sort('so2')" 
+              (keydown.enter)="sort('so2')" 
+              (keydown.space)="sort('so2')"
+            >
               SO₂
               <span class="sort-icon" *ngIf="sortField === 'so2'">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
@@ -178,9 +223,13 @@
             <td>{{ data.no2 }}</td>
             <td>{{ data.so2 }}</td>
           </tr>
+          <tr *ngIf="paginatedData.length === 0">
+            <td colspan="9" class="no-data">No data available for the selected filters</td>
+          </tr>
         </tbody>
       </table>
     </div>
+
 
     <div class="pagination">
       <button [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">

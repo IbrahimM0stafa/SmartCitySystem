@@ -18,8 +18,8 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     public themeService: ThemeService,
-    private router: Router,
-    private authService: AuthService
+    private readonly router: Router,
+    private readonly authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -29,7 +29,7 @@ export class NavbarComponent implements OnInit {
   private loadUserProfile() {
     this.authService.getUserProfile().subscribe({
       next: (response: any) => {
-        this.userName = response.firstname || 'User';
+        this.userName = response.firstname ?? 'User';
       },
       error: () => {
         this.userName = 'User';
@@ -43,6 +43,29 @@ export class NavbarComponent implements OnInit {
 
   closeDropdown() {
     this.dropdownOpen = false;
+  }
+
+  onKeyDown(event: KeyboardEvent) {
+    // Handle Enter and Space keys for dropdown toggle
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.toggleDropdown();
+    }
+    // Handle Escape key to close dropdown
+    else if (event.key === 'Escape' && this.dropdownOpen) {
+      this.closeDropdown();
+    }
+  }
+
+  onMenuItemKeyDown(event: KeyboardEvent, action: string) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      if (action === 'changePassword') {
+        this.onChangePassword();
+      } else if (action === 'logout') {
+        this.onLogout();
+      }
+    }
   }
 
   onChangePassword() {

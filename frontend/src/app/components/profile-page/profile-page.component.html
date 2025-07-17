@@ -97,8 +97,8 @@
           
           <div class="info-grid">
             <div class="info-item" *ngFor="let field of profileFields">
-              <label>{{ field.label }}</label>
-              
+              <label [for]="'field-' + field.key">{{ field.label }}</label>
+
               <!-- Display Mode -->
               <div 
                 *ngIf="!isEditMode || field.key === 'email'" 
@@ -106,22 +106,24 @@
                 [ngClass]="{'masked': field.key === 'password'}">
                 {{ field.value || 'Not specified' }}
               </div>
-              
+
               <!-- Edit Mode for Text Fields -->
               <input 
                 *ngIf="isEditMode && field.key !== 'email' && field.key !== 'password' && field.key !== 'gender'"
                 class="info-input"
+                [id]="'field-' + field.key"
                 [type]="getInputType(field.key)"
                 [(ngModel)]="editableData[field.key]"
                 [placeholder]="field.label"
                 [min]="field.key === 'age' ? 1 : null"
                 [max]="field.key === 'age' ? 150 : null"
                 required>
-              
+
               <!-- Edit Mode for Gender (Dropdown) -->
               <select 
                 *ngIf="isEditMode && field.key === 'gender'"
                 class="info-input"
+                [id]="'field-' + field.key"
                 [(ngModel)]="editableData.gender"
                 required>
                 <option value="">Select Gender</option>
@@ -129,6 +131,7 @@
                 <option value="Female">Female</option>
               </select>
             </div>
+
           </div>
 
           <div class="security-section">

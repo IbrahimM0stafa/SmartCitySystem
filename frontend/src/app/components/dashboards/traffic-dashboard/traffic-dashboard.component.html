@@ -105,31 +105,56 @@
       <table class="data-table">
         <thead>
           <tr>
-            <th (click)="sort('location')">
+            <th 
+              tabindex="0"
+              (click)="sort('location')" 
+              (keydown.enter)="sort('location')" 
+              (keydown.space)="sort('location')"
+            >
               Location
               <span class="sort-icon" *ngIf="sortField === 'location'">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
               </span>
             </th>
-            <th (click)="sort('timestamp')">
+            <th 
+              tabindex="0"
+              (click)="sort('timestamp')" 
+              (keydown.enter)="sort('timestamp')" 
+              (keydown.space)="sort('timestamp')"
+            >
               Time
               <span class="sort-icon" *ngIf="sortField === 'timestamp'">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
               </span>
             </th>
-            <th (click)="sort('trafficDensity')">
+            <th 
+              tabindex="0"
+              (click)="sort('trafficDensity')" 
+              (keydown.enter)="sort('trafficDensity')" 
+              (keydown.space)="sort('trafficDensity')"
+            >
               Traffic Density
               <span class="sort-icon" *ngIf="sortField === 'trafficDensity'">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
               </span>
             </th>
-            <th (click)="sort('avgSpeed')">
+            <th 
+              tabindex="0"
+              (click)="sort('avgSpeed')" 
+              (keydown.enter)="sort('avgSpeed')" 
+              (keydown.space)="sort('avgSpeed')"
+            >
               Average Speed
               <span class="sort-icon" *ngIf="sortField === 'avgSpeed'">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
               </span>
             </th>
-            <th (click)="sort('congestionLevel')">
+            <th 
+              tabindex="0"
+              (click)="sort('congestionLevel')" 
+              (keydown.enter)="sort('congestionLevel')" 
+              (keydown.space)="sort('congestionLevel')"
+            >
               Congestion Level
               <span class="sort-icon" *ngIf="sortField === 'congestionLevel'">
                 {{ sortDirection === 'asc' ? '↑' : '↓' }}
@@ -149,6 +174,9 @@
               </span>
             </td>
           </tr>
+          <tr *ngIf="paginatedData.length === 0">
+            <td colspan="5" class="no-data">No data available for the selected filters</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -164,7 +192,7 @@
     </div>
     
     <div class="auto-refresh-indicator">
-      <small>Data automatically refreshes every 20 seconds</small>
+      <small>Data automatically refreshes every 60 seconds</small>
     </div>
   </div>
 </div>

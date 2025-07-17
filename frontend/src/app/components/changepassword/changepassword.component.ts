@@ -1,18 +1,18 @@
 import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ElementRef, Output, EventEmitter, AfterViewInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl, FormArray, FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { interval, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../services/theme.service';
+import { VALIDATION_MESSAGES } from './validation-messages.config';
 
 @Component({
   selector: 'app-change-password',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, RouterModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, FormsModule],
   templateUrl: './changepassword.component.html',
   styleUrls: ['./changepassword.component.css'],
   encapsulation: ViewEncapsulation.None
@@ -37,12 +37,12 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
   cooldown = 0;
   cooldownSubscription?: Subscription;
 
-  private apiUrl = environment.apiUrl;
+  private readonly apiUrl = environment.apiUrl;
 
   constructor(
-    private fb: FormBuilder,
-    private http: HttpClient,
-    private router: Router,
+    private readonly fb: FormBuilder,
+    private readonly http: HttpClient,
+    private readonly router: Router,
     public themeService: ThemeService
   ) {
     // Initialize password change form
@@ -114,7 +114,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
         const value = target.value;
         
         // Only allow single digit numbers
-        const digit = value.replace(/[^0-9]/g, '').slice(-1);
+        const digit = value.replace(/\D/g, '').slice(-1);
         target.value = digit;
         
         // Update form control value
@@ -154,9 +154,14 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
   checkPasswordStrength(password: string): void {
     let strength = 0;
     if (password.length >= 8) strength += 25;
-    if (password.match(/[A-Z]/)) strength += 25;
-    if (password.match(/[0-9]/)) strength += 25;
-    if (password.match(/[^A-Za-z0-9]/)) strength += 25;
+
+    const upperCaseReg = /[A-Z]/;
+    const digitReg = /\d/;
+    const specialCharReg = /[^A-Za-z0-9]/;
+
+    if (upperCaseReg.exec(password)) strength += 25;
+    if (digitReg.exec(password)) strength += 25;
+    if (specialCharReg.exec(password)) strength += 25;
     this.passwordStrength = strength;
   }
 
@@ -168,17 +173,17 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
     // Password regex: min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
     if (!passwordRegex.test(formData.newPassword)) {
-      this.passwordError = 'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.';
+      this.passwordError = VALIDATION_MESSAGES.PASSWORD_REQUIREMENTS;
       return;
     }
 
     if (formData.newPassword !== formData.confirmPassword) {
-      this.passwordError = 'Passwords do not match';
+      this.passwordError = VALIDATION_MESSAGES.PASSWORDS_MISMATCH;
       return;
     }
 
     if (this.passwordStrength < 50) {
-      this.passwordError = 'Please use a stronger password';
+      this.passwordError = VALIDATION_MESSAGES.WEAK_PASSWORD;
       return;
     }
 
@@ -190,7 +195,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
     }).subscribe({
       next: (res: any) => {
         console.log('Response:', res);
-        alert(res.message || 'OTP sent successfully!');
+        alert(res.message ?? 'OTP sent successfully!');
         this.pageAnimation = 'slide-out';
         setTimeout(() => {
           this.isOtpScreen = true;
@@ -209,7 +214,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
       },
       error: (err) => {
         console.error('Error:', err);
-        const errorMessage = err.error?.error || err.error || 'An error occurred.';
+        const errorMessage = err.error?.error ?? err.error ?? 'An error occurred.';
         alert(errorMessage);
         this.loading = false;
       }
@@ -232,7 +237,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
     }).subscribe({
       next: (res: any) => {
         console.log('Verification Response:', res);
-        alert(res.message || 'Password changed successfully!');
+        alert(res.message ?? 'Password changed successfully!');
         this.pageAnimation = 'success-animation';
         setTimeout(() => {
           window.location.href = '/login';
@@ -240,7 +245,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
       },
       error: (err) => {
         console.error('OTP Error:', err);
-        const errorMessage = err.error?.error || err.error || 'OTP verification failed.';
+        const errorMessage = err.error?.error ?? err.error ?? 'OTP verification failed.';
         alert(errorMessage);
         this.loading = false;
       }
@@ -249,7 +254,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
 
   handlePaste(event: ClipboardEvent): void {
     event.preventDefault();
-    const pastedData = event.clipboardData?.getData('text') || '';
+    const pastedData = event.clipboardData?.getData('text') ?? '';
     const digits = pastedData.replace(/\D/g, '').substring(0, 6);
     
     if (digits) {
@@ -259,7 +264,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
         this.otpDigits.at(i).setValue(value);
         
         if (this.otpDigitInputs.get(i)) {
-          this.otpDigitInputs.first!.nativeElement.focus();
+          this.otpDigitInputs.first.nativeElement.focus();
         }
       }
       
@@ -267,7 +272,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
       const focusIndex = Math.min(digits.length, 5);
       setTimeout(() => {
         if (this.otpDigitInputs.get(focusIndex)) {
-          this.otpDigitInputs.first!.nativeElement.focus();
+          this.otpDigitInputs.first.nativeElement.focus();
         }
       }, 0);
     }
@@ -301,7 +306,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
     }).subscribe({
       next: (res: any) => {
         console.log('Resend OTP Response:', res);
-        alert(res.message || 'New OTP sent successfully!');
+        alert(res.message ?? 'New OTP sent successfully!');
         this.startResendCooldown();
         this.loading = false;
         // Focus first input
@@ -313,7 +318,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy, AfterViewInit
       },
       error: (err) => {
         console.error('Resend OTP Error:', err);
-        const errorMessage = err.error?.error || err.error || 'Could not resend OTP.';
+        const errorMessage = err.error?.error ?? err.error ?? 'Could not resend OTP.';
         alert(errorMessage);
         this.loading = false;
       }
