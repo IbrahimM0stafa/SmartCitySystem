@@ -1,8 +1,8 @@
-package com.example.DXC.jwt;
+package com.example.dxc.jwt;
 
-import com.example.DXC.model.User;
-import com.example.DXC.repository.UserRepository;
-import com.example.DXC.service.CustomOAuth2User;
+import com.example.dxc.model.User;
+import com.example.dxc.repository.UserRepository;
+import com.example.dxc.service.CustomOAuth2User;
 import java.io.IOException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,7 +28,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
         String email = oAuth2User.getEmail();
 
-        User user = userRepository.findByEmail(email).orElseThrow();
 
         // Generate JWT
         String token = jwtUtils.generateJwtTokenWithEmail(email);

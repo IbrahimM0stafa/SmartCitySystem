@@ -1,4 +1,4 @@
-package com.example.DXC.model;
+package com.example.dxc.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,6 +27,7 @@ public class Settings {
         Above,
         Below
     }
+
 
     @Id
     @GeneratedValue

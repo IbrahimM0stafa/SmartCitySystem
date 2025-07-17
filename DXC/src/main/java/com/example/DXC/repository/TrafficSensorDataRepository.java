@@ -1,6 +1,6 @@
-package com.example.DXC.repository;
+package com.example.dxc.repository;
 
-import com.example.DXC.model.TrafficSensorData;
+import com.example.dxc.model.TrafficSensorData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

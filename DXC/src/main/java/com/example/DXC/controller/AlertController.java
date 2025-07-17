@@ -1,8 +1,8 @@
-package com.example.DXC.controller;
+package com.example.dxc.controller;
 
-import com.example.DXC.dto.AlertResponse;
-import com.example.DXC.model.Alert;
-import com.example.DXC.repository.AlertRepository;
+import com.example.dxc.dto.AlertResponse;
+import com.example.dxc.model.Alert;
+import com.example.dxc.repository.AlertRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

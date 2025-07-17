@@ -1,6 +1,6 @@
-package com.example.DXC.service;
+package com.example.dxc.service;
 
-import com.example.DXC.model.Alert;
+import com.example.dxc.model.Alert;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +9,15 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.List;
 
 @Service
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
+    private static final Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
 
     @Override
     public void sendOtpEmail(String to, String otp) {
@@ -95,7 +97,7 @@ public class EmailServiceImpl implements EmailService {
             mailSender.send(message);
         } catch (MessagingException e) {
             // Optionally log or rethrow
-            System.err.println("Failed to send welcome email: " + e.getMessage());
+            logger.error("Failed to send welcome email to {}: {}", to, e.getMessage(), e);
         }
     }
     @Async

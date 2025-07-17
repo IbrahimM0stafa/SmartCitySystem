@@ -1,8 +1,8 @@
-package com.example.DXC.controller;
+package com.example.dxc.controller;
 
-import com.example.DXC.dto.SettingsRequest;
-import com.example.DXC.model.Settings;
-import com.example.DXC.service.SettingsService;
+import com.example.dxc.dto.SettingsRequest;
+import com.example.dxc.model.Settings;
+import com.example.dxc.service.SettingsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

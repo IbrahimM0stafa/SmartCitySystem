@@ -1,8 +1,8 @@
-package com.example.DXC.service;
+package com.example.dxc.service;
 
-import com.example.DXC.dto.SettingsRequest;
-import com.example.DXC.model.Alert;
-import com.example.DXC.model.Settings;
+import com.example.dxc.dto.SettingsRequest;
+import com.example.dxc.model.Alert;
+import com.example.dxc.model.Settings;
 
 public interface SettingsService {
     Settings saveSettings(SettingsRequest request);

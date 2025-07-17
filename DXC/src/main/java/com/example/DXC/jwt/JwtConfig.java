@@ -1,4 +1,4 @@
-package com.example.DXC.jwt;
+package com.example.dxc.jwt;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

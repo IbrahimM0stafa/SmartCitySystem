@@ -1,18 +1,21 @@
-package com.example.DXC.service.strategy;
+package com.example.dxc.service.strategy;
 
-import com.example.DXC.model.AirPollutionSensorData;
-import com.example.DXC.repository.AirPollutionSensorDataRepository;
-import com.example.DXC.service.SensorDataValidator;
-import com.example.DXC.service.SettingsService;
+import com.example.dxc.model.AirPollutionSensorData;
+import com.example.dxc.repository.AirPollutionSensorDataRepository;
+import com.example.dxc.service.SensorDataValidator;
+import com.example.dxc.service.SettingsService;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @Service
 public class AirPollutionSensorStrategy extends AbstractSensorDataStrategy<AirPollutionSensorData> {
+    private static final Logger logger = LoggerFactory.getLogger(AirPollutionSensorStrategy.class);
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public AirPollutionSensorStrategy(
             AirPollutionSensorDataRepository repository,
@@ -48,14 +51,15 @@ public class AirPollutionSensorStrategy extends AbstractSensorDataStrategy<AirPo
 
     @Override
     protected void logSensorSpecificData(AirPollutionSensorData data) {
-        System.out.printf("PM2.5: %.2f μg/m³%n", data.getPm2_5());
-        System.out.printf("PM10: %.2f μg/m³%n", data.getPm10());
-        System.out.printf("CO: %.2f ppm%n", data.getCo());
-        System.out.printf("NO2: %.2f%n", data.getNo2());
-        System.out.printf("SO2: %.2f%n", data.getSo2());
-        System.out.printf("Ozone: %.2f ppb%n", data.getOzone());
-        System.out.printf("Pollution Level: %s%n", data.getPollutionLevel());
+        logger.info("PM2.5: {} μg/m³", String.format("%.2f", data.getPm2_5()));
+        logger.info("PM10: {} μg/m³", String.format("%.2f", data.getPm10()));
+        logger.info("CO: {} ppm", String.format("%.2f", data.getCo()));
+        logger.info("NO2: {}", String.format("%.2f", data.getNo2()));
+        logger.info("SO2: {}", String.format("%.2f", data.getSo2()));
+        logger.info("Ozone: {} ppb", String.format("%.2f", data.getOzone()));
+        logger.info("Pollution Level: {}", data.getPollutionLevel());
     }
+
 
     @Override
     protected String getStatusFieldName() {

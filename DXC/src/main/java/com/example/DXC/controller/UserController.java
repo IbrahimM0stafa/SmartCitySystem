@@ -1,9 +1,9 @@
-package com.example.DXC.controller;
+package com.example.dxc.controller;
 
-import com.example.DXC.dto.UpdateProfileRequest;
-import com.example.DXC.dto.UserProfileResponse;
-import com.example.DXC.model.UserDetailsImpl;
-import com.example.DXC.service.UserService;
+import com.example.dxc.dto.UpdateProfileRequest;
+import com.example.dxc.dto.UserProfileResponse;
+import com.example.dxc.model.UserDetailsImpl;
+import com.example.dxc.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,7 @@
 
-package com.example.DXC.service.observer;
-import com.example.DXC.model.Alert;
-import com.example.DXC.model.User;
+package com.example.dxc.service.observer;
+import com.example.dxc.model.Alert;
+import com.example.dxc.model.User;
 
 public interface AlertObserver {
     void notify(Alert alert, User user);

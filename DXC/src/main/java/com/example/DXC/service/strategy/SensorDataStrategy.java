@@ -1,7 +1,6 @@
 
-package com.example.DXC.service.strategy;
+package com.example.dxc.service.strategy;
 
-import com.example.DXC.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;

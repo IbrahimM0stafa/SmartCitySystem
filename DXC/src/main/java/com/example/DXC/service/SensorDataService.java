@@ -1,11 +1,10 @@
-package com.example.DXC.service;
+package com.example.dxc.service;
 
-import com.example.DXC.model.*;
+import com.example.dxc.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public interface SensorDataService {
 

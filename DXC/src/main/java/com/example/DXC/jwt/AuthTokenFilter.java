@@ -1,4 +1,4 @@
-package com.example.DXC.jwt;
+package com.example.dxc.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,4 +1,4 @@
-package com.example.DXC.model;
+package com.example.dxc.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

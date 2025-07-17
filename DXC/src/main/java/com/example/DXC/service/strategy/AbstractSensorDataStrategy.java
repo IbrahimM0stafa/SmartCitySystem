@@ -1,7 +1,7 @@
-package com.example.DXC.service.strategy;
+package com.example.dxc.service.strategy;
 
-import com.example.DXC.service.SensorDataValidator;
-import com.example.DXC.service.SettingsService;
+import com.example.dxc.service.SensorDataValidator;
+import com.example.dxc.service.SettingsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +11,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import jakarta.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @RequiredArgsConstructor
 public abstract class AbstractSensorDataStrategy<T> implements SensorDataStrategy<T> {
@@ -20,6 +23,8 @@ public abstract class AbstractSensorDataStrategy<T> implements SensorDataStrateg
     protected final SensorDataValidator validator;
     protected final SettingsService settingsService;
     protected final Random random = new Random();
+    private static final Logger logger = LoggerFactory.getLogger(AbstractSensorDataStrategy.class);
+
 
     // Template method for data generation
     @Override
@@ -69,16 +74,29 @@ public abstract class AbstractSensorDataStrategy<T> implements SensorDataStrateg
         return specExecutor.findAll(spec, pageable);
     }
 
-    // Template method for logging
-    @Override
-    public final void log(T data, String header) {
-        System.out.printf("%s:%n", header);
-        System.out.printf("ID: %s%n", extractId(data));
-        System.out.printf("Location: %s%n", extractLocation(data));
-        System.out.printf("Timestamp: %s%n", extractTimestamp(data));
+// Template method for logging
+@Override
+public final void log(T data, String header) {
+    logger.info("{}:", header);
+
+    if (data != null) {
+        Object id = extractId(data);
+        Object location = extractLocation(data);
+        Object timestamp = extractTimestamp(data);
+
+        if (id != null) logger.info("ID: {}", id);
+        if (location != null) logger.info("Location: {}", location);
+        if (timestamp != null) logger.info("Timestamp: {}", timestamp);
+
         logSensorSpecificData(data);
-        System.out.println("----------------------");
+    } else {
+        logger.warn("No data available to log.");
     }
+
+    logger.info("----------------------");
+}
+
+
 
     // Abstract methods that concrete strategies must implement
     protected abstract T createSensorSpecificData();

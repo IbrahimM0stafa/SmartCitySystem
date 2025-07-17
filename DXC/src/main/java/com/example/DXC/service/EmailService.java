@@ -1,9 +1,7 @@
-package com.example.DXC.service;
+package com.example.dxc.service;
 
-import com.example.DXC.model.Alert;
+import com.example.dxc.model.Alert;
 import org.springframework.scheduling.annotation.Async;
-
-import java.util.List;
 
 public interface EmailService {
     void sendOtpEmail(String to, String otp);

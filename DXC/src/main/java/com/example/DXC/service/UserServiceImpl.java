@@ -1,11 +1,11 @@
-package com.example.DXC.service;
+package com.example.dxc.service;
 
-import com.example.DXC.dto.SignupRequest;
-import com.example.DXC.dto.UpdateProfileRequest;
-import com.example.DXC.dto.UserProfileResponse;
-import com.example.DXC.model.User;
-import com.example.DXC.model.UserDetailsImpl;
-import com.example.DXC.repository.UserRepository;
+import com.example.dxc.dto.SignupRequest;
+import com.example.dxc.dto.UpdateProfileRequest;
+import com.example.dxc.dto.UserProfileResponse;
+import com.example.dxc.model.User;
+import com.example.dxc.model.UserDetailsImpl;
+import com.example.dxc.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -118,21 +118,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return response;
     }
-
-
-    //    @Override
-//    public User loginUser(SignInRequest request) {
-//        Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
-//
-//        if (userOptional.isEmpty()) {
-//            throw new RuntimeException("Invalid email or password");
-//        }
-//
-//        User user = userOptional.get();
-//        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-//            throw new RuntimeException("Invalid email or password");
-//        }
-//
-//        return user;
-//    }
 }

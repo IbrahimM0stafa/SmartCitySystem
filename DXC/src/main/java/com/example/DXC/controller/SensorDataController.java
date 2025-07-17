@@ -1,7 +1,7 @@
-package com.example.DXC.controller;
+package com.example.dxc.controller;
 
-import com.example.DXC.model.*;
-import com.example.DXC.service.SensorDataService;
+import com.example.dxc.model.*;
+import com.example.dxc.service.SensorDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.format.annotation.DateTimeFormat;

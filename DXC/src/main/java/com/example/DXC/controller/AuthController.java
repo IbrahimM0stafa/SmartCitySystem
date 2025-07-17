@@ -1,12 +1,12 @@
-package com.example.DXC.controller;
+package com.example.dxc.controller;
 
-import com.example.DXC.dto.SignInRequest;
-import com.example.DXC.dto.SignupRequest;
-import com.example.DXC.dto.JwtResponse;
-import com.example.DXC.model.User;
-import com.example.DXC.model.UserDetailsImpl;
-import com.example.DXC.service.UserService;
-import com.example.DXC.jwt.JwtUtils;
+import com.example.dxc.dto.SignInRequest;
+import com.example.dxc.dto.SignupRequest;
+import com.example.dxc.dto.JwtResponse;
+import com.example.dxc.model.User;
+import com.example.dxc.model.UserDetailsImpl;
+import com.example.dxc.service.UserService;
+import com.example.dxc.jwt.JwtUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

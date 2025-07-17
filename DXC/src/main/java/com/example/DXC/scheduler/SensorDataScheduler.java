@@ -1,6 +1,6 @@
-package com.example.DXC.scheduler;
+package com.example.dxc.scheduler;
 
-import com.example.DXC.service.SensorDataService;
+import com.example.dxc.service.SensorDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

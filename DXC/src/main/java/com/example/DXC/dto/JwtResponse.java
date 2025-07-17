@@ -1,4 +1,4 @@
-package com.example.DXC.dto;
+package com.example.dxc.dto;
 
 public class JwtResponse {
     private String token;

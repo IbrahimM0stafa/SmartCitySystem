@@ -1,7 +1,7 @@
-package com.example.DXC.service;
+package com.example.dxc.service;
 
-import com.example.DXC.model.User;
-import com.example.DXC.repository.UserRepository;
+import com.example.dxc.model.User;
+import com.example.dxc.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

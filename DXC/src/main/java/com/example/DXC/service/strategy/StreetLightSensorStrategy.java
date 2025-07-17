@@ -1,18 +1,21 @@
-package com.example.DXC.service.strategy;
+package com.example.dxc.service.strategy;
 
-import com.example.DXC.model.StreetLightSensorData;
-import com.example.DXC.repository.StreetLightSensorDataRepository;
-import com.example.DXC.service.SensorDataValidator;
-import com.example.DXC.service.SettingsService;
+import com.example.dxc.model.StreetLightSensorData;
+import com.example.dxc.repository.StreetLightSensorDataRepository;
+import com.example.dxc.service.SensorDataValidator;
+import com.example.dxc.service.SettingsService;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @Service
 public class StreetLightSensorStrategy extends AbstractSensorDataStrategy<StreetLightSensorData> {
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final Logger logger = LoggerFactory.getLogger(StreetLightSensorStrategy.class);
 
     public StreetLightSensorStrategy(
             StreetLightSensorDataRepository repository,
@@ -46,10 +49,11 @@ public class StreetLightSensorStrategy extends AbstractSensorDataStrategy<Street
 
     @Override
     protected void logSensorSpecificData(StreetLightSensorData data) {
-        System.out.printf("Brightness: %d%%%n", data.getBrightnessLevel());
-        System.out.printf("Power: %.2f watts%n", data.getPowerConsumption());
-        System.out.printf("Status: %s%n", data.getStatus());
+        logger.info("Brightness: {}%", data.getBrightnessLevel());
+        logger.info("Power: {} watts", String.format("%.2f", data.getPowerConsumption()));
+        logger.info("Status: {}", data.getStatus());
     }
+
 
     @Override
     protected String getStatusFieldName() {

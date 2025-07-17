@@ -1,6 +1,6 @@
-package com.example.DXC.repository;
+package com.example.dxc.repository;
 
-import com.example.DXC.model.User;
+import com.example.dxc.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

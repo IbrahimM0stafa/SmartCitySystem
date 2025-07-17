@@ -1,7 +1,7 @@
-package com.example.DXC.dto;
+package com.example.dxc.dto;
 
-import com.example.DXC.model.Settings.AlertType;
-import com.example.DXC.model.Settings.SettingType;
+import com.example.dxc.model.Settings.AlertType;
+import com.example.dxc.model.Settings.SettingType;
 import lombok.Data;
 
 @Data

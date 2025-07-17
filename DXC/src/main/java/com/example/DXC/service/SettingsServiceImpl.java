@@ -1,14 +1,13 @@
-package com.example.DXC.service;
+package com.example.dxc.service;
 
-import com.example.DXC.dto.SettingsRequest;
-import com.example.DXC.model.Alert;
-import com.example.DXC.model.Settings;
-import com.example.DXC.model.User;
-import com.example.DXC.repository.AlertRepository;
-import com.example.DXC.repository.SettingsRepository;
-import com.example.DXC.repository.UserRepository;
-import com.example.DXC.service.SettingsService;
-import com.example.DXC.service.observer.AlertObserver;
+import com.example.dxc.dto.SettingsRequest;
+import com.example.dxc.model.Alert;
+import com.example.dxc.model.Settings;
+import com.example.dxc.model.User;
+import com.example.dxc.repository.AlertRepository;
+import com.example.dxc.repository.SettingsRepository;
+import com.example.dxc.repository.UserRepository;
+import com.example.dxc.service.observer.AlertObserver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

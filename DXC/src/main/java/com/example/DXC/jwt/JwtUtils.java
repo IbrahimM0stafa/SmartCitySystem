@@ -1,7 +1,7 @@
-package com.example.DXC.jwt;
+package com.example.dxc.jwt;
 
-import com.example.DXC.model.User;
-import com.example.DXC.model.UserDetailsImpl;
+import com.example.dxc.model.User;
+import com.example.dxc.model.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

@@ -1,10 +1,10 @@
 // Updated SecurityConfig.java
-package com.example.DXC.config;
+package com.example.dxc.config;
 
-import com.example.DXC.jwt.AuthTokenFilter;
-import com.example.DXC.jwt.JwtUtils;
-import com.example.DXC.jwt.OAuth2LoginSuccessHandler;
-import com.example.DXC.service.CustomOAuth2UserService;
+import com.example.dxc.jwt.AuthTokenFilter;
+import com.example.dxc.jwt.JwtUtils;
+import com.example.dxc.jwt.OAuth2LoginSuccessHandler;
+import com.example.dxc.service.CustomOAuth2UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,13 +18,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
     private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
     private final CustomOAuth2UserService customOAuth2UserService;
@@ -55,7 +57,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable())// Safe: using stateless JWT auth, no cookies
                 .cors(withDefaults())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -101,11 +103,11 @@ public class SecurityConfig {
                         "http://" + minikubeIp + ":30080"
                 };
 
-                System.out.println("CORS Configuration:");
-                System.out.println("Frontend URL: " + frontendUrl);
-                System.out.println("Minikube IP: " + minikubeIp);
+                logger.info("CORS Configuration:");
+                logger.info("Frontend URL: {}", frontendUrl);
+                logger.info("Minikube IP: {}", minikubeIp);
                 for (String origin : allowedOrigins) {
-                    System.out.println("Allowed Origin: " + origin);
+                    logger.info("Allowed Origin: {}", origin);
                 }
 
                 registry.addMapping("/api/**")

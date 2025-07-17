@@ -1,8 +1,8 @@
-package com.example.DXC.service;
+package com.example.dxc.service;
 
-import com.example.DXC.model.AirPollutionSensorData;
-import com.example.DXC.model.StreetLightSensorData;
-import com.example.DXC.model.TrafficSensorData;
+import com.example.dxc.model.AirPollutionSensorData;
+import com.example.dxc.model.StreetLightSensorData;
+import com.example.dxc.model.TrafficSensorData;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

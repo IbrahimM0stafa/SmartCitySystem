@@ -1,7 +1,7 @@
-package com.example.DXC.service.observer;
-import com.example.DXC.model.Alert;
-import com.example.DXC.model.User;
-import com.example.DXC.service.EmailService;
+package com.example.dxc.service.observer;
+import com.example.dxc.model.Alert;
+import com.example.dxc.model.User;
+import com.example.dxc.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;

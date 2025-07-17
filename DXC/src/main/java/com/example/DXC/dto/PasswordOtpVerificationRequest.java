@@ -1,12 +1,14 @@
-package com.example.DXC.dto;
+package com.example.dxc.dto;
 
 public class PasswordOtpVerificationRequest {
     private String email;
     private String otp;
     private String newPassword;
 
-    // Required: No-arg constructor
-    public PasswordOtpVerificationRequest() {}
+    // Default constructor required for framework deserialization (e.g. Jackson)
+    public PasswordOtpVerificationRequest() {
+        // Intentionally empty
+    }
 
     public String getEmail() {
         return email;

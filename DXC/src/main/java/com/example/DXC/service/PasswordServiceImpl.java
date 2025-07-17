@@ -1,7 +1,7 @@
-package com.example.DXC.service;
+package com.example.dxc.service;
 
-import com.example.DXC.model.User;
-import com.example.DXC.repository.UserRepository;
+import com.example.dxc.model.User;
+import com.example.dxc.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,9 @@ public class PasswordServiceImpl implements PasswordService {
     @Autowired
     private EmailService mailService;
 
-    // Simple in-memory OTP store (can be replaced with Redis or DB if needed)
     private final Map<String, String> otpStore = new HashMap<>();
+
+    private final Random random = new Random();
 
     @Override
     public String initiatePasswordChange(String email, String oldPassword) {
@@ -35,11 +36,10 @@ public class PasswordServiceImpl implements PasswordService {
             throw new RuntimeException("Incorrect current password.");
         }
 
-        // Generate 6-digit OTP
-        String otp = String.format("%06d", new Random().nextInt(999999));
+        // ✅ Reused Random instance
+        String otp = String.format("%06d", random.nextInt(999999));
         otpStore.put(email, otp);
 
-        // Send OTP via email
         mailService.sendOtpEmail(email, otp);
 
         return "OTP sent to your email.";
@@ -57,7 +57,7 @@ public class PasswordServiceImpl implements PasswordService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
 
-        otpStore.remove(email); // Clean up after successful change
+        otpStore.remove(email);
 
         return "Password changed successfully.";
     }

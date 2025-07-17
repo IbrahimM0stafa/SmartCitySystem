@@ -1,18 +1,21 @@
-package com.example.DXC.service.strategy;
+package com.example.dxc.service.strategy;
 
-import com.example.DXC.model.TrafficSensorData;
-import com.example.DXC.repository.TrafficSensorDataRepository;
-import com.example.DXC.service.SensorDataValidator;
-import com.example.DXC.service.SettingsService;
+import com.example.dxc.model.TrafficSensorData;
+import com.example.dxc.repository.TrafficSensorDataRepository;
+import com.example.dxc.service.SensorDataValidator;
+import com.example.dxc.service.SettingsService;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @Service
 public class TrafficSensorStrategy extends AbstractSensorDataStrategy<TrafficSensorData> {
+    private static final Logger logger = LoggerFactory.getLogger(TrafficSensorStrategy.class);
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public TrafficSensorStrategy(
             TrafficSensorDataRepository repository,
@@ -44,10 +47,11 @@ public class TrafficSensorStrategy extends AbstractSensorDataStrategy<TrafficSen
 
     @Override
     protected void logSensorSpecificData(TrafficSensorData data) {
-        System.out.printf("Traffic Density: %d%n", data.getTrafficDensity());
-        System.out.printf("Avg Speed: %.2f%n", data.getAvgSpeed());
-        System.out.printf("Congestion Level: %s%n", data.getCongestionLevel());
+        logger.info("Traffic Density: {}", data.getTrafficDensity());
+        logger.info("Avg Speed: {:.2f}", data.getAvgSpeed());
+        logger.info("Congestion Level: {}", data.getCongestionLevel());
     }
+
 
     @Override
     protected String getStatusFieldName() {

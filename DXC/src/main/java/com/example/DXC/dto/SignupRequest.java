@@ -1,4 +1,4 @@
-package com.example.DXC.dto;
+package com.example.dxc.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;

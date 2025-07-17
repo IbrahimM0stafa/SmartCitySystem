@@ -1,6 +1,6 @@
-package com.example.DXC.dto;
+package com.example.dxc.dto;
 
-import com.example.DXC.model.Alert;
+import com.example.dxc.model.Alert;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

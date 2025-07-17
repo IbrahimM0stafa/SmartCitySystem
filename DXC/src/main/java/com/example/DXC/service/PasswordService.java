@@ -1,4 +1,4 @@
-package com.example.DXC.service;
+package com.example.dxc.service;
 
 public interface PasswordService {
     String initiatePasswordChange(String email, String oldPassword);

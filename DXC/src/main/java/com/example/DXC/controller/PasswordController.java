@@ -1,8 +1,8 @@
-package com.example.DXC.controller;
+package com.example.dxc.controller;
 
-import com.example.DXC.dto.PasswordChangeRequest;
-import com.example.DXC.dto.PasswordOtpVerificationRequest;
-import com.example.DXC.service.PasswordService;
+import com.example.dxc.dto.PasswordChangeRequest;
+import com.example.dxc.dto.PasswordOtpVerificationRequest;
+import com.example.dxc.service.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ import java.util.Map;
 public class PasswordController {
 
     @Autowired
-    private PasswordService passwordService;
+    PasswordService passwordService;
 
     @PostMapping("/change-password-request")
     public ResponseEntity<?> requestPasswordChange(@RequestBody PasswordChangeRequest request) {
