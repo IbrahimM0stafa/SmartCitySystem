@@ -3,23 +3,23 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { AlertService, Alert } from '../../services/alert.service';
 import { ThemeService } from '../../services/theme.service';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
-  selector: 'app-alert',  standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  selector: 'app-alert',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './alert.component.html',
   styleUrls: ['./alert.component.css']
 })
 export class AlertComponent implements OnInit, OnDestroy {
   alerts: Alert[] = [];
   isDarkMode = false;
-  private alertSubscription: Subscription;
-  private themeSubscription: Subscription;
+  private readonly alertSubscription: Subscription;
+  private readonly themeSubscription: Subscription;
 
   constructor(
-    private alertService: AlertService,
-    private themeService: ThemeService
+    private readonly alertService: AlertService,
+    private readonly themeService: ThemeService
   ) {
     console.log('AlertComponent constructed');
     this.alertSubscription = this.alertService.getAlerts().subscribe({

@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   title = 'iot-monitoring-system';
   showAlert = true;
 
-  constructor(private router: Router) {
+  constructor(private readonly router: Router) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {

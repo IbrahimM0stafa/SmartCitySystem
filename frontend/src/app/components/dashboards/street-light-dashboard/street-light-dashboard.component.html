@@ -104,56 +104,85 @@
     </div>
 
     <div class="table-container">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th (click)="sort('location')">
-              Location
-              <span class="sort-icon" *ngIf="sortField === 'location'">
-                {{ sortDirection === 'asc' ? '↑' : '↓' }}
-              </span>
-            </th>
-            <th (click)="sort('timestamp')">
-              Time
-              <span class="sort-icon" *ngIf="sortField === 'timestamp'">
-                {{ sortDirection === 'asc' ? '↑' : '↓' }}
-              </span>
-            </th>
-            <th (click)="sort('brightnessLevel')">
-              Brightness Level
-              <span class="sort-icon" *ngIf="sortField === 'brightnessLevel'">
-                {{ sortDirection === 'asc' ? '↑' : '↓' }}
-              </span>
-            </th>
-            <th (click)="sort('powerConsumption')">
-              Power Consumption
-              <span class="sort-icon" *ngIf="sortField === 'powerConsumption'">
-                {{ sortDirection === 'asc' ? '↑' : '↓' }}
-              </span>
-            </th>
-            <th (click)="sort('status')">
-              Status
-              <span class="sort-icon" *ngIf="sortField === 'status'">
-                {{ sortDirection === 'asc' ? '↑' : '↓' }}
-              </span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of paginatedData" [ngClass]="data.status.toLowerCase()">
-            <td>{{ data.location }}</td>
-            <td>{{ data.timestamp | date:'medium' }}</td>
-            <td>{{ data.brightnessLevel }}%</td>
-            <td>{{ data.powerConsumption }} W</td>
-            <td>
-              <span class="status-badge" [ngClass]="data.status.toLowerCase()">
-                {{ data.status }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th 
+            tabindex="0"
+            (click)="sort('location')" 
+            (keydown.enter)="sort('location')" 
+            (keydown.space)="sort('location')"
+          >
+            Location
+            <span class="sort-icon" *ngIf="sortField === 'location'">
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th 
+            tabindex="0"
+            (click)="sort('timestamp')" 
+            (keydown.enter)="sort('timestamp')" 
+            (keydown.space)="sort('timestamp')"
+          >
+            Time
+            <span class="sort-icon" *ngIf="sortField === 'timestamp'">
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th 
+            tabindex="0"
+            (click)="sort('brightnessLevel')" 
+            (keydown.enter)="sort('brightnessLevel')" 
+            (keydown.space)="sort('brightnessLevel')"
+          >
+            Brightness Level
+            <span class="sort-icon" *ngIf="sortField === 'brightnessLevel'">
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th 
+            tabindex="0"
+            (click)="sort('powerConsumption')" 
+            (keydown.enter)="sort('powerConsumption')" 
+            (keydown.space)="sort('powerConsumption')"
+          >
+            Power Consumption
+            <span class="sort-icon" *ngIf="sortField === 'powerConsumption'">
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th 
+            tabindex="0"
+            (click)="sort('status')" 
+            (keydown.enter)="sort('status')" 
+            (keydown.space)="sort('status')"
+          >
+            Status
+            <span class="sort-icon" *ngIf="sortField === 'status'">
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of paginatedData" [ngClass]="data.status.toLowerCase()">
+          <td>{{ data.location }}</td>
+          <td>{{ data.timestamp | date:'medium' }}</td>
+          <td>{{ data.brightnessLevel }}%</td>
+          <td>{{ data.powerConsumption }} W</td>
+          <td>
+            <span class="status-badge" [ngClass]="data.status.toLowerCase()">
+              {{ data.status }}
+            </span>
+          </td>
+        </tr>
+        <tr *ngIf="paginatedData.length === 0">
+          <td colspan="5" class="no-data">No data available for the selected filters</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
 
     <div class="pagination">
       <button [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
@@ -166,7 +195,7 @@
     </div>
     
     <div class="auto-refresh-indicator">
-      <small>Data automatically refreshes every 20 seconds</small>
+      <small>Data automatically refreshes every 60 seconds</small>
     </div>
   </div>
 </div>

@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../services/theme.service';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { AccessibleClickDirective } from '../../directives/accessibility.directive';
 
 @Component({
   selector: 'app-dashboard-entry',
   standalone: true,
-  imports: [CommonModule, NavbarComponent],
+  imports: [CommonModule, NavbarComponent,  AccessibleClickDirective],
   templateUrl: './dashboard-entry.component.html',
   styleUrls: ['./dashboard-entry.component.css'],
   encapsulation: ViewEncapsulation.None
@@ -56,7 +57,7 @@ export class DashboardEntryComponent implements OnInit {
 
   constructor(
     public themeService: ThemeService,
-    private router: Router
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
