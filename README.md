@@ -2,6 +2,12 @@
 
 Smart City System is a real-time monitoring platform designed to visualize environmental and traffic sensor data. It integrates sensor input with dashboards to help urban planners and citizens make data-driven decisions.
 
+## 🎥 Demo Video
+
+[![Smart City System Demo](https://img.youtube.com/vi/QJFu0HMIXE4/maxresdefault.jpg)](https://youtu.be/QJFu0HMIXE4)
+
+[📹 Watch Full Demo Video](https://youtu.be/QJFu0HMIXE4)
+
 ## 🔧 Tech Stack
 
 - **Frontend**: Angular 16+  
@@ -298,4 +304,3 @@ SmartCitySystem/
 ├── README.md               # Project documentation
 └── docker-compose.yml      # Docker Compose configuration
 ```
-
