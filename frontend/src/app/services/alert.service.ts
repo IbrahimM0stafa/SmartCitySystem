@@ -25,7 +25,7 @@ export interface AlertResponse {
 })
 export class AlertService {
   private readonly baseUrl = `${environment.apiUrl}/api/alerts`;
-  private alerts = new BehaviorSubject<Alert[]>([]);
+  private readonly alerts = new BehaviorSubject<Alert[]>([]);
   private alertQueue: Alert[] = [];
   private pollingSubscription: Subscription | null = null;
   private displayTimeout: any;
@@ -33,7 +33,7 @@ export class AlertService {
   private readonly DISPLAY_DURATION = 5000; // 5 seconds
   private isProcessingQueue = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getAlerts(): Observable<Alert[]> {
     return this.alerts.asObservable();

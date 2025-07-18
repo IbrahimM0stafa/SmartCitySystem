@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../services/theme.service';
@@ -20,7 +20,7 @@ interface SignupData {
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
   encapsulation: ViewEncapsulation.None
@@ -39,8 +39,8 @@ export class SignupComponent implements OnInit {
   showPassword: boolean = false;
 
   constructor(
-    private router: Router,
-    private http: HttpClient,
+    private readonly router: Router,
+    private readonly http: HttpClient,
     public themeService: ThemeService
   ) { }
 
@@ -60,8 +60,6 @@ export class SignupComponent implements OnInit {
         next: (response: any) => {
           console.log('Signup successful:', response);
           alert(`Account created successfully for ${response.firstName} ${response.lastName}!`);
-          
-          // Navigate to login page after successful signup
           this.router.navigate(['/login']);
         },
         error: (error) => {

@@ -25,14 +25,6 @@ export const routes: Routes = [
       )
   },
   {
-    path: 'home',
-    loadComponent: () =>
-      import('./components/home-page/home-page.component').then(
-        (m) => m.HomePageComponent
-      ),
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'profile',
     loadComponent: () =>
       import('./components/profile-page/profile-page.component').then(
@@ -66,7 +58,7 @@ export const routes: Routes = [
   {
     path: 'traffic-dashboard',
     loadComponent: () =>
-      import('./components/traffic-dashboard/traffic-dashboard.component').then(
+      import('./components/dashboards/traffic-dashboard/traffic-dashboard.component').then(
         (m) => m.TrafficDashboardComponent
       ),
     canActivate: [AuthGuard]
@@ -74,7 +66,7 @@ export const routes: Routes = [
   {
     path: 'lighting-dashboard',
     loadComponent: () =>
-      import('./components/street-light-dashboard/street-light-dashboard.component').then(
+      import('./components/dashboards/street-light-dashboard/street-light-dashboard.component').then(
         (m) => m.StreetLightDashboardComponent
       ),
     canActivate: [AuthGuard]
@@ -82,7 +74,7 @@ export const routes: Routes = [
   {
     path: 'pollution-dashboard',
     loadComponent: () =>
-      import('./components/air-pollution-dashboard/air-pollution-dashboard.component').then(
+      import('./components/dashboards/air-pollution-dashboard/air-pollution-dashboard.component').then(
         (m) => m.AirPollutionDashboardComponent
       ),
     canActivate: [AuthGuard]

@@ -1,5 +1,3 @@
-<!-- Updated HTML snippet to incorporate Font Awesome icons properly -->
-
 <app-navbar></app-navbar>
 <div class="container">
   <header>
@@ -20,11 +18,13 @@
   </div>
   
   <div class="cards-container">
-    <div class="card" *ngFor="let card of cardData" (click)="navigateToDashboard(card.id)">
+    <div class="card" 
+         *ngFor="let card of cardData" 
+         [appAccessibleClick]="navigateToDashboard.bind(this, card.id)"
+         [attr.aria-label]="'Navigate to ' + card.title + ' dashboard'">
       <div class="card-header">
         <h2>{{ card.title }}</h2>
         <div class="card-icon" [ngClass]="card.iconClass">
-          
           <i class="fas fa-{{ card.icon }}"></i>
         </div>
       </div>

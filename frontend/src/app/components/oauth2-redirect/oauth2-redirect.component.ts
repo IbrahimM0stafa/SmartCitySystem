@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./oauth2-redirect.component.css']
 })
 export class Oauth2RedirectComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(private readonly router: Router) {}
 
   ngOnInit(): void {
     const urlParams = new URLSearchParams(window.location.search);

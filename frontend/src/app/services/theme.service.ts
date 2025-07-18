@@ -6,9 +6,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ThemeService {
-  private storageKey = 'preferred-theme';
+  private readonly storageKey = 'preferred-theme';
   private _currentTheme: 'light' | 'dark' = 'dark';
-  private themeSubject = new BehaviorSubject<'light' | 'dark'>('dark');
+  private readonly themeSubject = new BehaviorSubject<'light' | 'dark'>('dark');
 
   
   themeChanges$: Observable<'light' | 'dark'> = this.themeSubject.asObservable();

@@ -1,15 +1,15 @@
 import { Component, OnInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http'; // Added HttpClientModule
+import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../services/theme.service';
-import { environment } from '../../../environments/environment'; // Import environment
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule], // Added HttpClientModule
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   encapsulation: ViewEncapsulation.None
@@ -23,14 +23,12 @@ export class LoginComponent implements OnInit {
   showPassword: boolean = false;
 
   constructor(
-    private router: Router,
-    private http: HttpClient,
+    private readonly router: Router,
+    private readonly http: HttpClient,
     public themeService: ThemeService
-  ) { }
+  ) {}
 
-  ngOnInit(): void {
-    // No need for localStorage logic, ThemeService handles it
-  }
+  ngOnInit(): void { /*  No need for localStorage logic, ThemeService handles it */ }
 
   handleSubmit(): void {
     this.http.post<any>(`${environment.apiUrl}/api/auth/signin`, {
@@ -39,22 +37,13 @@ export class LoginComponent implements OnInit {
     }).subscribe({
       next: (response) => {
         console.log('Login successful:', response);
-  
-        // Save the JWT token in localStorage
         localStorage.setItem('token', response.token);
-  
-        // Optionally, save user info
         localStorage.setItem('user', JSON.stringify({
           id: response.id,
           email: response.email
         }));
-  
         alert(`Welcome! Your email: ${response.email}`);
-  
-        // Emit login event
         this.onLogin.emit();
-  
-        // Navigate to home page or dashboard
         this.router.navigate(['/dashboard-entry']);
       },
       error: (error) => {

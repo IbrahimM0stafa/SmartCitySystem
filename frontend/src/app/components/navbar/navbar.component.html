@@ -15,12 +15,16 @@
       </a>
     </div>
     
-    <div class="user-menu" (click)="toggleDropdown()" (clickOutside)="closeDropdown()">
-      <div class="user-info">
+    <div class="user-menu" (clickOutside)="closeDropdown()">
+      <button class="user-info" 
+              (click)="toggleDropdown()" 
+              (keydown)="onKeyDown($event)"
+              aria-haspopup="true"
+              [attr.aria-expanded]="dropdownOpen">
         <i class="fas fa-user-circle"></i>
         <span class="username">{{ userName }}</span>
         <span class="dropdown-arrow" [class.open]="dropdownOpen">▼</span>
-      </div>
+      </button>
       
       <div class="dropdown-menu" *ngIf="dropdownOpen">
         <button (click)="onChangePassword()">

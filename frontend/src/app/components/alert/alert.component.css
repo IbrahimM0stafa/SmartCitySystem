@@ -15,6 +15,7 @@
   opacity: 1;
   transition: opacity 0.3s ease-in-out;
   border-left: 4px solid #4CAF50;
+  animation: slideIn 0.3s ease-out;
 }
 
 .alert.dark {
@@ -76,6 +77,3 @@
   }
 }
 
-.alert {
-  animation: slideIn 0.3s ease-out;
-}

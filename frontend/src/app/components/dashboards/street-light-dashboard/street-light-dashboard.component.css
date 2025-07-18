@@ -31,14 +31,12 @@
   --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-
 /* Base Styles */
 .dashboard-container {
   min-height: 100vh;
   transition: var(--transition);
   font-family: 'Segoe UI', 'Roboto', sans-serif;
   padding: 20px;
-  padding-top: 0; 
 }
 
 /* Dark Mode Styles */
@@ -70,8 +68,8 @@
 
 .dark-mode .filter-input {
   background-color: #2d2d2d;
-  color: #fff;
-  border-color: #404040;
+  color: var(--dark-text-primary);
+  border-color: var(--dark-border);
 }
 
 .dark-mode .chart-container {
@@ -87,14 +85,12 @@
 /* Header Styles */
 .dashboard-header {
   padding: 1.5rem 2rem;
-  /* background: rgba(0, 0, 0, 0.2); */
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--dark-border);
   margin-bottom: 20px;
 }
 
 .light-mode .dashboard-header {
-  /* background: rgba(255, 255, 255, 0.2); */
   border-bottom: 1px solid var(--light-border);
 }
 
@@ -113,7 +109,6 @@
   background: linear-gradient(135deg, var(--dark-accent) 0%, var(--dark-accent-light) 100%);
   -webkit-background-clip: text;
   background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -121,7 +116,6 @@
   background: linear-gradient(135deg, var(--light-accent) 0%, var(--light-accent-light) 100%);
   -webkit-background-clip: text;
     background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -162,24 +156,21 @@
 
 .filter-group {
   display: flex;
-  gap: 1rem;
   flex-wrap: wrap;
   gap: 10px;
 }
 
 .filter-input {
   padding: 0.75rem 1rem;
+  border: 1px solid var(--light-border);
   border-radius: var(--border-radius-sm);
-  border: 1px solid var(--dark-border);
-  background: rgba(0, 0, 0, 0.2);
-  color: var(--dark-text-primary);
+  background: var(--light-bg-secondary);
+  color: var(--light-text-primary);
   font-size: 0.9rem;
   transition: var(--transition);
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
   min-width: 150px;
 }
+
 
 .light-mode .filter-input {
   border: 1px solid var(--light-border);
@@ -208,6 +199,7 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
+  transition: var(--transition);
 }
 
 /* Metric Cards */
@@ -272,14 +264,12 @@
   background: linear-gradient(135deg, var(--dark-accent) 0%, var(--dark-accent-light) 100%);
   -webkit-background-clip: text;
   background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .light-mode .metric-value {
   background: linear-gradient(135deg, var(--light-accent) 0%, var(--light-accent-light) 100%);
   -webkit-background-clip: text;
-  background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -301,21 +291,6 @@
   font-weight: 500;
 }
 
-.congestion-indicator.low {
-  background: rgba(0, 200, 83, 0.2);
-  color: var(--success);
-}
-
-.congestion-indicator.medium {
-  background: rgba(255, 160, 0, 0.2);
-  color: var(--warning);
-}
-
-.congestion-indicator.high {
-  background: rgba(211, 47, 47, 0.2);
-  color: var(--error);
-}
-
 /* Chart Placeholder */
 .card-chart {
   margin-top: 1.5rem;
@@ -333,29 +308,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
-  margin-top: 2rem;
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
   gap: 10px;
-  align-items: center;
+  margin-top: 20px;
 }
 
 .pagination button {
-  padding: 0.5rem 1rem;
-  border: none;
-  background: var(--dark-accent);
-  color: white;
-  border-radius: var(--border-radius-sm);
-  cursor: pointer;
-  transition: var(--transition);
   padding: 8px 16px;
   border: none;
   background-color: #007bff;
   color: white;
   border-radius: 4px;
   cursor: pointer;
+  transition: var(--transition);
 }
 
 .light-mode .pagination button {
@@ -366,8 +330,8 @@
   opacity: 0.5;
   cursor: not-allowed;
   background-color: #ccc;
-  cursor: not-allowed;
 }
+
 
 .pagination button:not(:disabled):hover {
   background: var(--dark-accent-light);
@@ -423,11 +387,6 @@
   border-color: var(--light-accent);
 }
 
-.metrics-grid {
-  display: grid;
-  gap: 1.5rem;
-  transition: var(--transition);
-}
 
 .metrics-grid.show-all {
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -470,11 +429,11 @@
 
 /* Chart Container */
 .chart-container {
-  margin-bottom: 20px;
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--light-bg-secondary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow);
 }
 
 /* Table Container */
@@ -499,25 +458,17 @@
 }
 
 .data-table th {
-  background-color: #f8f9fa;
-  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-right: 20px; /* Space for sort icon */
 }
 
 .data-table tr {
   background-color: unset;
 }
 
-.dark-mode .data-table tr {
-  background-color: unset;
-}
-
 /* Sortable Table Headers */
-.data-table th {
-  cursor: pointer;
-  user-select: none;
-  position: relative;
-  padding-right: 20px; /* Space for sort icon */
-}
 
 .data-table th:hover {
   background-color: rgba(0, 0, 0, 0.05);
@@ -545,21 +496,6 @@
   font-weight: 500;
 }
 
-.low {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.moderate {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.high {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
 /* Status Badge */
 .status-badge {
   padding: 4px 8px;
@@ -569,33 +505,37 @@
   display: inline-block;
 }
 
-.dark-mode .status-badge.severe {
-  background-color: rgba(220, 38, 38, 0.25);
-  color: #ef4444;
-  border: 1px solid #ef4444;
+/* Street Light Status */
+.on {
+  background-color: #cce5ff;
+  color: #004085;
 }
 
-
-
-
-
-/* Traffic Status */
-.low {
-  background-color: #d4edda;
-  color: #155724;
+.off {
+  background-color: #e2e3e5;
+  color: #383d41;
 }
 
-.medium {
+.maintenance {
   background-color: #fff3cd;
   color: #856404;
 }
 
-.high {
+/* Air Pollution Status */
+.good {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.moderate {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.unhealthy {
   background-color: #f8d7da;
   color: #721c24;
 }
-
-
 
 /* Responsive Table Styles */
 @media (max-width: 768px) {
@@ -612,41 +552,9 @@
 }
 
 /* Chart Container */
-.chart-container {
-  background: var(--light-bg-secondary);
-  border-radius: var(--border-radius-lg);
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  box-shadow: var(--box-shadow);
-}
 
-.dark-mode .chart-container {
-  background: var(--dark-bg-secondary);
-}
 
 /* Filter Inputs */
-.filter-input {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--light-border);
-  border-radius: var(--border-radius-sm);
-  background: var(--light-bg-secondary);
-  color: var(--light-text-primary);
-  font-size: 0.9rem;
-  transition: var(--transition);
-  min-width: 150px;
-}
-
-.dark-mode .filter-input {
-  border-color: var(--dark-border);
-  background: var(--dark-bg-secondary);
-  color: var(--dark-text-primary);
-}
-
-.filter-input:focus {
-  outline: none;
-  border-color: var(--light-accent);
-}
-
 .dark-mode .filter-input:focus {
   border-color: var(--dark-accent);
 }
@@ -662,12 +570,7 @@ select.filter-input {
 }
 
 .dark-mode select.filter-input {
-  cursor: pointer;
-  appearance: none;
-  padding-right: 2rem;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23fff' viewBox='0 0 16 16'%3E%3Cpath d='M8 11l-6-6h12z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
 }
 
 /* Date Input */
@@ -685,18 +588,6 @@ input[type="datetime-local"].filter-input {
 .dark-mode .empty-state {
   color: var(--dark-text-secondary);
 }
-
-.severe {
-  background-color: #f9c2c6;
-  color: #721c24;
-}
-
-.dark-mode .severe {
-  background-color: rgba(211, 47, 47, 0.2);
-  color: #ffb4b4;
-}
-
-
 
 .data-table tr:hover {
   background-color: rgba(0,0,0,0.04) !important;
