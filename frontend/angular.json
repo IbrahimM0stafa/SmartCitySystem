@@ -23,7 +23,7 @@
             "assets": [
               "src/assets",
               {
-                "glob": "**/*",
+                "glob": "/*",
                 "input": "public"
               }
             ],
@@ -84,20 +84,21 @@
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               {
-                "glob": "**/*",
+                "glob": "/*",
                 "input": "public"
               }
             ],
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "karmaConfig": "karma.conf.js"
           }
         }
       }
     }
   },
   "cli": {
-    "analytics": false
-  }
+    "analytics":false
+}
 }

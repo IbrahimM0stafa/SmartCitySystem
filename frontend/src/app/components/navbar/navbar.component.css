@@ -86,14 +86,29 @@
   gap: 0.7rem;
   padding: 0.5rem 1.2rem;
   border-radius: 8px;
-  background: rgba(123,31,162,0.07);
+  background: rgba(123, 31, 162, 0.07);
   font-weight: 500;
   font-size: 1.08rem;
   transition: background 0.2s;
+
+  /* Button reset styles */
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  text-align: inherit;
+  outline: none;
+  width: 100%;
 }
+
 
 .dark-theme .user-info {
   background: rgba(156,77,204,0.13);
+}
+
+.user-info:focus-visible {
+  box-shadow: 0 0 0 2px #ae52d4;
+  border-radius: 8px;
 }
 
 .username {
@@ -155,6 +170,10 @@
 .dropdown-menu button:hover {
   background: linear-gradient(90deg, #ae52d4 0%, #0097a7 100%);
   color: #fff;
+}
+
+.dropdown-menu button:focus {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive adjustments */

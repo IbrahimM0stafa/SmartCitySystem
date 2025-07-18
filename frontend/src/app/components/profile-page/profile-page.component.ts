@@ -88,9 +88,9 @@ export class ProfilePageComponent implements OnInit {
   profileFields: InfoField[] = [];
 
   constructor(
-    private http: HttpClient,
+    private readonly http: HttpClient,
     public themeService: ThemeService,
-    private router: Router
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -124,7 +124,7 @@ export class ProfilePageComponent implements OnInit {
         console.log('API Response:', response); // Debug log
         
         this.userData = {
-          id: response.id || 0,
+          id: response.id ?? 0,
           email: response.email || '',
           // Fix: Map the correct field names from backend response
           firstName: response.firstname || '', // Note: backend uses 'firstname' (lowercase)
@@ -132,7 +132,7 @@ export class ProfilePageComponent implements OnInit {
           phone: response.phoneNumber || '',
           age: response.age || 0,
           gender: response.gender || '',
-          password: '••••••••' // Masked password
+          password: '••••••••' // NOSONAR
         };
         
         // Initialize editable data
@@ -343,7 +343,7 @@ export class ProfilePageComponent implements OnInit {
     }
     
     // Basic phone validation (you can make this more sophisticated)
-    const phoneRegex = /^[\+]?[0-9\s\-\(\)]{10,}$/;
+    const phoneRegex = /^[+]?[\d\s\-()]{10,}$/;
     if (!phoneRegex.test(phone)) {
       this.error = 'Please enter a valid phone number';
       return false;
