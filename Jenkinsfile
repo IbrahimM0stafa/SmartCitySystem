@@ -25,7 +25,7 @@ pipeline {
     stage('Build Backend Image') {
       steps {
         script {
-          docker.build("${BACKEND_IMAGE}:latest", '-f DXC/Dockerfile DXC')
+          docker.build("${BACKEND_IMAGE}:latest", '-f dxc/Dockerfile dxc')
         }
       }
     }
